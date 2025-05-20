@@ -22,7 +22,8 @@ namespace ColdTable {
 		void BindVertexBuffer(VertexBufferPtr vertexBuffer);
 		void UseShader(ShaderPtr shader);
 
-		void DrawTriangles(UINT vertexCount, UINT startVertexIndex);
+		void DrawTriangleList(UINT vertexCount, UINT startVertexIndex);
+		void DrawTriangleStrip(UINT vertexCount, UINT startVertexIndex);
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _context;

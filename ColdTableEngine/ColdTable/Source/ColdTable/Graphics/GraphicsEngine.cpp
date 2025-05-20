@@ -27,12 +27,12 @@ ColdTable::GraphicsDevicePtr ColdTable::GraphicsEngine::GetGraphicsDevice() noex
 void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, VertexBufferPtr vertexBuffer, Rect viewportSize, ShaderPtr shader)
 {
 	auto& context = *_deviceContext;
-	context.ClearAndSetBackBuffer(swapChain, {1, 0, 0, 1});
+	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});
 
 	context.SetViewportSize(viewportSize);
 	UseShader(shader);
 	context.BindVertexBuffer(vertexBuffer);
-	context.DrawTriangles(vertexBuffer->GetVertexCount(), 0);
+	context.DrawTriangleList(vertexBuffer->GetVertexCount(), 0);
 
 	auto& device = *_graphicsDevice;
 	device.ExecuteCommandList(context);

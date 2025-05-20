@@ -48,9 +48,15 @@ void ColdTable::DeviceContext::UseShader(ShaderPtr shader)
 	_context->PSSetShader(shader->_pixelShader, nullptr, 0);
 }
 
-void ColdTable::DeviceContext::DrawTriangles(UINT vertexCount, UINT startVertexIndex)
+void ColdTable::DeviceContext::DrawTriangleList(UINT vertexCount, UINT startVertexIndex)
 {
 	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_context->Draw(vertexCount, startVertexIndex);
+}
+
+void ColdTable::DeviceContext::DrawTriangleStrip(UINT vertexCount, UINT startVertexIndex)
+{
+	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	_context->Draw(vertexCount, startVertexIndex);
 }
 
