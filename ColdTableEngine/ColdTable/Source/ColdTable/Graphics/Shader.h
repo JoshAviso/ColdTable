@@ -13,18 +13,21 @@ namespace ColdTable
 		explicit Shader(ShaderDesc desc);
 		virtual ~Shader();
 
-	public:
+	private:
 		void GetBufferAndSize(void** shaderByteCode, UINT* shaderSize);
 
-	private:
 		ID3DBlob* _vertexShaderBlob;
 		ID3DBlob* _pixelShaderBlob;
 
 		ID3D11VertexShader* _vertexShader;
 		ID3D11PixelShader* _pixelShader;
 
+		GraphicsDevicePtr _sourceDevice{};
+
 	private:
 		friend class DeviceContext;
+		friend class Renderable;
+		friend class VertexBuffer;
 	};
 	
 }

@@ -3,7 +3,7 @@
 #include "GraphicsDevice.h"
 #include "GraphicsLogUtil.h"
 
-ColdTable::VertexBuffer::VertexBuffer(VertexBufferDesc desc): Base(desc.base), _graphicsDevice(desc.graphicsDevice), _buffer(0), _layout(0)
+ColdTable::VertexBuffer::VertexBuffer(VertexBufferDesc desc): Base(desc.base), _buffer(0), _layout(0)
 {
 }
 
@@ -13,7 +13,7 @@ ColdTable::VertexBuffer::~VertexBuffer()
 	_layout->Release();
 }
 
-void ColdTable::VertexBuffer::LoadVertices(void* list, UINT vertexSize, UINT listSize, void* shaderByteCode, UINT shaderByteSize)
+void ColdTable::VertexBuffer::LoadVertices(const void* list, UINT vertexSize, UINT listSize, ShaderPtr shader)
 {
 	if (_buffer) _buffer->Release();
 	if (_layout) _layout->Release();
@@ -31,7 +31,7 @@ void ColdTable::VertexBuffer::LoadVertices(void* list, UINT vertexSize, UINT lis
 	_vertexSize = vertexSize;
 	_listSize = listSize;
 
-	ColdTableGraphicsLogThrowOnFail(_graphicsDevice->_d3dDevice->CreateBuffer(&bufferDesc, &initData, &_buffer),
+	ColdTableGraphicsLogThrowOnFail(shader->_sourceDevice->_d3dDevice->CreateBuffer(&bufferDesc, &initData, &_buffer),
 		"CreateBuffer failed.");
 
 
@@ -45,7 +45,7 @@ void ColdTable::VertexBuffer::LoadVertices(void* list, UINT vertexSize, UINT lis
 
 	UINT layoutSize = ARRAYSIZE(layout);
 
-	ColdTableGraphicsLogThrowOnFail(_graphicsDevice->_d3dDevice->CreateInputLayout(layout, layoutSize, shaderByteCode, shaderByteSize, &_layout),
+	ColdTableGraphicsLogThrowOnFail(shader->_sourceDevice->_d3dDevice->CreateInputLayout(layout, layoutSize, shader->_vertexShaderBlob->GetBufferPointer(), shader->_vertexShaderBlob->GetBufferSize(), &_layout),
 		"CreateInputLayer failed.")
 }
 

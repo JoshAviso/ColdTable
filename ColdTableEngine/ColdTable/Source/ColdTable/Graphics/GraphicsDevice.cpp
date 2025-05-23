@@ -55,7 +55,7 @@ DeviceContextPtr GraphicsDevice::CreateDeviceContext()
 
 VertexBufferPtr GraphicsDevice::CreateVertexBuffer()
 {
-	VertexBufferDesc desc{{_logger},shared_from_this()};
+	VertexBufferDesc desc{{_logger}};
 	return std::make_shared<VertexBuffer>(desc);
 }
 

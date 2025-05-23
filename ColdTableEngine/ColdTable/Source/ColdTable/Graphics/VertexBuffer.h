@@ -11,22 +11,21 @@ namespace ColdTable
 	public:
 		explicit VertexBuffer(VertexBufferDesc desc);
 		virtual ~VertexBuffer() override;
-		void LoadVertices(void* list, UINT vertexSize, UINT listSize, void* shaderByteCode, UINT shaderByteSize);
-
-		UINT GetVertexCount();
 
 	private:
+		UINT GetVertexCount();
+		void LoadVertices(const void* list, UINT vertexSize, UINT listSize, ShaderPtr shader);
 		UINT _vertexSize;
 		UINT _listSize;
 
 	private:
-		GraphicsDevicePtr _graphicsDevice{};
 
 		ID3D11Buffer* _buffer;
 		ID3D11InputLayout* _layout;
 
 	private:
 		friend class DeviceContext;
+		friend class Renderable;
 	};
 }
  

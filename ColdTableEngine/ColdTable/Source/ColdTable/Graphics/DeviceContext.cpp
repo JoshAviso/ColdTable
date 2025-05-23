@@ -48,10 +48,26 @@ void ColdTable::DeviceContext::UseShader(ShaderPtr shader)
 	_context->PSSetShader(shader->_pixelShader, nullptr, 0);
 }
 
-void ColdTable::DeviceContext::BindConstantBuffer(ShaderPtr shader, ConstantBufferPtr constantBuffer)
+void ColdTable::DeviceContext::BindConstantBuffer(ConstantBufferPtr constantBuffer)
 {
 	_context->VSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
 	_context->PSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
+}
+
+void ColdTable::DeviceContext::Draw(RenderablePtr renderable)
+{
+	UseShader(renderable->_shader);
+	BindVertexBuffer(renderable->_vertexBuffer);
+
+	switch (renderable->_drawMode)
+	{
+	case DRAWMODE_TRI:
+		DrawTriangleList(renderable->_vertexBuffer->GetVertexCount(), 0);
+		break;
+	case DRAWMODE_TRI_STRIP:
+		DrawTriangleStrip(renderable->_vertexBuffer->GetVertexCount(), 0);
+		break;
+	}
 }
 
 void ColdTable::DeviceContext::DrawTriangleList(UINT vertexCount, UINT startVertexIndex)

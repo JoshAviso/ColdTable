@@ -1,9 +1,9 @@
-#include <ColdTable/Game/Game.h>
+#include <ColdTable/Game/GameLoop.h>
 #include <Windows.h>
 
 #include "ColdTable/Game/Display.h"
 
-void ColdTable::Game::Run()
+void ColdTable::GameLoop::Run()
 {
 	onInternalStartup();
 

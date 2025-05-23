@@ -2,4 +2,4 @@
 
 #include <stdexcept>
 
-#include <ColdTable/Game/Game.h>
+#include <ColdTable/Game/GameLoop.h>

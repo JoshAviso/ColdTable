@@ -6,11 +6,11 @@
 
 namespace ColdTable
 {
-	class Game: public Base
+	class GameLoop: public Base
 	{
 	public:
-		explicit Game(const GameDesc& desc);
-		virtual ~Game() override;
+		explicit GameLoop(const GameDesc& desc);
+		virtual ~GameLoop() override;
 
 		virtual void Run() final;
 
@@ -18,7 +18,7 @@ namespace ColdTable
 		void onInternalStartup();
 		void onInternalCallback();
 
-		VertexBufferPtr tempBuffer{};
+		RenderablePtr tempRenderable{};
 		ShaderPtr tempShader{};
 		ConstantBufferPtr tempConstantBuffer{};
 

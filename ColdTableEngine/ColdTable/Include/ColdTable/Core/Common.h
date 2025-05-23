@@ -1,9 +1,12 @@
 #pragma once
+#include <intsafe.h>
 #include <ColdTable/Core/Core.h>
 #include <ColdTable/Core/Logger.h>
 
 #include "Logger.h"
 #include "ColdTable/Math/Rect.h"
+#include <ColdTable/Graphics/GraphicsEnums.h>
+#include <ColdTable/Math/Vertex.h>
 
 namespace ColdTable
 {
@@ -34,10 +37,18 @@ namespace ColdTable
 		BaseDesc base;
 	};
 
+	struct RenderableDesc
+	{
+		BaseDesc base;
+		Vertex* vertexList;
+		UINT vertexCount;
+		EGeometryDrawmode drawMode;
+		ShaderPtr shader;
+	};
+
 	struct VertexBufferDesc
 	{
 		BaseDesc base;
-		GraphicsDevicePtr graphicsDevice;
 	};
 
 	struct ConstantBufferDesc

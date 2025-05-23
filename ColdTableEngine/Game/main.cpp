@@ -4,7 +4,7 @@ int main()
 {
 	try
 	{
-		ColdTable::Game game({ 
+		ColdTable::GameLoop game({ 
 			{1280, 720},
 			ColdTable::Logger::LogLevel::Info
 		});

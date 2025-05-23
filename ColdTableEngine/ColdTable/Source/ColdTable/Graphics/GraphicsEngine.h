@@ -14,18 +14,21 @@ namespace ColdTable
 
 		GraphicsDevicePtr GetGraphicsDevice() noexcept;
 
-		void Render(SwapChain& swapChain, VertexBufferPtr vertexBuffer, ConstantBufferPtr constantBuffer, Rect viewportSize, ShaderPtr shader);
 		void SetViewportSize(Rect size);
+		ShaderPtr CreateShader(wchar_t* vertexShaderSrc, wchar_t* pixelShaderSrc);
 
 		VertexBufferPtr CreateVertexBuffer();
 		ConstantBufferPtr CreateConstantBuffer();
 
-		ShaderPtr CreateShader(wchar_t* vertexShaderSrc, wchar_t* pixelShaderSrc);
-		void UseShader(const ShaderPtr& shader);
-
 	private:
+		void UseShader(const ShaderPtr& shader);
+		void Render(SwapChain& swapChain, RenderablePtr renderable, ConstantBufferPtr constantBuffer, Rect viewportSize);
+
 		std::shared_ptr<GraphicsDevice> _graphicsDevice{};
 		DeviceContextPtr _deviceContext{};
+
+
+		friend class GameLoop;
 	};
 }
 

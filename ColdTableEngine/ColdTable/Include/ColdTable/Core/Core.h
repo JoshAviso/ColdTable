@@ -8,7 +8,7 @@ namespace ColdTable
 	class Base;
 	class Window;
 	class Display;
-	class Game;
+	class GameLoop;
 
 	class GraphicsEngine;
 	class GraphicsDevice;
@@ -16,6 +16,7 @@ namespace ColdTable
 	class DeviceContext;
 	class VertexBuffer;
 	class ConstantBuffer;
+	class Renderable;
 	class Shader;
 
 	class Logger;
@@ -30,5 +31,6 @@ namespace ColdTable
 	using DeviceContextPtr = std::shared_ptr<DeviceContext>;
 	using VertexBufferPtr = std::shared_ptr<VertexBuffer>;
 	using ConstantBufferPtr = std::shared_ptr<ConstantBuffer>;
+	using RenderablePtr = std::shared_ptr<Renderable>;
 	using ShaderPtr = std::shared_ptr<Shader>;
 }

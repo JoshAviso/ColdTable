@@ -8,6 +8,7 @@
 #include <ColdTable/Math/Vec4.h>
 #include <ColdTable/Graphics/VertexBuffer.h>
 #include <ColdTable/Graphics/ConstantBuffer.h>
+#include <ColdTable/Graphics/Renderable.h>
 
 
 namespace ColdTable {
@@ -20,10 +21,14 @@ namespace ColdTable {
 
 		void ClearAndSetBackBuffer(const SwapChain& swapChain, const Vec4& color);
 		void SetViewportSize(Rect size);
+		void BindConstantBuffer(ConstantBufferPtr constantBuffer);
+
+	public:
+		void Draw(RenderablePtr renderable);
+
+	private:
 		void BindVertexBuffer(VertexBufferPtr vertexBuffer);
 		void UseShader(ShaderPtr shader);
-		void BindConstantBuffer(ShaderPtr shader, ConstantBufferPtr constantBuffer);
-
 		void DrawTriangleList(UINT vertexCount, UINT startVertexIndex);
 		void DrawTriangleStrip(UINT vertexCount, UINT startVertexIndex);
 
