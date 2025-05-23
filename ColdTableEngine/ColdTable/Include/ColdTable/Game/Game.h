@@ -20,6 +20,7 @@ namespace ColdTable
 
 		VertexBufferPtr tempBuffer{};
 		ShaderPtr tempShader{};
+		ConstantBufferPtr tempConstantBuffer{};
 
 	private:
 		std::unique_ptr<Logger> _loggerPtr{};

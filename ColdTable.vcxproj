@@ -164,6 +164,7 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\DeviceContext.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\VertexBuffer.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Shader.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ConstantBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\All.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\DeviceContext.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\VertexBuffer.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Shader.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ConstantBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -48,6 +48,12 @@ void ColdTable::DeviceContext::UseShader(ShaderPtr shader)
 	_context->PSSetShader(shader->_pixelShader, nullptr, 0);
 }
 
+void ColdTable::DeviceContext::BindConstantBuffer(ShaderPtr shader, ConstantBufferPtr constantBuffer)
+{
+	_context->VSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
+	_context->PSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
+}
+
 void ColdTable::DeviceContext::DrawTriangleList(UINT vertexCount, UINT startVertexIndex)
 {
 	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

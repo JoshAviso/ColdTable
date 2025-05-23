@@ -24,15 +24,22 @@ ColdTable::GraphicsDevicePtr ColdTable::GraphicsEngine::GetGraphicsDevice() noex
 }
 
 
-void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, VertexBufferPtr vertexBuffer, Rect viewportSize, ShaderPtr shader)
+void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, VertexBufferPtr vertexBuffer, ConstantBufferPtr constantBuffer, Rect viewportSize, ShaderPtr shader)
 {
 	auto& context = *_deviceContext;
 	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});
 
 	context.SetViewportSize(viewportSize);
+
+	ConstantBufferContent constant;
+	constant.m_time = ::GetTickCount();
+
+	constantBuffer->Update(&context, &constant);
+	context.BindConstantBuffer(shader, constantBuffer);
+
 	UseShader(shader);
 	context.BindVertexBuffer(vertexBuffer);
-	context.DrawTriangleList(vertexBuffer->GetVertexCount(), 0);
+	context.DrawTriangleStrip(vertexBuffer->GetVertexCount(), 0);
 
 	auto& device = *_graphicsDevice;
 	device.ExecuteCommandList(context);
@@ -48,6 +55,11 @@ void ColdTable::GraphicsEngine::SetViewportSize(Rect size)
 ColdTable::VertexBufferPtr ColdTable::GraphicsEngine::CreateVertexBuffer()
 {
 	return _graphicsDevice->CreateVertexBuffer();
+}
+
+ColdTable::ConstantBufferPtr ColdTable::GraphicsEngine::CreateConstantBuffer()
+{
+	return _graphicsDevice->CreateConstantBuffer();
 }
 
 ColdTable::ShaderPtr ColdTable::GraphicsEngine::CreateShader(wchar_t* vertexShaderSrc, wchar_t* pixelShaderSrc)

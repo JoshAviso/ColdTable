@@ -59,6 +59,12 @@ VertexBufferPtr GraphicsDevice::CreateVertexBuffer()
 	return std::make_shared<VertexBuffer>(desc);
 }
 
+ConstantBufferPtr GraphicsDevice::CreateConstantBuffer()
+{
+	ConstantBufferDesc desc{{_logger}, shared_from_this()};
+	return std::make_shared<ConstantBuffer>(desc);
+}
+
 ShaderPtr GraphicsDevice::CreateShader(wchar_t* vertexShaderSrc, wchar_t* pixelShaderSrc)
 {
 	ShaderDesc desc{

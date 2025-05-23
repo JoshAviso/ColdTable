@@ -15,6 +15,7 @@ namespace ColdTable
 	class SwapChain;
 	class DeviceContext;
 	class VertexBuffer;
+	class ConstantBuffer;
 	class Shader;
 
 	class Logger;
@@ -28,5 +29,6 @@ namespace ColdTable
 	using GraphicsDevicePtr = std::shared_ptr<GraphicsDevice>;
 	using DeviceContextPtr = std::shared_ptr<DeviceContext>;
 	using VertexBufferPtr = std::shared_ptr<VertexBuffer>;
+	using ConstantBufferPtr = std::shared_ptr<ConstantBuffer>;
 	using ShaderPtr = std::shared_ptr<Shader>;
 }

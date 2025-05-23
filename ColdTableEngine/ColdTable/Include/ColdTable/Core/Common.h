@@ -40,6 +40,12 @@ namespace ColdTable
 		GraphicsDevicePtr graphicsDevice;
 	};
 
+	struct ConstantBufferDesc
+	{
+		BaseDesc base;
+		GraphicsDevicePtr graphicsDevice;
+	};
+
 	struct ShaderDesc
 	{
 		BaseDesc base;
@@ -58,5 +64,11 @@ namespace ColdTable
 	{
 		void* windowHandle;
 		Rect windowSize;
+	};
+
+	__declspec(align(16))
+	struct ConstantBufferContent
+	{
+		unsigned int m_time;
 	};
 }

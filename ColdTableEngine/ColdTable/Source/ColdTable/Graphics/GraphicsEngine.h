@@ -14,10 +14,11 @@ namespace ColdTable
 
 		GraphicsDevicePtr GetGraphicsDevice() noexcept;
 
-		void Render(SwapChain& swapChain, VertexBufferPtr vertexBuffer, Rect viewportSize, ShaderPtr shader);
+		void Render(SwapChain& swapChain, VertexBufferPtr vertexBuffer, ConstantBufferPtr constantBuffer, Rect viewportSize, ShaderPtr shader);
 		void SetViewportSize(Rect size);
 
 		VertexBufferPtr CreateVertexBuffer();
+		ConstantBufferPtr CreateConstantBuffer();
 
 		ShaderPtr CreateShader(wchar_t* vertexShaderSrc, wchar_t* pixelShaderSrc);
 		void UseShader(const ShaderPtr& shader);
