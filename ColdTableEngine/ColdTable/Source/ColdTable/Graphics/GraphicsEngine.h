@@ -12,6 +12,8 @@ namespace ColdTable
 		explicit GraphicsEngine(const GraphicsEngineDesc& desc);
 		virtual ~GraphicsEngine() override;
 
+		void RegisterRenderable(RenderablePtr renderable);
+
 		GraphicsDevicePtr GetGraphicsDevice() noexcept;
 
 		void SetViewportSize(Rect size);
@@ -22,10 +24,12 @@ namespace ColdTable
 
 	private:
 		void UseShader(const ShaderPtr& shader);
-		void Render(SwapChain& swapChain, RenderablePtr renderable, ConstantBufferPtr constantBuffer, Rect viewportSize);
+		void Render(SwapChain& swapChain, RenderablePtr renderable1, RenderablePtr renderable2, RenderablePtr renderable3, ConstantBufferPtr constantBuffer, Rect viewportSize);
 
 		std::shared_ptr<GraphicsDevice> _graphicsDevice{};
 		DeviceContextPtr _deviceContext{};
+
+		RenderablePtr _renderables[]{};
 
 
 		friend class GameLoop;

@@ -8,7 +8,7 @@
 #include <ColdTable/Math/Vec4.h>
 #include <ColdTable/Graphics/VertexBuffer.h>
 #include <ColdTable/Graphics/ConstantBuffer.h>
-#include <ColdTable/Graphics/Renderable.h>
+#include <ColdTable/Graphics/Renderables/Renderable.h>
 
 
 namespace ColdTable {

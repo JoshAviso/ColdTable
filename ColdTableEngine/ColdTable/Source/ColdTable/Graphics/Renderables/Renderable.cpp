@@ -1,13 +1,14 @@
-#include <ColdTable/Graphics/Renderable.h>
+#include <ColdTable/Graphics/Renderables/Renderable.h>
 
-#include "Shader.h"
-#include "VertexBuffer.h"
+#include <ColdTable/Graphics/Shader.h>
+#include <ColdTable/Graphics/VertexBuffer.h>
 
 ColdTable::Renderable::Renderable(const RenderableDesc& desc) : Base(desc.base), _shader(desc.shader), _drawMode(desc.drawMode)
 {
 	VertexBufferDesc bufferDesc{ {_logger} };
 	_vertexBuffer = std::make_shared<VertexBuffer>(bufferDesc);
-	LoadVertices(desc.vertexList, desc.vertexCount);
+	if (desc.vertexCount > 0)
+		LoadVertices(desc.vertexList, desc.vertexCount);
 }
 
 ColdTable::Renderable::~Renderable()

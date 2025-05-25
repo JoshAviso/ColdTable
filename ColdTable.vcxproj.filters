@@ -57,7 +57,10 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ConstantBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderable.cpp">
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Renderable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,10 +128,13 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ConstantBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderable.h">
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Renderable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\GraphicsEnums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Quad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

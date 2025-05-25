@@ -14,7 +14,7 @@ namespace ColdTable
 		explicit Renderable(const RenderableDesc& desc);
 		virtual ~Renderable() override;
 
-		void LoadVertices(const Vertex* vertexList, UINT listSize);
+		virtual void LoadVertices(const Vertex* vertexList, UINT listSize);
 		void SetShader(ShaderPtr shader);
 
 	private:

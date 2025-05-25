@@ -24,7 +24,7 @@ ColdTable::GraphicsDevicePtr ColdTable::GraphicsEngine::GetGraphicsDevice() noex
 }
 
 
-void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, RenderablePtr renderable, ConstantBufferPtr constantBuffer, Rect viewportSize)
+void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, RenderablePtr renderable1, RenderablePtr renderable2, RenderablePtr renderable3, ConstantBufferPtr constantBuffer, Rect viewportSize)
 {
 	auto& context = *_deviceContext;
 	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});
@@ -37,7 +37,10 @@ void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, RenderablePtr rende
 	constantBuffer->Update(&context, &constant);
 	context.BindConstantBuffer(constantBuffer);
 
-	context.Draw(renderable);
+	for (auto renderable : _renderables)
+	{
+		context.Draw(renderable);
+	}
 
 	auto& device = *_graphicsDevice;
 	device.ExecuteCommandList(context);

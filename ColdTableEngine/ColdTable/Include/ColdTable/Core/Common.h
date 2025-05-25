@@ -46,6 +46,16 @@ namespace ColdTable
 		ShaderPtr shader;
 	};
 
+	struct QuadDesc
+	{
+		BaseDesc base;
+		ShaderPtr shader;
+		Vertex vert1;
+		Vertex vert2;
+		Vertex vert3;
+		Vertex vert4;
+	};
+
 	struct VertexBufferDesc
 	{
 		BaseDesc base;

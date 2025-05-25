@@ -19,6 +19,9 @@ namespace ColdTable
 		void onInternalCallback();
 
 		RenderablePtr tempRenderable{};
+		RenderablePtr tempQuad1{};
+		RenderablePtr tempQuad2{};
+		RenderablePtr tempQuad3{};
 		ShaderPtr tempShader{};
 		ConstantBufferPtr tempConstantBuffer{};
 

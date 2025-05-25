@@ -165,7 +165,8 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\VertexBuffer.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Shader.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ConstantBuffer.cpp" />
-    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderable.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Renderable.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Quad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\All.h" />
@@ -190,7 +191,8 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\VertexBuffer.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Shader.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ConstantBuffer.h" />
-    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderable.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Renderable.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Quad.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
