@@ -18,13 +18,34 @@ ColdTable::GraphicsEngine::~GraphicsEngine()
 {
 }
 
+void ColdTable::GraphicsEngine::RegisterRenderable(RenderablePtr renderable)
+{
+	_renderables.push_back(renderable);
+}
+
+void ColdTable::GraphicsEngine::UnregisterRenderable(RenderablePtr renderable)
+{
+	std::vector<RenderablePtr>::iterator index{};
+	for (auto itr = _renderables.begin(); itr != _renderables.end(); ++itr)
+	{
+		if (*itr == renderable)
+		{
+			index = itr;
+			break;
+		}
+	}
+
+	if (index != _renderables.end())
+		_renderables.erase(index);
+}
+
 ColdTable::GraphicsDevicePtr ColdTable::GraphicsEngine::GetGraphicsDevice() noexcept
 {
 	return _graphicsDevice;
 }
 
 
-void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, RenderablePtr renderable1, RenderablePtr renderable2, RenderablePtr renderable3, ConstantBufferPtr constantBuffer, Rect viewportSize)
+void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, ConstantBufferPtr constantBuffer, Rect viewportSize)
 {
 	auto& context = *_deviceContext;
 	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});

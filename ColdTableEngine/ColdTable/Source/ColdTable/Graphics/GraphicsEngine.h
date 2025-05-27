@@ -3,6 +3,7 @@
 #include <ColdTable/Core/Base.h>
 #include <ColdTable/Core/Core.h>
 #include <ColdTable/Graphics/DeviceContext.h>
+#include <vector>
 
 namespace ColdTable
 {
@@ -13,6 +14,7 @@ namespace ColdTable
 		virtual ~GraphicsEngine() override;
 
 		void RegisterRenderable(RenderablePtr renderable);
+		void UnregisterRenderable(RenderablePtr renderable);
 
 		GraphicsDevicePtr GetGraphicsDevice() noexcept;
 
@@ -24,12 +26,12 @@ namespace ColdTable
 
 	private:
 		void UseShader(const ShaderPtr& shader);
-		void Render(SwapChain& swapChain, RenderablePtr renderable1, RenderablePtr renderable2, RenderablePtr renderable3, ConstantBufferPtr constantBuffer, Rect viewportSize);
+		void Render(SwapChain& swapChain, ConstantBufferPtr constantBuffer, Rect viewportSize);
 
 		std::shared_ptr<GraphicsDevice> _graphicsDevice{};
 		DeviceContextPtr _deviceContext{};
 
-		RenderablePtr _renderables[]{};
+		std::vector<RenderablePtr> _renderables{};
 
 
 		friend class GameLoop;
