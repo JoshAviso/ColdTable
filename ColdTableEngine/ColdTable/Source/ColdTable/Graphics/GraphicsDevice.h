@@ -25,7 +25,7 @@ namespace ColdTable
 		DeviceContextPtr CreateDeviceContext();
 		VertexBufferPtr CreateVertexBuffer();
 		ConstantBufferPtr CreateConstantBuffer();
-		ShaderPtr CreateShader(wchar_t* vertexShaderSrc, wchar_t* pixelShaderSrc);
+		ShaderPtr CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc);
 
 		void ExecuteCommandList(DeviceContext& context);
 

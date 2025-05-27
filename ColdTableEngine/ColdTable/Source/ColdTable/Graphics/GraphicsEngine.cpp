@@ -84,7 +84,7 @@ ColdTable::ConstantBufferPtr ColdTable::GraphicsEngine::CreateConstantBuffer()
 	return _graphicsDevice->CreateConstantBuffer();
 }
 
-ColdTable::ShaderPtr ColdTable::GraphicsEngine::CreateShader(wchar_t* vertexShaderSrc, wchar_t* pixelShaderSrc)
+ColdTable::ShaderPtr ColdTable::GraphicsEngine::CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc)
 {
 	return _graphicsDevice->CreateShader(vertexShaderSrc, pixelShaderSrc);
 }

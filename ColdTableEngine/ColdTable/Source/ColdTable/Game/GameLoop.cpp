@@ -31,7 +31,7 @@ void ColdTable::GameLoop::onInternalStartup()
 	wchar_t vertexSource[] = L"VertexShader.hlsl";
 	wchar_t pixelSource[] = L"PixelShader.hlsl";
 
-	tempShader = _graphicsEngine->CreateShader(vertexSource, pixelSource);
+	tempShader = _graphicsEngine->CreateShader(L"VertexShader.hlsl", pixelSource);
 
 	QuadDesc quad1 = {
 		{_logger},

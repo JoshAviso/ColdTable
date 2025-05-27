@@ -19,7 +19,7 @@ namespace ColdTable
 		GraphicsDevicePtr GetGraphicsDevice() noexcept;
 
 		void SetViewportSize(Rect size);
-		ShaderPtr CreateShader(wchar_t* vertexShaderSrc, wchar_t* pixelShaderSrc);
+		ShaderPtr CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc);
 
 		VertexBufferPtr CreateVertexBuffer();
 		ConstantBufferPtr CreateConstantBuffer();

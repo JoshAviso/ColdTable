@@ -167,6 +167,9 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ConstantBuffer.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Renderable.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Quad.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameObjects\GameObjectManager.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameObjects\GameObject.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\Component.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\All.h" />
@@ -193,6 +196,9 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ConstantBuffer.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Renderable.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Quad.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameObjects\GameObjectManager.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameObjects\GameObject.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\Component.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

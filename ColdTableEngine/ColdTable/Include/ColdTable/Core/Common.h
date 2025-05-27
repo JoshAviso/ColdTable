@@ -71,8 +71,8 @@ namespace ColdTable
 	{
 		BaseDesc base;
 		GraphicsDevicePtr sourceDevice;
-		wchar_t* vertexShaderSourceFile;
-		wchar_t* pixelShaderSourceFile;
+		const wchar_t* vertexShaderSourceFile;
+		const wchar_t* pixelShaderSourceFile;
 	};
 
 	struct GameDesc
