@@ -10,6 +10,8 @@ void ColdTable::GameLoop::Run()
 	MSG message{};
 	while (_isRunning)
 	{
+
+		// Input reading, currently funnels to window
 		while(PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
 		{
 			if (message.message == WM_QUIT)
