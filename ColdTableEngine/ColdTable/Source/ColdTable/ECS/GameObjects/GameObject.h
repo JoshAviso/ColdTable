@@ -1,6 +1,6 @@
 #pragma once
 
-namespace {
+namespace ColdTable {
 
 class GameObject
 {

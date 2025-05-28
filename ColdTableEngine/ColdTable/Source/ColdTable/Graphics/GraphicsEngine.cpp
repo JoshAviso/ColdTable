@@ -8,7 +8,7 @@
 
 ColdTable::GraphicsEngine::GraphicsEngine(const GraphicsEngineDesc& desc): Base(desc.base)
 {
-	_graphicsDevice = std::make_shared<GraphicsDevice>(GraphicsDeviceDesc{_logger});
+	_graphicsDevice = std::make_shared<GraphicsDevice>(GraphicsDeviceDesc{desc.base});
 
 	auto& device = *_graphicsDevice;
 	_deviceContext = device.CreateDeviceContext();

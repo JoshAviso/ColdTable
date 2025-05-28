@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 namespace ColdTable
 {
@@ -12,9 +13,12 @@ namespace ColdTable
 			Info
 		};
 
+		static std::unique_ptr<Logger> shared_instance;
+		static void Initialize(LogLevel loglevel);
+
 		explicit Logger(LogLevel logLevel = LogLevel::Error);
 		~Logger();
-		void Log(LogLevel level, const char* message);
+		static void Log(LogLevel level, const char* message);
 
 	protected:
 		Logger(const Logger&) = delete;
@@ -27,18 +31,18 @@ namespace ColdTable
 	};
 
 #define ColdTableLogInfo(message)\
-	getLogger().Log((Logger::LogLevel::Info), message);\
+	Logger::Log((Logger::LogLevel::Info), message);\
 
 #define ColdTableLogWarning(message)\
-	getLogger().Log((Logger::LogLevel::Warning), message);\
+	Logger::Log((Logger::LogLevel::Warning), message);\
 
 #define ColdTableLogError(message)\
-	getLogger().Log((Logger::LogLevel::Error), message);\
+	Logger::Log((Logger::LogLevel::Error), message);\
 
 #define ColdTableLogErrorAndThrow(message)\
 	{\
-	ColdTableLogError(message);\
-	throw std::runtime_error(message);\
+		ColdTableLogError(message);\
+		throw std::runtime_error(message);\
 	}\
 
 }

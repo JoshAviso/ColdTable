@@ -2,7 +2,7 @@
 
 #include "GraphicsDevice.h"
 
-ColdTable::Shader::Shader(ShaderDesc desc): Base(desc.base), _sourceDevice(desc.sourceDevice)
+ColdTable::Shader::Shader(ShaderDesc desc): _sourceDevice(desc.sourceDevice)
 {
 	ID3DBlob* errblob = nullptr;
 	D3DCompileFromFile(desc.vertexShaderSourceFile, nullptr, nullptr, "vsmain", "vs_5_0", NULL, NULL, &_vertexShaderBlob, &errblob);

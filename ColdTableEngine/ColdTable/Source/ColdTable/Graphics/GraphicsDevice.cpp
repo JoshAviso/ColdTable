@@ -55,20 +55,19 @@ DeviceContextPtr GraphicsDevice::CreateDeviceContext()
 
 VertexBufferPtr GraphicsDevice::CreateVertexBuffer()
 {
-	VertexBufferDesc desc{{_logger}};
+	VertexBufferDesc desc{{}};
 	return std::make_shared<VertexBuffer>(desc);
 }
 
 ConstantBufferPtr GraphicsDevice::CreateConstantBuffer()
 {
-	ConstantBufferDesc desc{{_logger}, shared_from_this()};
+	ConstantBufferDesc desc{{}, shared_from_this()};
 	return std::make_shared<ConstantBuffer>(desc);
 }
 
 ShaderPtr GraphicsDevice::CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc)
 {
 	ShaderDesc desc{
-		{_logger},
 		shared_from_this(),
 		vertexShaderSrc,
 		pixelShaderSrc
@@ -86,5 +85,5 @@ void GraphicsDevice::ExecuteCommandList(DeviceContext& context)
 
 GraphicsResourceDesc GraphicsDevice::getGraphicsResourceDesc() const noexcept
 {
-	return {{_logger}, shared_from_this(),*_d3dDevice.Get(), *_dxgiFactory.Get()};
+	return {{}, shared_from_this(),*_d3dDevice.Get(), *_dxgiFactory.Get()};
 }

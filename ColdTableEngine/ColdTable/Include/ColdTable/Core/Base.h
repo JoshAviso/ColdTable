@@ -1,5 +1,6 @@
 #pragma once
 #include <ColdTable/Core/Common.h>
+#include <ColdTable/Core/Core.h>
 
 namespace ColdTable
 {
@@ -8,7 +9,6 @@ namespace ColdTable
 	public:
 		explicit Base(const BaseDesc& desc);
 		virtual ~Base();
-		virtual Logger& getLogger() noexcept final;
 
 	protected:
 		Base(const Base&) = delete;
@@ -16,8 +16,6 @@ namespace ColdTable
 		Base& operator = (const Base&) = delete;
 		Base& operator = (Base&&) = delete;
 
-	protected:
-		Logger& _logger;
 	};
 }
 

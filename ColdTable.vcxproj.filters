@@ -63,6 +63,18 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameObjects\GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\Component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\ECSEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\GameSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Core\Base.h">
@@ -135,6 +147,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Quad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameObjects\GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\ECSEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\GameSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

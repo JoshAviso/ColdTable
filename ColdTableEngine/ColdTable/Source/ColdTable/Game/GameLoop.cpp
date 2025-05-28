@@ -9,12 +9,13 @@
 #include "ColdTable/Graphics/Renderables/Quad.h"
 
 ColdTable::GameLoop::GameLoop(const GameDesc& desc):
-	Base({*std::make_unique<Logger>(desc.logLevel).release()}),
-	_loggerPtr(&_logger),
+	Base({desc.base}),
 	tempWindowSize(desc.windowSize)
 {
-	_graphicsEngine = std::make_unique<GraphicsEngine>(GraphicsEngineDesc{_logger});
-	_display = std::make_unique<Display>(DisplayDesc{_logger, desc.windowSize, _graphicsEngine->GetGraphicsDevice()});
+	Logger::Initialize(desc.logLevel);
+
+	_graphicsEngine = std::make_unique<GraphicsEngine>(GraphicsEngineDesc{desc.base});
+	_display = std::make_unique<Display>(DisplayDesc{desc.base,{desc.base, desc.windowSize}, _graphicsEngine->GetGraphicsDevice()});
 
 	_graphicsEngine->SetViewportSize(desc.windowSize);
 
@@ -28,13 +29,9 @@ ColdTable::GameLoop::~GameLoop()
 
 void ColdTable::GameLoop::onInternalStartup()
 {
-	wchar_t vertexSource[] = L"VertexShader.hlsl";
-	wchar_t pixelSource[] = L"PixelShader.hlsl";
-
-	tempShader = _graphicsEngine->CreateShader(L"VertexShader.hlsl", pixelSource);
+	tempShader = _graphicsEngine->CreateShader(L"VertexShader.hlsl", L"PixelShader.hlsl");
 
 	QuadDesc quad1 = {
-		{_logger},
 		tempShader,
 		{{-0.75, 0.75, 0.0}, {0.8, 0.2, 0.2}},
 		{{-0.15, 0.75, 0.0}, {0.2, 0.8, 0.2}},
@@ -42,7 +39,6 @@ void ColdTable::GameLoop::onInternalStartup()
 		{{-0.75, 0.15, 0.0}, {0.8, 0.8, 0.2}},
 	};
 	QuadDesc quad2 = {
-		{_logger},
 		tempShader,
 		{{0.15, 0.75, 0.0}, {0.1, 0.1, 0.9}},
 		{{0.75, 0.75, 0.0}, {0.1, 0.9, 0.9}},
@@ -50,7 +46,6 @@ void ColdTable::GameLoop::onInternalStartup()
 		{{0.15, 0.15, 0.0}, {0.9, 0.1, 0.1}}
 	};
 	QuadDesc quad3 = {
-		{_logger},
 		tempShader,
 		{{-0.5, -0.15, 0.0}, {1.0, 0.3, 0.3}},
 		{{0.5, -0.15, 0.0}, {0.3, 0.3, 1.0}},

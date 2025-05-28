@@ -2,7 +2,7 @@
 using namespace ColdTable;
 
 
-Base::Base(const BaseDesc& desc): _logger(desc.logger)
+Base::Base(const BaseDesc& desc)
 {
 
 }
@@ -12,8 +12,4 @@ Base::~Base()
 
 }
 
-Logger& Base::getLogger() noexcept
-{
-	return _logger;
-}
 

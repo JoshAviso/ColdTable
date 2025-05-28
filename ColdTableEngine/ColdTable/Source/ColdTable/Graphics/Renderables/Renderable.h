@@ -8,11 +8,11 @@
 
 namespace ColdTable
 {
-	class Renderable : public Base
+	class Renderable
 	{
 	public:
 		explicit Renderable(const RenderableDesc& desc);
-		virtual ~Renderable() override;
+		virtual ~Renderable();
 
 		virtual void LoadVertices(const Vertex* vertexList, UINT listSize);
 		void SetShader(ShaderPtr shader);

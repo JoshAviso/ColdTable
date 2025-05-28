@@ -12,7 +12,7 @@ namespace ColdTable
 {
 	struct BaseDesc
 	{
-		Logger& logger;
+
 	};
 
 	struct WindowDesc
@@ -23,6 +23,7 @@ namespace ColdTable
 
 	struct DisplayDesc
 	{
+		BaseDesc base;
 		WindowDesc window;
 		GraphicsDevicePtr graphicsDevice;
 	};
@@ -37,9 +38,13 @@ namespace ColdTable
 		BaseDesc base;
 	};
 
-	struct RenderableDesc
+	struct ECSEngineDesc
 	{
 		BaseDesc base;
+	};
+
+	struct RenderableDesc
+	{
 		Vertex* vertexList;
 		UINT vertexCount;
 		EGeometryDrawmode drawMode;
@@ -48,7 +53,6 @@ namespace ColdTable
 
 	struct QuadDesc
 	{
-		BaseDesc base;
 		ShaderPtr shader;
 		Vertex vert1;
 		Vertex vert2;
@@ -69,7 +73,6 @@ namespace ColdTable
 
 	struct ShaderDesc
 	{
-		BaseDesc base;
 		GraphicsDevicePtr sourceDevice;
 		const wchar_t* vertexShaderSourceFile;
 		const wchar_t* pixelShaderSourceFile;
@@ -77,12 +80,14 @@ namespace ColdTable
 
 	struct GameDesc
 	{
+		BaseDesc base;
 		Rect windowSize{1280, 720};
 		Logger::LogLevel logLevel = Logger::LogLevel::Error();
 	};
 
 	struct SwapChainDesc
 	{
+		BaseDesc base;
 		void* windowHandle;
 		Rect windowSize;
 	};

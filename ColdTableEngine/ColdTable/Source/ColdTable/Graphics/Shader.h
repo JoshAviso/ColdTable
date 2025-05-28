@@ -7,7 +7,7 @@
 
 namespace ColdTable
 {
-	class Shader: public Base
+	class Shader
 	{
 	public:
 		explicit Shader(ShaderDesc desc);
