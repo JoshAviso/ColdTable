@@ -114,7 +114,7 @@ void ColdTable::GameLoop::onInternalCallback()
 	_graphicsEngine->TickConstantBuffer(tempConstantBuffer, false);
 
 	_graphicsEngine->DispatchComputeShader(tempComputeShader, 1, 1, 1);
-	Sleep(5);
+	//Sleep(5);
 
 	// Update Vertex Positions
 	float* array = tempComputeShader->ReadBuffer();
