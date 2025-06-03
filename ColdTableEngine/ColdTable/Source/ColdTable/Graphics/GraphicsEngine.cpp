@@ -56,8 +56,6 @@ void ColdTable::GraphicsEngine::TickConstantBuffer(ColdTable::ConstantBufferPtr 
 	ConstantBufferContent constant;
 	constant.m_time = ::GetTickCount();
 
-	std::cout << "Time: " << constant.m_time << std::endl;
-
 	if (isDeferred)
 	{
 		constantBuffer->Update(&*_deviceContext, &constant);
