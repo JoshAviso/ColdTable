@@ -8,6 +8,9 @@
 #include <ColdTable/Graphics/GraphicsEnums.h>
 #include <ColdTable/Math/Vertex.h>
 
+#include <wrl.h>
+#include <d3d11.h>
+
 namespace ColdTable
 {
 	struct BaseDesc
@@ -76,6 +79,14 @@ namespace ColdTable
 		GraphicsDevicePtr sourceDevice;
 		const wchar_t* vertexShaderSourceFile;
 		const wchar_t* pixelShaderSourceFile;
+	};
+
+	struct ComputeShaderDesc
+	{
+		GraphicsDevicePtr sourceDevice;
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> context;
+		const wchar_t* sourceFile;
+		const float* inputArray;
 	};
 
 	struct GameDesc

@@ -1,5 +1,5 @@
 #pragma once
-#include <d3d11.h>
+#include <d3d11_4.h>
 #include <wrl.h>
 
 #include <ColdTable/Core/Common.h>
@@ -11,7 +11,8 @@
 
 #include <ColdTable/Graphics/SwapChain.h>
 #include <ColdTable/Graphics/DeviceContext.h>
-#include <ColdTable/Graphics/Shader.h>
+#include <ColdTable/Graphics/EngineShader.h>
+#include <ColdTable/Utility/ComputeShader.h>
 
 namespace ColdTable
 {
@@ -26,6 +27,7 @@ namespace ColdTable
 		VertexBufferPtr CreateVertexBuffer();
 		ConstantBufferPtr CreateConstantBuffer();
 		ShaderPtr CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc);
+		ComputeShaderPtr CreateComputeShader(DeviceContextPtr context, const wchar_t* sourceFile, const float* inputArray);
 
 		void ExecuteCommandList(DeviceContext& context);
 
@@ -42,7 +44,9 @@ namespace ColdTable
 	private:
 		friend class VertexBuffer;
 		friend class ConstantBuffer;
-		friend class Shader;
+		friend class EngineShader;
+		friend class ComputeShader;
+		friend class GraphicsEngine;
 	};
 }
 

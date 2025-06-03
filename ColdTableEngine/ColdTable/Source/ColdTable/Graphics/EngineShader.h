@@ -7,11 +7,11 @@
 
 namespace ColdTable
 {
-	class Shader
+	class EngineShader
 	{
 	public:
-		explicit Shader(ShaderDesc desc);
-		virtual ~Shader();
+		explicit EngineShader(ShaderDesc desc);
+		virtual ~EngineShader();
 
 	private:
 		void GetBufferAndSize(void** shaderByteCode, UINT* shaderSize);

@@ -22,6 +22,8 @@ namespace ColdTable {
 		void ClearAndSetBackBuffer(const SwapChain& swapChain, const Vec4& color);
 		void SetViewportSize(Rect size);
 		void BindConstantBuffer(ConstantBufferPtr constantBuffer);
+		void BindComputeShader(ComputeShaderPtr computeShader);
+		void DispatchComputeShader(UINT xThreadGroups, UINT yThreadGroups, UINT zThreadGroups);
 
 	public:
 		void Draw(RenderablePtr renderable);
@@ -38,6 +40,8 @@ namespace ColdTable {
 	private:
 		friend class GraphicsDevice;
 		friend class ConstantBuffer;
+		friend class GraphicsEngine;
+		friend class ComputeShader;
 	};
 }
 

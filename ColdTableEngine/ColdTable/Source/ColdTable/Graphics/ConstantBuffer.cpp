@@ -37,3 +37,8 @@ void ColdTable::ConstantBuffer::Update(DeviceContext* context, void* buffer)
 {
 	context->_context->UpdateSubresource(this->_buffer, NULL, NULL, buffer, NULL, NULL);
 }
+
+void ColdTable::ConstantBuffer::Update(ID3D11DeviceContext* context, void* buffer)
+{
+	context->UpdateSubresource(this->_buffer, NULL, NULL, buffer, NULL, NULL);
+}

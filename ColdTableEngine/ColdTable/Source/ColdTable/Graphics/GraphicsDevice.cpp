@@ -72,7 +72,18 @@ ShaderPtr GraphicsDevice::CreateShader(const wchar_t* vertexShaderSrc, const wch
 		vertexShaderSrc,
 		pixelShaderSrc
 	};
-	return std::make_shared<Shader>(desc);
+	return std::make_shared<EngineShader>(desc);
+}
+
+ComputeShaderPtr GraphicsDevice::CreateComputeShader(DeviceContextPtr context, const wchar_t* sourceFile, const float* inputArray)
+{
+	ComputeShaderDesc desc{
+		shared_from_this(),
+		_d3dContext,
+		sourceFile,
+		inputArray
+	};
+	return std::make_shared<ComputeShader>(desc);
 }
 
 void GraphicsDevice::ExecuteCommandList(DeviceContext& context)

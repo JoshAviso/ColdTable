@@ -17,7 +17,7 @@ namespace ColdTable
 		void LoadVertices(const void* list, UINT vertexSize, UINT listSize, ShaderPtr shader);
 		UINT _vertexSize;
 		UINT _listSize;
-
+		
 	private:
 
 		ID3D11Buffer* _buffer;

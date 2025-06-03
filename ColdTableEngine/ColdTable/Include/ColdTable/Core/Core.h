@@ -20,7 +20,8 @@ namespace ColdTable
 	class DeviceContext;
 	class VertexBuffer;
 	class ConstantBuffer;
-	class Shader;
+	class EngineShader;
+	class ComputeShader;
 
 	// ECS Engine Classes
 	class ECSEngine;
@@ -29,6 +30,7 @@ namespace ColdTable
 	class GameSystem;
 
 	class Renderable;
+	class Quad;
 
 	// Shorthand definitions
 	using i32 = int;
@@ -42,5 +44,7 @@ namespace ColdTable
 	using VertexBufferPtr = std::shared_ptr<VertexBuffer>;
 	using ConstantBufferPtr = std::shared_ptr<ConstantBuffer>;
 	using RenderablePtr = std::shared_ptr<Renderable>;
-	using ShaderPtr = std::shared_ptr<Shader>;
+	using ShaderPtr = std::shared_ptr<EngineShader>;
+	using ComputeShaderPtr = std::shared_ptr<ComputeShader>;
+	using QuadPtr = std::shared_ptr<Quad>;
 }

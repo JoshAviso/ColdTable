@@ -1,7 +1,8 @@
 #include <ColdTable/Graphics/DeviceContext.h>
 
-#include "Shader.h"
+#include "EngineShader.h"
 #include "SwapChain.h"
+#include "ColdTable/Utility/ComputeShader.h"
 
 ColdTable::DeviceContext::DeviceContext(const GraphicsResourceDesc& desc): GraphicsResource(desc)
 {
@@ -52,6 +53,19 @@ void ColdTable::DeviceContext::BindConstantBuffer(ConstantBufferPtr constantBuff
 {
 	_context->VSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
 	_context->PSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
+	_context->CSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
+}
+
+void ColdTable::DeviceContext::BindComputeShader(ComputeShaderPtr computeShader)
+{
+	_context->CSSetShaderResources(0, 1, &computeShader->resourceView);
+	_context->CSSetUnorderedAccessViews(0, 1, &computeShader->unorderedAccessView, nullptr);
+	_context->CSSetShader(computeShader->_computeShader, nullptr, 0);
+}
+
+void ColdTable::DeviceContext::DispatchComputeShader(UINT xThreadGroups, UINT yThreadGroups, UINT zThreadGroups)
+{
+	_context->Dispatch(xThreadGroups, yThreadGroups, zThreadGroups);
 }
 
 void ColdTable::DeviceContext::Draw(RenderablePtr renderable)

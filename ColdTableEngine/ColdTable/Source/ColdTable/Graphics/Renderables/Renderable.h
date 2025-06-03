@@ -22,6 +22,8 @@ namespace ColdTable
 		EGeometryDrawmode _drawMode;
 		ShaderPtr _shader;
 
+		const Vertex* vertexListRef;
+
 	private:
 		friend class DeviceContext;
 

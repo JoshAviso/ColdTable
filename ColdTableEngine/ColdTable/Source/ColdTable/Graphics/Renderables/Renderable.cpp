@@ -1,6 +1,6 @@
 #include <ColdTable/Graphics/Renderables/Renderable.h>
 
-#include <ColdTable/Graphics/Shader.h>
+#include <ColdTable/Graphics/EngineShader.h>
 #include <ColdTable/Graphics/VertexBuffer.h>
 
 ColdTable::Renderable::Renderable(const RenderableDesc& desc) : _shader(desc.shader), _drawMode(desc.drawMode)
@@ -18,6 +18,7 @@ ColdTable::Renderable::~Renderable()
 
 void ColdTable::Renderable::LoadVertices(const Vertex* vertexList, UINT listSize)
 {
+	vertexListRef = vertexList;
 	_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _shader);
 }
 

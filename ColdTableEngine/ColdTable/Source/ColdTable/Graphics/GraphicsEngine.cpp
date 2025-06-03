@@ -3,6 +3,7 @@
 #include <ColdTable/Graphics/DeviceContext.h>
 #include <ColdTable/Graphics/VertexBuffer.h>
 #include <d3dcompiler.h>
+#include <iostream>
 
 #include "ColdTable/Math/Vertex.h"
 
@@ -39,11 +40,36 @@ void ColdTable::GraphicsEngine::UnregisterRenderable(RenderablePtr renderable)
 		_renderables.erase(index);
 }
 
+void ColdTable::GraphicsEngine::RegisterComputeShader(ComputeShaderPtr computeShader)
+{
+	_deviceContext->BindComputeShader(computeShader);
+}
+
 ColdTable::GraphicsDevicePtr ColdTable::GraphicsEngine::GetGraphicsDevice() noexcept
 {
 	return _graphicsDevice;
 }
 
+
+void ColdTable::GraphicsEngine::TickConstantBuffer(ColdTable::ConstantBufferPtr constantBuffer, bool isDeferred)
+{
+	ConstantBufferContent constant;
+	constant.m_time = ::GetTickCount();
+
+	std::cout << "Time: " << constant.m_time << std::endl;
+
+	if (isDeferred)
+	{
+		constantBuffer->Update(&*_deviceContext, &constant);
+		_deviceContext->BindConstantBuffer(constantBuffer);
+	} else
+	{
+		constantBuffer->Update(&*_deviceContext, &constant);
+		constantBuffer->Update((_graphicsDevice->_d3dContext).Get(), &constant);
+		_deviceContext->BindConstantBuffer(constantBuffer);
+		_graphicsDevice->_d3dContext.Get()->CSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
+	}
+}
 
 void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, ConstantBufferPtr constantBuffer, Rect viewportSize)
 {
@@ -51,13 +77,9 @@ void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, ConstantBufferPtr c
 	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});
 
 	context.SetViewportSize(viewportSize);
-
-	ConstantBufferContent constant;
-	constant.m_time = ::GetTickCount();
-
-	constantBuffer->Update(&context, &constant);
-	context.BindConstantBuffer(constantBuffer);
-
+	
+	TickConstantBuffer(constantBuffer, true);
+	
 	for (auto renderable : _renderables)
 	{
 		context.Draw(renderable);
@@ -67,6 +89,24 @@ void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, ConstantBufferPtr c
 	device.ExecuteCommandList(context);
 
 	swapChain.Present();
+}
+
+void ColdTable::GraphicsEngine::DispatchComputeShader(ComputeShaderPtr computeShader, UINT xThreads, UINT yThreads,
+	UINT zThreads)
+{
+	/*D3D11_QUERY_DESC queryDesc{
+
+	};
+	_graphicsDevice->_d3dDevice->CreateQuery(&queryDesc, &_computeShaderQuery);
+	_deviceContext->_context->Begin(_computeShaderQuery);*/
+
+	_deviceContext->BindComputeShader(computeShader);
+	_deviceContext->DispatchComputeShader(xThreads, yThreads, zThreads);
+}
+
+void ColdTable::GraphicsEngine::AwaitComputeShaderFinish()
+{
+
 }
 
 void ColdTable::GraphicsEngine::SetViewportSize(Rect size)
@@ -87,6 +127,20 @@ ColdTable::ConstantBufferPtr ColdTable::GraphicsEngine::CreateConstantBuffer()
 ColdTable::ShaderPtr ColdTable::GraphicsEngine::CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc)
 {
 	return _graphicsDevice->CreateShader(vertexShaderSrc, pixelShaderSrc);
+}
+
+ColdTable::ComputeShaderPtr ColdTable::GraphicsEngine::CreateComputeShader(const wchar_t* sourceFile, const float* inputArray)
+{
+	return _graphicsDevice->CreateComputeShader(_deviceContext, sourceFile, inputArray);
+}
+
+void ColdTable::GraphicsEngine::BindComputeShader(ComputeShaderPtr computeShader)
+{
+	//_deviceContext->BindComputeShader(computeShader);
+	_graphicsDevice->_d3dContext->CSSetShader(computeShader->_computeShader, nullptr, 0);
+
+	_graphicsDevice->_d3dContext->CSSetShaderResources(0, 1, &computeShader->resourceView);
+	_graphicsDevice->_d3dContext->CSSetUnorderedAccessViews(0, 1, &computeShader->unorderedAccessView, nullptr);
 }
 
 void ColdTable::GraphicsEngine::UseShader(const ShaderPtr& shader)

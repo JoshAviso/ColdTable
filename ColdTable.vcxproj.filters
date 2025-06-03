@@ -51,7 +51,7 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\VertexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Shader.cpp">
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\EngineShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ConstantBuffer.cpp">
@@ -73,6 +73,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\GameSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ComputeShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,7 +137,7 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Vec3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Shader.h">
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\EngineShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ConstantBuffer.h">
@@ -159,6 +162,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\GameSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ComputeShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

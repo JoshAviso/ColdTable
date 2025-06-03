@@ -1,8 +1,8 @@
-#include <ColdTable/Graphics/Shader.h>
+#include <ColdTable/Graphics/EngineShader.h>
 
 #include "GraphicsDevice.h"
 
-ColdTable::Shader::Shader(ShaderDesc desc): _sourceDevice(desc.sourceDevice)
+ColdTable::EngineShader::EngineShader(ShaderDesc desc): _sourceDevice(desc.sourceDevice)
 {
 	ID3DBlob* errblob = nullptr;
 	D3DCompileFromFile(desc.vertexShaderSourceFile, nullptr, nullptr, "vsmain", "vs_5_0", NULL, NULL, &_vertexShaderBlob, &errblob);
@@ -12,7 +12,7 @@ ColdTable::Shader::Shader(ShaderDesc desc): _sourceDevice(desc.sourceDevice)
 
 }
 
-ColdTable::Shader::~Shader()
+ColdTable::EngineShader::~EngineShader()
 {
 	_vertexShader->Release();
 	_vertexShaderBlob->Release();
@@ -20,7 +20,7 @@ ColdTable::Shader::~Shader()
 	_pixelShaderBlob->Release();
 }
 
-void ColdTable::Shader::GetBufferAndSize(void** shaderByteCode, UINT* shaderSize)
+void ColdTable::EngineShader::GetBufferAndSize(void** shaderByteCode, UINT* shaderSize)
 {
 	*shaderByteCode = _vertexShaderBlob->GetBufferPointer();
 	*shaderSize = (UINT)_vertexShaderBlob->GetBufferSize();

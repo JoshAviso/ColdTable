@@ -12,6 +12,7 @@ namespace ColdTable
 		virtual ~ConstantBuffer() override;
 		void LoadData(void* buffer, UINT bufferSize);
 		void Update(DeviceContext* context, void* buffer);
+		void Update(ID3D11DeviceContext* context, void* buffer);
 
 	private:
 		GraphicsDevicePtr _graphicsDevice{};
@@ -20,5 +21,6 @@ namespace ColdTable
 
 	private:
 		friend class DeviceContext;
+		friend class GraphicsEngine;
 	};
 }
