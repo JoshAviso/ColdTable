@@ -78,6 +78,9 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ComputeShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Game\EngineTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Core\Base.h">
@@ -165,6 +168,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ComputeShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Game\EngineTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,6 +3,7 @@
 #include <ColdTable/Core/Base.h>
 #include <ColdTable/Core/Core.h>
 #include <ColdTable/Graphics/DeviceContext.h>
+#include <ColdTable/Game/EngineTime.h>
 #include <vector>
 
 namespace ColdTable
@@ -42,6 +43,11 @@ namespace ColdTable
 		std::vector<RenderablePtr> _renderables{};
 
 		ID3D11Query* _computeShaderQuery;
+
+		double runningTime = 0.0;
+		double animationTime = 2.0;
+		bool transitioningToOriginalPosition = false;
+		bool slowingDownAnim = false;
 
 		friend class GameLoop;
 	};

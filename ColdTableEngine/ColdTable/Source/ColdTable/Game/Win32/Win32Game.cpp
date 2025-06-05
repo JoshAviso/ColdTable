@@ -1,6 +1,7 @@
 #include <ColdTable/Game/GameLoop.h>
 #include <Windows.h>
 
+#include <ColdTable/Game/EngineTime.h>
 #include "ColdTable/Game/Display.h"
 
 void ColdTable::GameLoop::Run()
@@ -10,6 +11,7 @@ void ColdTable::GameLoop::Run()
 	MSG message{};
 	while (_isRunning)
 	{
+		EngineTime::LogFrameStart();
 
 		// Input reading, currently funnels to window
 		while(PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
@@ -24,6 +26,8 @@ void ColdTable::GameLoop::Run()
 			DispatchMessage(&message);
 		}
 
+		Sleep(1);
+		EngineTime::LogFrameEnd();
 		onInternalCallback();
 	}
 }

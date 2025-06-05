@@ -172,6 +172,7 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\Component.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\GameSystem.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ComputeShader.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Game\EngineTime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\All.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\Component.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\GameSystem.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ComputeShader.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Game\EngineTime.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

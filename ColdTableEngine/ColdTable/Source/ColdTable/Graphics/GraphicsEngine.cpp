@@ -54,19 +54,50 @@ ColdTable::GraphicsDevicePtr ColdTable::GraphicsEngine::GetGraphicsDevice() noex
 void ColdTable::GraphicsEngine::TickConstantBuffer(ColdTable::ConstantBufferPtr constantBuffer, bool isDeferred)
 {
 	ConstantBufferContent constant;
-	constant.m_time = ::GetTickCount();
 
-	if (isDeferred)
+	std::cout << runningTime << " " << animationTime << std::endl;
+
+	if (transitioningToOriginalPosition)
+		runningTime -= EngineTime::GetDeltaTime();
+	else
+		runningTime += EngineTime::GetDeltaTime();
+
+	if (animationTime >= 2.0)
 	{
-		constantBuffer->Update(&*_deviceContext, &constant);
-		_deviceContext->BindConstantBuffer(constantBuffer);
-	} else
-	{
-		constantBuffer->Update(&*_deviceContext, &constant);
-		constantBuffer->Update((_graphicsDevice->_d3dContext).Get(), &constant);
-		_deviceContext->BindConstantBuffer(constantBuffer);
-		_graphicsDevice->_d3dContext.Get()->CSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
+		slowingDownAnim = true;
 	}
+	else if (animationTime <= 0.2)
+		slowingDownAnim = false;
+
+	if (runningTime >= animationTime)
+	{
+		transitioningToOriginalPosition = true;
+		srand(time(0));
+		//animationTime = static_cast<double>((rand() % (3 - 1 + 1)) + 1);
+		//if (slowingDownAnim)
+			//animationTime -= 0.2;
+		//else
+			//animationTime += 0.2;
+
+
+		runningTime = animationTime;
+		
+	} else if (runningTime <= 0.0)
+	{
+		transitioningToOriginalPosition = false;
+		srand(time(0));
+		//animationTime = static_cast<double>((rand() % (3 - 1 + 1)) + 1);
+		//if (slowingDownAnim)
+			//animationTime -= 0.2;
+		//else
+			//animationTime += 0.2;
+		runningTime = 0.0;
+	}
+
+	constant.m_time = static_cast<unsigned int>(runningTime / animationTime * 1000000.0);
+
+	constantBuffer->Update(&*_deviceContext, &constant);
+	_deviceContext->BindConstantBuffer(constantBuffer);
 }
 
 void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, ConstantBufferPtr constantBuffer, Rect viewportSize)
