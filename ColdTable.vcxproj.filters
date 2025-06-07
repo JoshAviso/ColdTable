@@ -81,6 +81,30 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Game\EngineTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Mat4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\IndexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Quaternion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Core\Base.h">
@@ -171,6 +195,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Game\EngineTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Mat4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Quaternion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\IndexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Utility\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

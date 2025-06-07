@@ -1,6 +1,7 @@
 #include <ColdTable/Graphics/DeviceContext.h>
 
 #include "EngineShader.h"
+#include "IndexBuffer.h"
 #include "SwapChain.h"
 #include "ColdTable/Utility/ComputeShader.h"
 
@@ -17,7 +18,7 @@ ColdTable::DeviceContext::~DeviceContext()
 
 void ColdTable::DeviceContext::ClearAndSetBackBuffer(const SwapChain& swapChain, const Vec4& color)
 {
-	f32 colorArray[] = { color.x, color.y, color.z, color.w };
+	f32 colorArray[] = { (f32)color.x, (f32)color.y, (f32)color.z, (f32)color.w };
 	auto renderTargetView = swapChain._renderTargetView.Get();
 	_context->ClearRenderTargetView(renderTargetView, colorArray);
 	_context->OMSetRenderTargets(1, &renderTargetView, nullptr);
@@ -41,6 +42,11 @@ void ColdTable::DeviceContext::BindVertexBuffer(VertexBufferPtr vertexBuffer)
 	UINT offset = 0;
 	_context->IASetVertexBuffers(0, 1, &vertexBuffer->_buffer, &stride, &offset);
 	_context->IASetInputLayout(vertexBuffer->_layout);
+}
+
+void ColdTable::DeviceContext::BindIndexBuffer(IndexBufferPtr indexBuffer)
+{
+	_context->IASetIndexBuffer(indexBuffer->_buffer, DXGI_FORMAT_R32_UINT, 0);
 }
 
 void ColdTable::DeviceContext::UseShader(ShaderPtr shader)
@@ -70,8 +76,16 @@ void ColdTable::DeviceContext::DispatchComputeShader(UINT xThreadGroups, UINT yT
 
 void ColdTable::DeviceContext::Draw(RenderablePtr renderable)
 {
+
 	UseShader(renderable->_shader);
 	BindVertexBuffer(renderable->_vertexBuffer);
+
+	if (renderable->_indexBuffer != nullptr)
+	{
+		BindIndexBuffer(renderable->_indexBuffer);
+		DrawIndexedTriangleList(renderable->_indexBuffer->GetListSize(), 0, 0);
+		return;
+	}
 
 	switch (renderable->_drawMode)
 	{
@@ -94,6 +108,12 @@ void ColdTable::DeviceContext::DrawTriangleStrip(UINT vertexCount, UINT startVer
 {
 	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	_context->Draw(vertexCount, startVertexIndex);
+}
+
+void ColdTable::DeviceContext::DrawIndexedTriangleList(UINT indexCount, UINT startVertexIndex, UINT startIndexIndex)
+{
+	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_context->DrawIndexed(indexCount, startIndexIndex, startVertexIndex);
 }
 
 

@@ -19,6 +19,7 @@ namespace ColdTable
 	class SwapChain;
 	class DeviceContext;
 	class VertexBuffer;
+	class IndexBuffer;
 	class ConstantBuffer;
 	class EngineShader;
 	class ComputeShader;
@@ -43,6 +44,7 @@ namespace ColdTable
 	using DeviceContextPtr = std::shared_ptr<DeviceContext>;
 	using VertexBufferPtr = std::shared_ptr<VertexBuffer>;
 	using ConstantBufferPtr = std::shared_ptr<ConstantBuffer>;
+	using IndexBufferPtr = std::shared_ptr<IndexBuffer>;
 	using RenderablePtr = std::shared_ptr<Renderable>;
 	using ShaderPtr = std::shared_ptr<EngineShader>;
 	using ComputeShaderPtr = std::shared_ptr<ComputeShader>;

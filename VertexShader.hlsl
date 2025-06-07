@@ -1,7 +1,6 @@
 struct VS_INPUT
 {
     float4 position : POSITION;
-    float4 position1 : POSITION1;
     float3 color : COLOR;
     float3 color1 : COLOR1;
 };
@@ -15,14 +14,28 @@ struct VS_OUTPUT
 
 cbuffer constant: register(b0)
 {
+    column_major float4x4 m_world;
+    column_major float4x4 m_view;
+    column_major float4x4 m_projection;
     unsigned int m_time;
 };
 
 VS_OUTPUT vsmain( VS_INPUT input )
 {
     VS_OUTPUT output = (VS_OUTPUT) 0;
+ 
+    output.position = input.position;
     
-    output.position = lerp(input.position, input.position1, m_time / 1000000.0 );
+    // To World Space
+    output.position = mul(output.position, m_world);
+    
+    // To View Space
+    output.position = mul(output.position, m_view);
+    
+    // To Screen Space
+    output.position = mul(output.position, m_projection);
+    
+    
     output.color = input.color;
     output.color1 = input.color1;
     

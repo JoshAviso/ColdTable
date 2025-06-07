@@ -51,52 +51,9 @@ ColdTable::GraphicsDevicePtr ColdTable::GraphicsEngine::GetGraphicsDevice() noex
 }
 
 
-void ColdTable::GraphicsEngine::TickConstantBuffer(ColdTable::ConstantBufferPtr constantBuffer, bool isDeferred)
+void ColdTable::GraphicsEngine::UpdateConstantBuffer(const ConstantBufferPtr& constantBuffer, ConstantBufferContent content)
 {
-	ConstantBufferContent constant;
-
-	std::cout << runningTime << " " << animationTime << std::endl;
-
-	if (transitioningToOriginalPosition)
-		runningTime -= EngineTime::GetDeltaTime();
-	else
-		runningTime += EngineTime::GetDeltaTime();
-
-	if (animationTime >= 2.0)
-	{
-		slowingDownAnim = true;
-	}
-	else if (animationTime <= 0.2)
-		slowingDownAnim = false;
-
-	if (runningTime >= animationTime)
-	{
-		transitioningToOriginalPosition = true;
-		srand(time(0));
-		//animationTime = static_cast<double>((rand() % (3 - 1 + 1)) + 1);
-		//if (slowingDownAnim)
-			//animationTime -= 0.2;
-		//else
-			//animationTime += 0.2;
-
-
-		runningTime = animationTime;
-		
-	} else if (runningTime <= 0.0)
-	{
-		transitioningToOriginalPosition = false;
-		srand(time(0));
-		//animationTime = static_cast<double>((rand() % (3 - 1 + 1)) + 1);
-		//if (slowingDownAnim)
-			//animationTime -= 0.2;
-		//else
-			//animationTime += 0.2;
-		runningTime = 0.0;
-	}
-
-	constant.m_time = static_cast<unsigned int>(runningTime / animationTime * 1000000.0);
-
-	constantBuffer->Update(&*_deviceContext, &constant);
+	constantBuffer->Update(&*_deviceContext, &content);
 	_deviceContext->BindConstantBuffer(constantBuffer);
 }
 
@@ -107,10 +64,32 @@ void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, ConstantBufferPtr c
 
 	context.SetViewportSize(viewportSize);
 	
-	TickConstantBuffer(constantBuffer, true);
 	
 	for (auto renderable : _renderables)
 	{
+		renderable->Update(EngineTime::GetDeltaTime());
+
+		UpdateConstantBuffer(constantBuffer, {
+			renderable->transformMat(),
+			Mat4::Identity,
+			//Mat4::Identity,
+			//Mat4::OrthoProjection(
+			//	viewportSize.width + viewportSize.left,
+			//	viewportSize.left,
+			//	viewportSize.top,
+			//	viewportSize.top + viewportSize.height,
+			//	-0.01f,
+			//	4.0f
+			//),
+			
+			Mat4::OrthoLH(
+				(viewportSize.width - viewportSize.left) / 400.0f,
+				(viewportSize.height - viewportSize.top) / 400.0f,
+				-4.0f,
+				4.0f
+			),
+			0
+		});
 		context.Draw(renderable);
 	}
 
@@ -151,6 +130,11 @@ ColdTable::VertexBufferPtr ColdTable::GraphicsEngine::CreateVertexBuffer()
 ColdTable::ConstantBufferPtr ColdTable::GraphicsEngine::CreateConstantBuffer()
 {
 	return _graphicsDevice->CreateConstantBuffer();
+}
+
+ColdTable::IndexBufferPtr ColdTable::GraphicsEngine::CreateIndexBuffer()
+{
+	return _graphicsDevice->CreateIndexBuffer();
 }
 
 ColdTable::ShaderPtr ColdTable::GraphicsEngine::CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc)

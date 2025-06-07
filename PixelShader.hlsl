@@ -7,10 +7,13 @@ struct PS_INPUT
 
 cbuffer constant : register(b0)
 {
+    column_major float4x4 m_world;
+    column_major float4x4 m_view;
+    column_major float4x4 m_projection;
     unsigned int m_time;
 };
 
 float4 psmain( PS_INPUT input ) : SV_TARGET
 {
-    return float4(lerp(input.color, input.color1, m_time / 1000000.0), 1.0f);
+    return float4(input.color, 1.0f);
 }

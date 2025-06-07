@@ -7,6 +7,7 @@
 #include "ColdTable/Math/Rect.h"
 #include <ColdTable/Graphics/GraphicsEnums.h>
 #include <ColdTable/Math/Vertex.h>
+#include <ColdTable/Math/Mat4.h>
 
 #include <wrl.h>
 #include <d3d11.h>
@@ -103,9 +104,4 @@ namespace ColdTable
 		Rect windowSize;
 	};
 
-	__declspec(align(16))
-	struct ConstantBufferContent
-	{
-		unsigned int m_time;
-	};
 }

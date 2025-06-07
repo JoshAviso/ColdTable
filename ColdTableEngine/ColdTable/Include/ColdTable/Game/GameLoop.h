@@ -35,6 +35,7 @@ namespace ColdTable
 		QuadPtr tempQ2{};
 		QuadPtr tempQ3{};
 
+
 	private:
 		Rect tempWindowSize{};
 		ComputeShaderPtr tempComputeShader;

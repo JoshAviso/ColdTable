@@ -151,9 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Camera.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Core\Base.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\ECSEngine.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Game\Win32\Win32Game.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Mat4.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Quaternion.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec3.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec4.cpp" />
     <ClCompile Include="ColdTableEngine\Game\main.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Window\Win32\Win32Window.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Game\GameLoop.cpp" />
@@ -173,12 +178,18 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\GameSystem.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ComputeShader.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Game\EngineTime.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\IndexBuffer.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Cube.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Quaternion.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Camera.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\All.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Core\Base.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Core\Common.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Core\Core.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Mat4.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Vec3.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Vertex.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Vec4.h" />
@@ -205,6 +216,9 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\GameSystem.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ComputeShader.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Game\EngineTime.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\IndexBuffer.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Cube.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Utility\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

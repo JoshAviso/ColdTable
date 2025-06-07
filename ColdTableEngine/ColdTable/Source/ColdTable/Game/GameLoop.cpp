@@ -1,3 +1,4 @@
+#include <iostream>
 #include <ColdTable/Game/GameLoop.h>
 #include <ColdTable/Window/Window.h>
 
@@ -6,8 +7,10 @@
 #include <ColdTable/Game/Display.h>
 #include <ColdTable/Math/Vertex.h>
 
+#include "ColdTable/Graphics/IndexBuffer.h"
 #include "ColdTable/Graphics/Renderables/Quad.h"
 #include "ColdTable/Utility/ComputeShader.h"
+#include "ColdTable/Utility/Utils.h"
 
 ColdTable::GameLoop::GameLoop(const GameDesc& desc):
 	Base({desc.base}),
@@ -36,16 +39,63 @@ void ColdTable::GameLoop::onInternalStartup()
 
 	QuadDesc quad1 = {
 		tempShader,
-		{{-0.2, -0.20, 0.0}, {-0.6, -0.9, 1.0}, {0.0, 0.8, 0.0 }, { 0.0, 0.0, 0.0 }},
-		{{0.0, 0.75, 1.0}, {-0.9, 0.1, 1.0}, {0.8, 0.8, 0.0}, { 0.8, 0.8, 0.0 }},
-		{{0.9, 0.75, 0.0}, {-0.6, -0.9, 0.0}, {0.0, 0.0, 0.8 }, { 0.8, 0.8, 0.8 }},
-		{{0.1, -0.75, 1.0}, {1.0, -0.2, 1.0}, {0.8, 0.0, 0.0 }, { 0.0, 0.0, 0.8 }},
+		{{-0.5, 0.5, 0.0}, {0.8, 0.8, 0.0}, { 0.8, 0.8, 0.0 }},
+		{{0.5, 0.5, 0.0}, {0.0, 0.0, 0.8 }, { 0.8, 0.8, 0.8 }},
+		{{0.5, -0.5, 0.0}, {0.8, 0.0, 0.0 }, { 0.0, 0.0, 0.8 }},
+		{{-0.5, -0.5, 0.0}, {0.0, 0.8, 0.0 }, { 0.0, 0.0, 0.0 }},
 	};
 	tempQ1 = std::make_shared<Quad>(quad1);
 	_graphicsEngine->RegisterRenderable(tempQ1);
 
-	ConstantBufferContent constant;
-	constant.m_time = 0;
+	tempQ1->localRotation.rotate({0.0f, 1.0f, 0.0f}, 60.0f);
+
+	Vertex vertlist[] = {
+		// FRONT FACE
+		Vertex({-0.5, -0.5, -0.5}, {1.0, 0.0, 0.0}),
+		Vertex({-0.5,  0.5, -0.5}, {1.0, 1.0, 0.0}),
+		Vertex({ 0.5,  0.5, -0.5}, {1.0, 1.0, 0.0}),
+		Vertex({ 0.5, -0.5, -0.5}, {1.0, 0.0, 0.0}),
+		//// BACK FACE
+		Vertex({ 0.5, -0.5,  0.5}, {0.0, 1.0, 0.0}),
+		Vertex({ 0.5,  0.5,  0.5}, {0.0, 1.0, 1.0}),
+		Vertex({-0.5,  0.5,  0.5}, {0.0, 1.0, 1.0}),
+		Vertex({-0.5, -0.5,  0.5}, {0.0, 1.0, 0.0})
+	};
+
+	unsigned int indexList[] = {
+		0, 1, 2, 2, 3, 0, // FRONT
+		4, 5, 6, 6, 7, 4, // BACK
+		1, 6, 5, 5, 2, 1, // TOP
+		7, 0, 3, 3, 4, 7, // BOTTOM
+		3, 2, 5, 5, 4, 3, // RIGHT
+		7, 6, 1, 1, 0, 7, // LEFT
+	};
+
+	IndexBufferPtr indexBuff = _graphicsEngine->CreateIndexBuffer();
+	indexBuff->LoadIndices(indexList, ARRAYSIZE(indexList));
+
+	RenderableDesc cubeDesc = {
+		vertlist,
+		ARRAYSIZE(vertlist),
+		EGeometryDrawmode::DRAWMODE_TRI,
+		tempShader
+	};
+
+	for (int i = 0; i < 1; i ++)
+	{
+		RenderablePtr cube = std::make_shared<Renderable>(cubeDesc);
+		cube->LoadVerticesInIndex(vertlist, ARRAYSIZE(vertlist), indexBuff);
+		_graphicsEngine->RegisterRenderable(cube);
+
+		cube->localScale = Vec3(0.3f);
+	}
+
+	ConstantBufferContent constant{
+		Mat4::Identity,
+		Mat4::Identity,
+		Mat4::Identity,
+		0
+	};
 
 	tempConstantBuffer = _graphicsEngine->CreateConstantBuffer();
 	tempConstantBuffer->LoadData(&constant, sizeof(ConstantBufferContent));

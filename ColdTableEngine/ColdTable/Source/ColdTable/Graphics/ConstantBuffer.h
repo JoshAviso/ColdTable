@@ -5,6 +5,15 @@
 
 namespace ColdTable
 {
+	__declspec(align(16))
+		struct ConstantBufferContent
+	{
+		Mat4 m_world;
+		Mat4 m_view;
+		Mat4 m_projection;
+		unsigned int m_time;
+	};
+
 	class ConstantBuffer : public Base
 	{
 	public:

@@ -20,7 +20,7 @@ namespace ColdTable
 		void RegisterComputeShader(ComputeShaderPtr computeShader);
 
 		GraphicsDevicePtr GetGraphicsDevice() noexcept;
-		void TickConstantBuffer(ColdTable::ConstantBufferPtr constantBuffer, bool isDeferred);
+		void UpdateConstantBuffer(const ConstantBufferPtr& constantBuffer, ConstantBufferContent content);
 
 		void SetViewportSize(Rect size);
 		ShaderPtr CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc);
@@ -29,6 +29,7 @@ namespace ColdTable
 
 		VertexBufferPtr CreateVertexBuffer();
 		ConstantBufferPtr CreateConstantBuffer();
+		IndexBufferPtr CreateIndexBuffer();
 
 	private:
 		void UseShader(const ShaderPtr& shader);

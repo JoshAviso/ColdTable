@@ -4,6 +4,9 @@ RWByteAddressBuffer BufferOut : register(u0);
 
 cbuffer constant : register(b0)
 {
+    column_major float4x4 m_world;
+    column_major float4x4 m_view;
+    column_major float4x4 m_projection;
     unsigned int m_time;
 };
 

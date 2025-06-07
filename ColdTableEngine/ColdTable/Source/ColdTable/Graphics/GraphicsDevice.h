@@ -7,6 +7,7 @@
 #include <ColdTable/Core/Core.h>
 #include <ColdTable/Graphics/GraphicsResource.h>
 #include <ColdTable/Graphics/ConstantBuffer.h>
+#include <ColdTable/Graphics/IndexBuffer.h>
 #include <ColdTable/Graphics/GraphicsLogUtil.h>
 
 #include <ColdTable/Graphics/SwapChain.h>
@@ -26,6 +27,7 @@ namespace ColdTable
 		DeviceContextPtr CreateDeviceContext();
 		VertexBufferPtr CreateVertexBuffer();
 		ConstantBufferPtr CreateConstantBuffer();
+		IndexBufferPtr CreateIndexBuffer();
 		ShaderPtr CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc);
 		ComputeShaderPtr CreateComputeShader(DeviceContextPtr context, const wchar_t* sourceFile, const float* inputArray);
 
@@ -47,6 +49,7 @@ namespace ColdTable
 		friend class EngineShader;
 		friend class ComputeShader;
 		friend class GraphicsEngine;
+		friend class IndexBuffer;
 	};
 }
 

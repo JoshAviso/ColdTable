@@ -65,6 +65,12 @@ ConstantBufferPtr GraphicsDevice::CreateConstantBuffer()
 	return std::make_shared<ConstantBuffer>(desc);
 }
 
+IndexBufferPtr GraphicsDevice::CreateIndexBuffer()
+{
+	IndexBufferDesc desc{ {}, shared_from_this() };
+	return std::make_shared<IndexBuffer>(desc);
+}
+
 ShaderPtr GraphicsDevice::CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc)
 {
 	ShaderDesc desc{
