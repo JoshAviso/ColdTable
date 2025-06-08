@@ -10,6 +10,9 @@ namespace ColdTable
 		explicit Window(const WindowDesc& desc);
 		virtual ~Window() override;
 
+		void OnFocus();
+		void OnLoseFocus();
+
 	protected:
 		void* _windowHandle;
 		Rect _size;

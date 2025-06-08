@@ -61,3 +61,34 @@ ColdTable::Mat4 ColdTable::Renderable::transformMat() const
 
 	return translateMat * static_cast<Mat4>(localRotation) * scaleMat;
 }
+
+void ColdTable::Renderable::OnKeyDown(int key)
+{
+	if (key == 'W')
+	{
+		localRotation.rotate({ {1.0f, 0.0f, 0.0f}, 5.0f });
+	}
+
+	if (key == 'S')
+	{
+		localRotation.rotate({ {1.0f, 0.0f, 0.0f}, -5.0f });
+	}
+	if (key == 'D')
+	{
+		localRotation.rotate({ {0.0f, 1.0f, 0.0f}, -5.0f });
+	}
+	if (key == 'A')
+	{
+		localRotation.rotate({ {0.0f, 1.0f, 0.0f}, 5.0f });
+	}
+}
+
+void ColdTable::Renderable::OnKeyUp(int key)
+{
+}
+
+void ColdTable::Renderable::OnMouseMove(Vec2 delta)
+{
+	localRotation.rotate({ {-1.0f, 0.0f, 0.0f}, delta.y });
+	localRotation.rotate({ {0.0f, -1.0f, 0.0f}, delta.x });
+}

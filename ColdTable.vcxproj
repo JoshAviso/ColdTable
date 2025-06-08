@@ -159,6 +159,7 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Quaternion.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec3.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec4.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec2.cpp" />
     <ClCompile Include="ColdTableEngine\Game\main.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Window\Win32\Win32Window.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Game\GameLoop.cpp" />
@@ -181,9 +182,12 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\IndexBuffer.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Cube.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\Utils.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Input\IInputListener.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Input\InputSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Quaternion.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Vec2.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Camera.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\All.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Core\Base.h" />
@@ -219,6 +223,8 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\IndexBuffer.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Cube.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Utility\Utils.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Input\IInputListener.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Input\InputSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,6 +5,7 @@
 #include <ColdTable/Graphics/EngineShader.h>
 
 #include "ColdTable/Graphics/Renderables/Quad.h"
+#include "ColdTable/Input/IInputListener.h"
 
 namespace ColdTable
 {
@@ -20,6 +21,7 @@ namespace ColdTable
 		void onInternalStartup();
 		void onInternalCallback();
 
+	private:
 		ShaderPtr tempShader{};
 		ConstantBufferPtr tempConstantBuffer{};
 

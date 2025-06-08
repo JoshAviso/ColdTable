@@ -9,7 +9,9 @@ ColdTable::VertexBuffer::VertexBuffer(VertexBufferDesc desc): Base(desc.base), _
 
 ColdTable::VertexBuffer::~VertexBuffer()
 {
+	if (_buffer)
 	_buffer->Release();
+	if (_layout)
 	_layout->Release();
 }
 

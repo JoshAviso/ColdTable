@@ -49,4 +49,10 @@ namespace ColdTable
 	using ShaderPtr = std::shared_ptr<EngineShader>;
 	using ComputeShaderPtr = std::shared_ptr<ComputeShader>;
 	using QuadPtr = std::shared_ptr<Quad>;
+
+	class InputSystem;
+	using InputSystemPtr = std::shared_ptr<InputSystem>;
+
+	class IInputListener;
+	using InputListenerPtr = std::shared_ptr<IInputListener>;
 }

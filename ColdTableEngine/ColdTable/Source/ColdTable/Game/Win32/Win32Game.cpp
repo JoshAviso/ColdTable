@@ -3,6 +3,7 @@
 
 #include <ColdTable/Game/EngineTime.h>
 #include "ColdTable/Game/Display.h"
+#include <ColdTable/Input/InputSystem.h>
 
 void ColdTable::GameLoop::Run()
 {
@@ -11,6 +12,7 @@ void ColdTable::GameLoop::Run()
 	MSG message{};
 	while (_isRunning)
 	{
+		InputSystem::Instance->Update();
 		EngineTime::LogFrameStart();
 
 		// Input reading, currently funnels to window

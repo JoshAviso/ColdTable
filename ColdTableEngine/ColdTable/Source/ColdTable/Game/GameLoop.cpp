@@ -9,6 +9,7 @@
 
 #include "ColdTable/Graphics/IndexBuffer.h"
 #include "ColdTable/Graphics/Renderables/Quad.h"
+#include "ColdTable/Input/InputSystem.h"
 #include "ColdTable/Utility/ComputeShader.h"
 #include "ColdTable/Utility/Utils.h"
 
@@ -34,6 +35,7 @@ ColdTable::GameLoop::~GameLoop()
 void ColdTable::GameLoop::onInternalStartup()
 {
 	EngineTime::Initialize();
+	InputSystem::Initialize();
 
 	tempShader = _graphicsEngine->CreateShader(L"VertexShader.hlsl", L"PixelShader.hlsl");
 

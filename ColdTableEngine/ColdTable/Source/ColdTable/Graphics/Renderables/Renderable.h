@@ -8,9 +8,11 @@
 #include <ColdTable/Math/Mat4.h>
 #include <ColdTable/Math/Quaternion.h>
 
+#include "ColdTable/Input/IInputListener.h"
+
 namespace ColdTable
 {
-	class Renderable
+	class Renderable : public IInputListener
 	{
 	public:
 		explicit Renderable(const RenderableDesc& desc);
@@ -26,6 +28,9 @@ namespace ColdTable
 		Vec3 localScale = Vec3::Identity;
 		Quaternion localRotation = Quaternion::Identity;
 		Mat4 transformMat() const;
+		void OnKeyDown(int key) override;
+		void OnKeyUp(int key) override;
+		void OnMouseMove(Vec2 delta) override;
 
 	private:
 		VertexBufferPtr _vertexBuffer;
