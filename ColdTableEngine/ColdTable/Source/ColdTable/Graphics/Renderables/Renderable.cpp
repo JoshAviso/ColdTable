@@ -1,3 +1,4 @@
+#include <string>
 #include <ColdTable/Graphics/Renderables/Renderable.h>
 
 #include <ColdTable/Graphics/EngineShader.h>
@@ -44,26 +45,15 @@ void ColdTable::Renderable::SetShader(ShaderPtr shader)
 
 ColdTable::Mat4 ColdTable::Renderable::transformMat() const
 {
-	Mat4 scaleMat = {
-		localScale.x, 0.0, 0.0, 0.0,
-		0.0, localScale.y, 0.0, 0.0,
-		0.0, 0.0, localScale.z, 0.0,
-		0.0, 0.0, 0.0, 1.0
-	};
-	Mat4 translateMat = {
-		 1.0, 0.0, 0.0, localPosition.x ,
-		0.0, 1.0, 0.0, localPosition.y ,
-		0.0, 0.0, 1.0, localPosition.z ,
-		 0.0, 0.0, 0.0, 1.0 
-	};
-
-	//return Mat4::Identity;
+	Mat4 scaleMat = localScale.asScaleMatrix();
+	Mat4 translateMat = localPosition.asTranslationMatrix();
 
 	return translateMat * static_cast<Mat4>(localRotation) * scaleMat;
 }
 
 void ColdTable::Renderable::OnKeyDown(int key)
 {
+	/*
 	if (key == 'W')
 	{
 		localRotation.rotate({ {1.0f, 0.0f, 0.0f}, 5.0f });
@@ -81,6 +71,7 @@ void ColdTable::Renderable::OnKeyDown(int key)
 	{
 		localRotation.rotate({ {0.0f, 1.0f, 0.0f}, 5.0f });
 	}
+	*/
 }
 
 void ColdTable::Renderable::OnKeyUp(int key)
@@ -89,6 +80,17 @@ void ColdTable::Renderable::OnKeyUp(int key)
 
 void ColdTable::Renderable::OnMouseMove(Vec2 delta)
 {
+	/*
 	localRotation.rotate({ {-1.0f, 0.0f, 0.0f}, delta.y });
-	localRotation.rotate({ {0.0f, -1.0f, 0.0f}, delta.x });
+	localRotation.rotate({ {0.0f, -1.0f, 0.0f}, delta.x });*/
+}
+
+void ColdTable::Renderable::OnLeftMouseDown(Vec2 pos)
+{
+	localScale += {0.1f, 0.1f, 0.1f};
+}
+
+void ColdTable::Renderable::OnRightMouseUp(Vec2 pos)
+{
+	localScale -= {0.1f, 0.1f, 0.1f};
 }

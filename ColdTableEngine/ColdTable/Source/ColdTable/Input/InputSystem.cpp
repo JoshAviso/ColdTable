@@ -50,7 +50,7 @@ void ColdTable::InputSystem::Update()
 		{
 			listener.second->OnMouseMove({
 				static_cast<float>(currMousePos.x) - _oldMousePosition.x,
-				static_cast<float>(currMousePos.y) - _oldMousePosition.y
+				-(static_cast<float>(currMousePos.y) - _oldMousePosition.y)
 			});
 		}
 
@@ -58,7 +58,7 @@ void ColdTable::InputSystem::Update()
 		_oldMousePosition.y = static_cast<float>(currMousePos.y);
 	}
 
-	// KEYBOARD
+	// KEYBOARD AND MOUSE CLICKS
 	if (::GetKeyboardState(_keyboardState))
 	{
 		for (int i = 0; i < 256; i++)
@@ -68,7 +68,18 @@ void ColdTable::InputSystem::Update()
 			{
 				for (auto listenerPair : _listeners)
 				{
-					listenerPair.second->OnKeyDown(i);
+					if (i == VK_LBUTTON)
+					{
+						if (_keyboardState[i] != _oldKeyboardState[i])
+							listenerPair.second->OnLeftMouseDown({static_cast<float>(currMousePos.x), static_cast<float>(currMousePos.y)});
+					}
+					else if (i == VK_RBUTTON)
+					{
+						if (_keyboardState[i] != _oldKeyboardState[i])
+							listenerPair.second->OnRightMouseDown({ static_cast<float>(currMousePos.x), static_cast<float>(currMousePos.y) });
+
+					} else
+						listenerPair.second->OnKeyDown(i);
 				}
 			}
 			// KEY IS UP
@@ -78,7 +89,12 @@ void ColdTable::InputSystem::Update()
 				{
 					for (auto listenerPair : _listeners)
 					{
-						listenerPair.second->OnKeyUp(i);
+						if (i == VK_LBUTTON)
+							listenerPair.second->OnLeftMouseUp({ static_cast<float>(currMousePos.x), static_cast<float>(currMousePos.y) });
+						else if (i == VK_RBUTTON)
+							listenerPair.second->OnRightMouseUp({ static_cast<float>(currMousePos.x), static_cast<float>(currMousePos.y) });
+						else
+							listenerPair.second->OnKeyUp(i);
 					}
 				}
 				

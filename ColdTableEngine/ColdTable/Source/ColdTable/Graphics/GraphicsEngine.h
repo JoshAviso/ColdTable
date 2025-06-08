@@ -33,7 +33,7 @@ namespace ColdTable
 
 	private:
 		void UseShader(const ShaderPtr& shader);
-		void Render(SwapChain& swapChain, ConstantBufferPtr constantBuffer, Rect viewportSize);
+		void Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr constantBuffer, Rect viewportSize);
 
 		void DispatchComputeShader(ComputeShaderPtr computeShader, UINT xThreads, UINT yThreads, UINT zThreads);
 		void AwaitComputeShaderFinish();

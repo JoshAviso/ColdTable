@@ -7,6 +7,7 @@
 #include <ColdTable/Game/Display.h>
 #include <ColdTable/Math/Vertex.h>
 
+#include "ColdTable/Graphics/Camera.h"
 #include "ColdTable/Graphics/IndexBuffer.h"
 #include "ColdTable/Graphics/Renderables/Quad.h"
 #include "ColdTable/Input/InputSystem.h"
@@ -89,6 +90,8 @@ void ColdTable::GameLoop::onInternalStartup()
 		cube->LoadVerticesInIndex(vertlist, ARRAYSIZE(vertlist), indexBuff);
 		_graphicsEngine->RegisterRenderable(cube);
 
+		cube->localPosition = {1, 0, 0};
+
 		cube->localScale = Vec3(0.3f);
 	}
 
@@ -103,9 +106,38 @@ void ColdTable::GameLoop::onInternalStartup()
 	tempConstantBuffer->LoadData(&constant, sizeof(ConstantBufferContent));
 
 	//tempComputeShader = _graphicsEngine->CreateComputeShader(L"ComputeShader.hlsl", tempVertexArray);
+
+	CameraDesc camDesc{};
+	tempCam = std::make_shared<Camera>(camDesc);
+
+	tempCam->localPosition -= {0, 0, 1};
+
+	tempCam->projectionMat =
+		//Mat4::Identity,
+		//Mat4::OrthoProjection(
+		//	viewportSize.width + viewportSize.left,
+		//	viewportSize.left,
+		//	viewportSize.top,
+		//	viewportSize.top + viewportSize.height,
+		//	-0.01f,
+		//	4.0f
+		//),
+
+		/*Mat4::OrthoLH(
+			(tempWindowSize.width - tempWindowSize.left) / 400.0f,
+			(tempWindowSize.height - tempWindowSize.top) / 400.0f,
+			-4.0f,
+			4.0f
+		);*/
+
+		Mat4::PerspectiveFovLH(
+			1.57f,
+			tempWindowSize.width / tempWindowSize.height,
+			0.1f, 100.0f
+		);
 }
 
 void ColdTable::GameLoop::onInternalCallback()
 {
-	_graphicsEngine->Render(_display->GetSwapChain(), tempConstantBuffer, tempWindowSize);
+	_graphicsEngine->Render(tempCam, _display->GetSwapChain(), tempConstantBuffer, tempWindowSize);
 }

@@ -4,7 +4,36 @@ ColdTable::Camera::Camera(const CameraDesc& desc)
 {
 }
 
-ColdTable::Mat4 ColdTable::Camera::getViewMatrix()
+ColdTable::Mat4 ColdTable::Camera::transformMat() const
 {
-	return Mat4::Identity;
+	Mat4 translateMat = localPosition.asTranslationMatrix();
+
+	return translateMat * static_cast<Mat4>(localRotation);
+}
+
+ColdTable::Mat4 ColdTable::Camera::viewMatrix()
+{
+	return transformMat().inverse();
+}
+
+void ColdTable::Camera::OnKeyDown(int key)
+{
+	if (key == 'W')
+		localPosition += localRotation.rotate({0, 0, 0.1});
+	if (key == 'S')
+		localPosition += localRotation.rotate({0, 0, -0.1});
+	if (key == 'E')
+		localPosition += localRotation.rotate({0, 0.1, 0});
+	if (key == 'Q')
+		localPosition += localRotation.rotate({0, -0.1, 0});
+	if (key == 'D')
+		localPosition += localRotation.rotate({0.1, 0, 0});
+	if (key == 'A')
+		localPosition += localRotation.rotate({-0.1, 0, 0});
+}
+
+void ColdTable::Camera::OnMouseMove(Vec2 delta)
+{
+	localRotation.rotateLocal( {-1.0f, 0.0f, 0.0f}, delta.y );
+	localRotation.rotate( {0.0f, 1.0f, 0.0f}, delta.x );
 }

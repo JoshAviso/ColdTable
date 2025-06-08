@@ -31,6 +31,8 @@ namespace ColdTable
 		void OnKeyDown(int key) override;
 		void OnKeyUp(int key) override;
 		void OnMouseMove(Vec2 delta) override;
+		void OnLeftMouseDown(Vec2 pos) override;
+		void OnRightMouseUp(Vec2 pos) override;
 
 	private:
 		VertexBufferPtr _vertexBuffer;

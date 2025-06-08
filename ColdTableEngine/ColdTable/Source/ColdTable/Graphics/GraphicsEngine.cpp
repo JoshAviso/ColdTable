@@ -5,6 +5,7 @@
 #include <d3dcompiler.h>
 #include <iostream>
 
+#include "Camera.h"
 #include "ColdTable/Math/Vertex.h"
 
 ColdTable::GraphicsEngine::GraphicsEngine(const GraphicsEngineDesc& desc): Base(desc.base)
@@ -57,7 +58,7 @@ void ColdTable::GraphicsEngine::UpdateConstantBuffer(const ConstantBufferPtr& co
 	_deviceContext->BindConstantBuffer(constantBuffer);
 }
 
-void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, ConstantBufferPtr constantBuffer, Rect viewportSize)
+void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr constantBuffer, Rect viewportSize)
 {
 	auto& context = *_deviceContext;
 	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});
@@ -71,23 +72,8 @@ void ColdTable::GraphicsEngine::Render(SwapChain& swapChain, ConstantBufferPtr c
 
 		UpdateConstantBuffer(constantBuffer, {
 			renderable->transformMat(),
-			Mat4::Identity,
-			//Mat4::Identity,
-			//Mat4::OrthoProjection(
-			//	viewportSize.width + viewportSize.left,
-			//	viewportSize.left,
-			//	viewportSize.top,
-			//	viewportSize.top + viewportSize.height,
-			//	-0.01f,
-			//	4.0f
-			//),
-			
-			Mat4::OrthoLH(
-				(viewportSize.width - viewportSize.left) / 400.0f,
-				(viewportSize.height - viewportSize.top) / 400.0f,
-				-4.0f,
-				4.0f
-			),
+			camera->viewMatrix(),
+			camera->projectionMat,
 			0
 		});
 		context.Draw(renderable);

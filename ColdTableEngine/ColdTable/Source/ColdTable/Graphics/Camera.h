@@ -1,21 +1,29 @@
 #pragma once
 #include <ColdTable/Math/Vec3.h>
 #include <ColdTable/Math/Mat4.h>
+#include <ColdTable/Math/Quaternion.h>
+
+#include "ColdTable/Input/IInputListener.h"
 
 namespace  ColdTable
 {
 	struct CameraDesc
 	{
-		Vec3 position;
-		Mat4 rotation;
 	};
 
-	class Camera
+	class Camera: public IInputListener
 	{
 	public:
 		Camera(const CameraDesc& desc);
+		Vec3 localPosition = Vec3::Zero;
+		Quaternion localRotation = Quaternion::Identity;
+		Mat4 projectionMat = Mat4::Identity;
 
-		Mat4 getViewMatrix();
+		Mat4 transformMat() const;
+		Mat4 viewMatrix();
+
+		void OnKeyDown(int key) override;
+		void OnMouseMove(Vec2 delta) override;
 	};
 }
 

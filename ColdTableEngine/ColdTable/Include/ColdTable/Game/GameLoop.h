@@ -37,6 +37,8 @@ namespace ColdTable
 		QuadPtr tempQ2{};
 		QuadPtr tempQ3{};
 
+		CameraPtr tempCam{};
+
 
 	private:
 		Rect tempWindowSize{};
