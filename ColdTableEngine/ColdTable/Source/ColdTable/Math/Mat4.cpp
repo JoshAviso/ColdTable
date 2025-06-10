@@ -18,6 +18,26 @@ const ColdTable::Mat4 ColdTable::Mat4::Identity = {
 	0.0, 0.0, 0.0, 1.0
 };
 
+ColdTable::Mat4::Mat4(f32 xx, f32 xy, f32 xz, f32 xw, f32 yx, f32 yy, f32 yz, f32 yw, f32 zx, f32 zy, f32 zz, f32 zw, f32 wx, f32 wy, f32 wz, f32 ww)
+{
+	m_mat[0][0] = xx;
+	m_mat[0][1] = xy;
+	m_mat[0][2] = xz;
+	m_mat[0][3] = xw;
+	m_mat[1][0] = yx;
+	m_mat[1][1] = yy;
+	m_mat[1][2] = yz;
+	m_mat[1][3] = yw;
+	m_mat[2][0] = zx;
+	m_mat[2][1] = zy;
+	m_mat[2][2] = zz;
+	m_mat[2][3] = zw;
+	m_mat[3][0] = wx;
+	m_mat[3][1] = wy;
+	m_mat[3][2] = wz;
+	m_mat[3][3] = ww;
+}
+
 ColdTable::Mat4 ColdTable::Mat4::lerp(Mat4 initial, Mat4 final, f32 delta)
 {
 	return (initial * (1 - delta)) + (final * delta);

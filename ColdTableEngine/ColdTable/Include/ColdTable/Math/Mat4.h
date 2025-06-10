@@ -8,6 +8,7 @@ namespace ColdTable
 	{
 	public:
 		Mat4() = default;
+		Mat4(f32, f32, f32, f32, f32, f32, f32, f32, f32, f32, f32, f32, f32, f32, f32, f32);
 		f32 m_mat[4][4];
 
 	public:
