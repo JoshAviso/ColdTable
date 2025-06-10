@@ -28,6 +28,7 @@ namespace ColdTable
 		explicit operator Mat4() const;
 		Mat4 asMat() const;
 		Quaternion conjugate() const;
+		Vec3 forward() const;
 
 		bool operator == (const Quaternion& q) const;
 		bool operator != (const Quaternion& q) const;
@@ -35,7 +36,7 @@ namespace ColdTable
 		Quaternion operator * (const Vec3& vec) const;
 		Quaternion operator * (const Quaternion& q) const;
 
-		Vec3 rotate(const Vec3& vec);
+		Vec3 rotate(const Vec3& vec) const;
 		void rotate(const Quaternion& q);
 		void rotate(const Vec3& worldAxis, const f32 angle);
 

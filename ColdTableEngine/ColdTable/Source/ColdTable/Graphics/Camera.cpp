@@ -1,6 +1,6 @@
 #include <ColdTable/Graphics/Camera.h>
 
-ColdTable::Camera::Camera(const CameraDesc& desc)
+ColdTable::Camera::Camera(const CameraDesc& desc): _cameraBuffer(desc.constantBuffer)
 {
 }
 

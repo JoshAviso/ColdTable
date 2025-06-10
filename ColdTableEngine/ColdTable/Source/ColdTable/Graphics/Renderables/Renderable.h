@@ -12,6 +12,15 @@
 
 namespace ColdTable
 {
+	struct RenderableDesc
+	{
+		Vertex* vertexList;
+		UINT vertexCount;
+		EGeometryDrawmode drawMode;
+		MaterialPtr material;
+		//ShaderPtr shader;
+	};
+
 	class Renderable : public IInputListener
 	{
 	public:
@@ -22,6 +31,7 @@ namespace ColdTable
 		virtual void LoadVerticesInIndex(const Vertex* vertexList, UINT listSize, const IndexBufferPtr& indexBuffer);
 		virtual void Update(const d64 deltaTime);
 		void SetShader(ShaderPtr shader);
+		void SetTexture(TexturePtr texture);
 
 	public:
 		Vec3 localPosition = Vec3::Zero;
@@ -38,13 +48,16 @@ namespace ColdTable
 		VertexBufferPtr _vertexBuffer;
 		IndexBufferPtr _indexBuffer;
 		EGeometryDrawmode _drawMode;
+
+		MaterialPtr _material;
 		ShaderPtr _shader;
+		TexturePtr _texture = nullptr;
 
 		const Vertex* vertexListRef;
 
 	private:
 		friend class DeviceContext;
-
+		friend class GraphicsEngine;
 	};
 }
 

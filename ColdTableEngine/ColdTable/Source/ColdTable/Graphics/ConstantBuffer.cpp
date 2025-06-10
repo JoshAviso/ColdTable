@@ -11,6 +11,7 @@ ColdTable::ConstantBuffer::ConstantBuffer(ConstantBufferDesc desc) : Base(desc.b
 
 ColdTable::ConstantBuffer::~ConstantBuffer()
 {
+	if (_buffer)
 	_buffer->Release();
 }
 
@@ -28,7 +29,8 @@ void ColdTable::ConstantBuffer::LoadData(void* buffer, UINT bufferSize)
 	D3D11_SUBRESOURCE_DATA initData{};
 	initData.pSysMem = buffer;
 
-	ColdTableGraphicsLogThrowOnFail(_graphicsDevice->_d3dDevice->CreateBuffer(&bufferDesc, &initData, &_buffer),
+	ColdTableGraphicsLogThrowOnFail(
+		_graphicsDevice->_d3dDevice->CreateBuffer(&bufferDesc, &initData, &_buffer),
 		"CreateBuffer failed.");
 
 }

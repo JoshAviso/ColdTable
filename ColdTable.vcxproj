@@ -78,13 +78,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>Bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;$(IncludePath)</IncludePath>
+    <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;Libs\DirectXTex\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>Libs\DirectXTex\bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;$(IncludePath)</IncludePath>
+    <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;Libs\DirectXTex\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>Libs\DirectXTex\bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -128,7 +130,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;DirectXTexD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,7 +149,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -155,11 +157,13 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Core\Base.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\ECSEngine.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Game\Win32\Win32Game.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\SpotLight.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Mat4.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Quaternion.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec3.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec4.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec2.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\PointLight.cpp" />
     <ClCompile Include="ColdTableEngine\Game\main.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Window\Win32\Win32Window.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Game\GameLoop.cpp" />
@@ -184,6 +188,13 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\Utils.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Input\IInputListener.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Input\InputSystem.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\ResourceManager.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Resource.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Texture\TextureManager.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Texture\Texture.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Material\Material.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\LightSource.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\DirectionalLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Quaternion.h" />
@@ -201,6 +212,7 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Window\Window.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Game\GameLoop.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\ECSEngine.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\SpotLight.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\GraphicsEngine.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\GraphicsEnums.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\GraphicsResource.h" />
@@ -218,6 +230,7 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameObjects\GameObject.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\Component.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\GameSystem.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\PointLight.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ComputeShader.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Game\EngineTime.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\IndexBuffer.h" />
@@ -225,6 +238,13 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Utility\Utils.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Input\IInputListener.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Input\InputSystem.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\ResourceManager.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Resource.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Texture\TextureManager.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Texture\Texture.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Material\Material.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\LightSource.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\DirectionalLight.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

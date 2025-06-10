@@ -21,7 +21,8 @@ namespace ColdTable {
 
 		void ClearAndSetBackBuffer(const SwapChain& swapChain, const Vec4& color);
 		void SetViewportSize(Rect size);
-		void BindConstantBuffer(ConstantBufferPtr constantBuffer);
+		void BindTexture(TexturePtr texture);
+		void BindConstantBuffer(ConstantBufferPtr constantBuffer, UINT bufferSlot);
 		void BindComputeShader(ComputeShaderPtr computeShader);
 		void DispatchComputeShader(UINT xThreadGroups, UINT yThreadGroups, UINT zThreadGroups);
 

@@ -6,6 +6,7 @@
 
 #include "ColdTable/Graphics/Renderables/Quad.h"
 #include "ColdTable/Input/IInputListener.h"
+#include "ColdTable/Resource/Texture/TextureManager.h"
 
 namespace ColdTable
 {
@@ -23,7 +24,7 @@ namespace ColdTable
 
 	private:
 		ShaderPtr tempShader{};
-		ConstantBufferPtr tempConstantBuffer{};
+		ConstantBufferPtr tempLightBuffer{};
 
 		float tempVertexArray[36];
 
@@ -31,6 +32,8 @@ namespace ColdTable
 		std::unique_ptr<GraphicsEngine> _graphicsEngine{};
 		std::unique_ptr<Display> _display{};
 		bool _isRunning{ true };
+
+		TextureManager* _textureManager{};
 
 	private:
 		QuadPtr tempQ1{};

@@ -50,6 +50,7 @@ namespace ColdTable
 		friend class ComputeShader;
 		friend class GraphicsEngine;
 		friend class IndexBuffer;
+		friend class Texture;
 	};
 }
 

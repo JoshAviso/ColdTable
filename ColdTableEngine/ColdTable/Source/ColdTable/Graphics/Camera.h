@@ -9,12 +9,13 @@ namespace  ColdTable
 {
 	struct CameraDesc
 	{
+		const ConstantBufferPtr& constantBuffer;
 	};
 
 	class Camera: public IInputListener
 	{
 	public:
-		Camera(const CameraDesc& desc);
+		explicit Camera(const CameraDesc& desc);
 		Vec3 localPosition = Vec3::Zero;
 		Quaternion localRotation = Quaternion::Identity;
 		Mat4 projectionMat = Mat4::Identity;
@@ -24,6 +25,10 @@ namespace  ColdTable
 
 		void OnKeyDown(int key) override;
 		void OnMouseMove(Vec2 delta) override;
+
+	private:
+		ConstantBufferPtr _cameraBuffer;
+		friend class GraphicsEngine;
 	};
 }
 

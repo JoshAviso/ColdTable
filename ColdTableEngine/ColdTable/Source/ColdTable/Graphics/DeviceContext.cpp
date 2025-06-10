@@ -4,6 +4,9 @@
 #include "IndexBuffer.h"
 #include "SwapChain.h"
 #include "ColdTable/Utility/ComputeShader.h"
+#include <ColdTable/Resource/Texture/Texture.h>
+
+#include "ColdTable/Resource/Material/Material.h"
 
 ColdTable::DeviceContext::DeviceContext(const GraphicsResourceDesc& desc): GraphicsResource(desc)
 {
@@ -36,6 +39,14 @@ void ColdTable::DeviceContext::SetViewportSize(Rect size)
 	_context->RSSetViewports(1, &viewport);
 }
 
+void ColdTable::DeviceContext::BindTexture(TexturePtr texture)
+{
+	if (texture->_resourceView == nullptr) return;
+
+	_context->VSSetShaderResources(0, 1, &texture->_resourceView);
+	_context->PSSetShaderResources(0, 1, &texture->_resourceView);
+}
+
 void ColdTable::DeviceContext::BindVertexBuffer(VertexBufferPtr vertexBuffer)
 {
 	UINT stride = vertexBuffer->_vertexSize;
@@ -55,11 +66,11 @@ void ColdTable::DeviceContext::UseShader(ShaderPtr shader)
 	_context->PSSetShader(shader->_pixelShader, nullptr, 0);
 }
 
-void ColdTable::DeviceContext::BindConstantBuffer(ConstantBufferPtr constantBuffer)
+void ColdTable::DeviceContext::BindConstantBuffer(ConstantBufferPtr constantBuffer, UINT bufferSlot)
 {
-	_context->VSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
-	_context->PSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
-	_context->CSSetConstantBuffers(0, 1, &constantBuffer->_buffer);
+	_context->VSSetConstantBuffers(bufferSlot, 1, &constantBuffer->_buffer);
+	_context->PSSetConstantBuffers(bufferSlot, 1, &constantBuffer->_buffer);
+	_context->CSSetConstantBuffers(bufferSlot, 1, &constantBuffer->_buffer);
 }
 
 void ColdTable::DeviceContext::BindComputeShader(ComputeShaderPtr computeShader)
@@ -77,7 +88,9 @@ void ColdTable::DeviceContext::DispatchComputeShader(UINT xThreadGroups, UINT yT
 void ColdTable::DeviceContext::Draw(RenderablePtr renderable)
 {
 
-	UseShader(renderable->_shader);
+	UseShader(renderable->_material->_shader);
+	BindTexture(renderable->_material->_textures.at(0));
+
 	BindVertexBuffer(renderable->_vertexBuffer);
 
 	if (renderable->_indexBuffer != nullptr)

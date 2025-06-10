@@ -42,7 +42,7 @@ ColdTable::Quaternion ColdTable::Quaternion::operator*(const Quaternion& q) cons
 	);
 }
 
-ColdTable::Vec3 ColdTable::Quaternion::rotate(const Vec3& vec)
+ColdTable::Vec3 ColdTable::Quaternion::rotate(const Vec3& vec) const
 {
 	Quaternion res = *this * vec * this->conjugate();
 	return { res.x, res.y, res.z };
@@ -80,5 +80,11 @@ ColdTable::Mat4 ColdTable::Quaternion::asMat() const
 ColdTable::Quaternion ColdTable::Quaternion::conjugate() const
 {
 	return Vec4(-x, -y, -z, w);
+}
+
+ColdTable::Vec3 ColdTable::Quaternion::forward() const
+{
+	Vec3 vec = { 0.0, 0.0, 1.0 };
+	return this->rotate(vec);
 }
 

@@ -3,15 +3,33 @@
 #include <ColdTable/Core/Base.h>
 #include <ColdTable/Core/Common.h>
 
+#include "ColdTable/Lighting/DirectionalLight.h"
+#include "ColdTable/Lighting/PointLight.h"
+#include "ColdTable/Lighting/SpotLight.h"
+
 namespace ColdTable
 {
 	__declspec(align(16))
-		struct ConstantBufferContent
+	struct LightConstantBufferContent
 	{
-		Mat4 m_world;
+		DirectionalLightContent directionalLight[2];
+		PointLightContent pointlight;
+		SpotLightContent spotlight;
+	};
+
+	__declspec(align(16))
+	struct CameraBufferContent
+	{
 		Mat4 m_view;
 		Mat4 m_projection;
-		unsigned int m_time;
+		Vec4 m_cameraPos;
+	};
+
+	__declspec(align(16))
+	struct PerObjectBufferContent
+	{
+		Mat4 transformMat;
+		Vec3 materialTint;
 	};
 
 	class ConstantBuffer : public Base
@@ -31,5 +49,6 @@ namespace ColdTable
 	private:
 		friend class DeviceContext;
 		friend class GraphicsEngine;
+		friend class Material;
 	};
 }

@@ -41,6 +41,45 @@ void ColdTable::GraphicsEngine::UnregisterRenderable(RenderablePtr renderable)
 		_renderables.erase(index);
 }
 
+void ColdTable::GraphicsEngine::RegisterLight(const DirectionalLightPtr& light)
+{
+	_directionalLights.push_back(light);
+}
+
+void ColdTable::GraphicsEngine::UnregisterLight(const DirectionalLightPtr& light)
+{
+	std::vector<DirectionalLightPtr>::iterator index{};
+	for (auto itr = _directionalLights.begin(); itr != _directionalLights.end(); ++itr)
+	{
+		if (*itr == light)
+		{
+			index = itr;
+			break;
+		}
+	}
+
+	if (index != _directionalLights.end())
+		_directionalLights.erase(index);
+}
+
+void ColdTable::GraphicsEngine::RegisterLight(const SpotLightPtr& light)
+{
+	_spotLights.push_back(light);
+}
+
+void ColdTable::GraphicsEngine::UnregisterLight(const SpotLightPtr& light)
+{
+}
+
+void ColdTable::GraphicsEngine::RegisterLight(const PointLightPtr& light)
+{
+	_pointLights.push_back(light);
+}
+
+void ColdTable::GraphicsEngine::UnregisterLight(const PointLightPtr& light)
+{
+}
+
 void ColdTable::GraphicsEngine::RegisterComputeShader(ComputeShaderPtr computeShader)
 {
 	_deviceContext->BindComputeShader(computeShader);
@@ -51,31 +90,64 @@ ColdTable::GraphicsDevicePtr ColdTable::GraphicsEngine::GetGraphicsDevice() noex
 	return _graphicsDevice;
 }
 
-
+/*
 void ColdTable::GraphicsEngine::UpdateConstantBuffer(const ConstantBufferPtr& constantBuffer, ConstantBufferContent content)
 {
 	constantBuffer->Update(&*_deviceContext, &content);
-	_deviceContext->BindConstantBuffer(constantBuffer);
+	_deviceContext->BindConstantBuffer(constantBuffer, 0);
 }
+*/
 
-void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr constantBuffer, Rect viewportSize)
+void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr lightBuffer, Rect viewportSize)
 {
 	auto& context = *_deviceContext;
 	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});
-
 	context.SetViewportSize(viewportSize);
-	
-	
+
+	for (auto dirLight : _directionalLights)
+	{
+		dirLight->Update();
+	}
+
+	_spotLights[0]->position = camera->localPosition;
+	_spotLights[0]->direction = camera->localRotation.forward();
+
+	LightConstantBufferContent lightBufferContent{
+		{
+		{_directionalLights[0]->data, _directionalLights[0]->direction},
+		{_directionalLights[1]->data, _directionalLights[1]->direction}
+		},
+		{_pointLights[0]->data, _pointLights[0]->position},
+		SpotLightContent{
+			_spotLights[0]->data,
+			_spotLights[0]->position,
+			_spotLights[0]->direction,
+			_spotLights[0]->innerCutoff,
+			_spotLights[0]->outerCutoff
+		},
+	};
+	lightBuffer->Update(&context, &lightBufferContent);
+	_deviceContext->BindConstantBuffer(lightBuffer, 0);
+
+	CameraBufferContent camBuffer{
+		camera->viewMatrix(),
+		camera->projectionMat,
+		camera->localPosition
+	};
+	camera->_cameraBuffer->Update(&context, &camBuffer);
+	_deviceContext->BindConstantBuffer(camera->_cameraBuffer, 1);
+
 	for (auto renderable : _renderables)
 	{
 		renderable->Update(EngineTime::GetDeltaTime());
 
-		UpdateConstantBuffer(constantBuffer, {
+		PerObjectBufferContent objectBuffer{
 			renderable->transformMat(),
-			camera->viewMatrix(),
-			camera->projectionMat,
-			0
-		});
+			renderable->_material->tint
+		};
+
+		renderable->_material->SetData(&objectBuffer, sizeof(PerObjectBufferContent));
+		_deviceContext->BindConstantBuffer(renderable->_material->_constantBuffer, 2);
 		context.Draw(renderable);
 	}
 
@@ -140,6 +212,19 @@ void ColdTable::GraphicsEngine::BindComputeShader(ComputeShaderPtr computeShader
 
 	_graphicsDevice->_d3dContext->CSSetShaderResources(0, 1, &computeShader->resourceView);
 	_graphicsDevice->_d3dContext->CSSetUnorderedAccessViews(0, 1, &computeShader->unorderedAccessView, nullptr);
+}
+
+void ColdTable::GraphicsEngine::BindMaterial(MaterialPtr material)
+{
+	
+}
+
+ColdTable::MaterialPtr ColdTable::GraphicsEngine::CreateMaterial(ShaderPtr shader)
+{
+	MaterialDesc desc{
+		shader, CreateConstantBuffer(), _deviceContext
+	};
+	return std::make_shared<Material>(desc);
 }
 
 void ColdTable::GraphicsEngine::UseShader(const ShaderPtr& shader)

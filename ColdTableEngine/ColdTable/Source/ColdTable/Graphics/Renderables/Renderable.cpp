@@ -4,7 +4,9 @@
 #include <ColdTable/Graphics/EngineShader.h>
 #include <ColdTable/Graphics/VertexBuffer.h>
 
-ColdTable::Renderable::Renderable(const RenderableDesc& desc) : _shader(desc.shader), _drawMode(desc.drawMode)
+#include "ColdTable/Resource/Material/Material.h"
+
+ColdTable::Renderable::Renderable(const RenderableDesc& desc) : _shader(0), _drawMode(desc.drawMode), _material(desc.material)
 {
 	VertexBufferDesc bufferDesc{ {} };
 	_vertexBuffer = std::make_shared<VertexBuffer>(bufferDesc);
@@ -22,7 +24,7 @@ void ColdTable::Renderable::LoadVertices(const Vertex* vertexList, UINT listSize
 	if (_indexBuffer) _indexBuffer = nullptr;
 
 	vertexListRef = vertexList;
-	_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _shader);
+	_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _material->_shader);
 }
 
 void ColdTable::Renderable::LoadVerticesInIndex(const Vertex* vertexList, UINT listSize, const IndexBufferPtr& indexBuffer)
@@ -30,7 +32,7 @@ void ColdTable::Renderable::LoadVerticesInIndex(const Vertex* vertexList, UINT l
 	_indexBuffer = indexBuffer;
 
 	vertexListRef = vertexList;
-	_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _shader);
+	_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _material->_shader);
 }
 
 void ColdTable::Renderable::Update(const d64 deltaTime)
@@ -41,6 +43,11 @@ void ColdTable::Renderable::Update(const d64 deltaTime)
 void ColdTable::Renderable::SetShader(ShaderPtr shader)
 {
 	_shader = shader;
+}
+
+void ColdTable::Renderable::SetTexture(TexturePtr texture)
+{
+	_texture = texture;
 }
 
 ColdTable::Mat4 ColdTable::Renderable::transformMat() const
@@ -87,10 +94,14 @@ void ColdTable::Renderable::OnMouseMove(Vec2 delta)
 
 void ColdTable::Renderable::OnLeftMouseDown(Vec2 pos)
 {
+	/*
 	localScale += {0.1f, 0.1f, 0.1f};
+	*/
 }
 
 void ColdTable::Renderable::OnRightMouseUp(Vec2 pos)
 {
+	/*
 	localScale -= {0.1f, 0.1f, 0.1f};
+	*/
 }

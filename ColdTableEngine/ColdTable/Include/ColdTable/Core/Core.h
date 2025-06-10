@@ -58,4 +58,25 @@ namespace ColdTable
 
 	class Camera;
 	using CameraPtr = std::shared_ptr<Camera>;
+
+	class Resource;
+	using ResourcePtr = std::shared_ptr<Resource>;
+
+	class Texture;
+	using TexturePtr = std::shared_ptr<Texture>;
+
+	class Material;
+	using MaterialPtr = std::shared_ptr<Material>;
+
+	class LightSource;
+	using LightSourcePtr = std::shared_ptr<LightSource>;
+
+	class DirectionalLight;
+	using DirectionalLightPtr = std::shared_ptr<DirectionalLight>;
+
+	class PointLight;
+	using PointLightPtr = std::shared_ptr<PointLight>;
+
+	class SpotLight;
+	using SpotLightPtr = std::shared_ptr<SpotLight>;
 }

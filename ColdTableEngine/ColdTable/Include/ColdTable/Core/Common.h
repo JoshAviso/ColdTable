@@ -47,17 +47,9 @@ namespace ColdTable
 		BaseDesc base;
 	};
 
-	struct RenderableDesc
-	{
-		Vertex* vertexList;
-		UINT vertexCount;
-		EGeometryDrawmode drawMode;
-		ShaderPtr shader;
-	};
-
 	struct QuadDesc
 	{
-		ShaderPtr shader;
+		MaterialPtr material;
 		Vertex vert1;
 		Vertex vert2;
 		Vertex vert3;
