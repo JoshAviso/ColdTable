@@ -50,17 +50,18 @@ void ColdTable::GameLoop::onInternalStartup()
 	woodBox->SetCullMode(CULL_MODE_BACK);
 	woodBox->AddTexture(woodTex);
 
-	/*QuadDesc quad1 = {
-		tempShader,
-		{{-0.5, 0.5, 0.0}, {0.8, 0.8, 0.0}, { 0.8, 0.8, 0.0 }},
-		{{0.5, 0.5, 0.0}, {0.0, 0.0, 0.8 }, { 0.8, 0.8, 0.8 }},
-		{{0.5, -0.5, 0.0}, {0.8, 0.0, 0.0 }, { 0.0, 0.0, 0.8 }},
-		{{-0.5, -0.5, 0.0}, {0.0, 0.8, 0.0 }, { 0.0, 0.0, 0.0 }},
+	QuadDesc quad1 = {
+		woodBox,
+		{{-0.5, 0.0, 0.5}, {0, 0}, { 0.0, 1, 0.0 }},
+		{{0.5, 0.0, 0.5}, {1,0 }, { 0, 1, 0 }},
+		{{0.5, 0.0, -0.5}, {0, 1 }, { 0, 1, 0}},
+		{{-0.5, 0.0, -0.5}, {1, 1}, { 0, 1, 0}},
 	};
 	tempQ1 = std::make_shared<Quad>(quad1);
-	_graphicsEngine->RegisterRenderable(tempQ1);
+	//_graphicsEngine->RegisterRenderable(tempQ1);
+	tempQ1->localScale = 10;
 
-	tempQ1->localRotation.rotate({0.0f, 1.0f, 0.0f}, 60.0f);*/
+	//tempQ1->localRotation.rotate({0.0f, 1.0f, 0.0f}, 60.0f);
 
 	Vec3 positionList[] = {
 		// FRONT FACE
@@ -151,6 +152,7 @@ void ColdTable::GameLoop::onInternalStartup()
 	cube->LoadVerticesInIndex(vertlist, ARRAYSIZE(vertlist), indexBuff);
 	_graphicsEngine->RegisterRenderable(cube);
 	cube->localPosition = {1, 0, 0};
+	cube->localScale = { 10, 0.01, 10 };
 
 	RenderablePtr cube2 = std::make_shared<Renderable>(cubeDesc);
 	cube2->LoadVerticesInIndex(vertlist, ARRAYSIZE(vertlist), indexBuff);

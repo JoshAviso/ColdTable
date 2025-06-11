@@ -18,6 +18,8 @@ namespace ColdTable {
 	private:
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _swapChain;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _renderTargetView;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> _frameBuffer;
+		Microsoft::WRL::ComPtr <ID3D11DepthStencilView> _depthStencilView;
 
 	private:
 		friend class DeviceContext;

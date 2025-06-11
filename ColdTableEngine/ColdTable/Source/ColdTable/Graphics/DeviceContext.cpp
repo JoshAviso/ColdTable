@@ -24,7 +24,8 @@ void ColdTable::DeviceContext::ClearAndSetBackBuffer(const SwapChain& swapChain,
 	f32 colorArray[] = { (f32)color.x, (f32)color.y, (f32)color.z, (f32)color.w };
 	auto renderTargetView = swapChain._renderTargetView.Get();
 	_context->ClearRenderTargetView(renderTargetView, colorArray);
-	_context->OMSetRenderTargets(1, &renderTargetView, nullptr);
+	_context->ClearDepthStencilView(swapChain._depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
+	_context->OMSetRenderTargets(1, &renderTargetView, swapChain._depthStencilView.Get());
 }
 
 void ColdTable::DeviceContext::SetViewportSize(Rect size)
