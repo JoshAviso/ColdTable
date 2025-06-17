@@ -147,6 +147,27 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_impl_dx11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_impl_win32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Core\Base.h">
@@ -297,6 +318,30 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_impl_dx11.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_impl_win32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imstb_rectpack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imstb_textedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

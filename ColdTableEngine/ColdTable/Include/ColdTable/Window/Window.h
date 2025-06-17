@@ -16,6 +16,8 @@ namespace ColdTable
 	protected:
 		void* _windowHandle;
 		Rect _size;
+
+		friend class GameLoop;
 	};
 } 
 

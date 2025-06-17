@@ -9,6 +9,11 @@
 #include "ColdTable/Resource/Mesh/MeshManager.h"
 #include "ColdTable/Resource/Texture/TextureManager.h"
 
+#include "DearImGUI/imgui.h"
+#include "DearImGUI/imgui_impl_dx11.h"
+#include "DearImGUI/imgui_impl_win32.h"
+#include "DearImGUI/imgui.h"
+
 namespace ColdTable
 {
 	class GameLoop: public Base

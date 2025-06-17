@@ -13,6 +13,8 @@ namespace ColdTable{
 
 	private:
 		SwapChainPtr _swapChain{};
+
+		friend class GameLoop;
 	};
 }
 

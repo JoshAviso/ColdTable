@@ -164,6 +164,13 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec4.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec2.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\PointLight.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_demo.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_draw.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_impl_dx11.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_impl_win32.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_tables.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_widgets.cpp" />
     <ClCompile Include="ColdTableEngine\Game\main.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Window\Win32\Win32Window.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Game\GameLoop.cpp" />
@@ -249,6 +256,14 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\DirectionalLight.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\MeshManager.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\Mesh.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imconfig.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_impl_dx11.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_impl_win32.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_internal.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imstb_rectpack.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imstb_textedit.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imstb_truetype.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

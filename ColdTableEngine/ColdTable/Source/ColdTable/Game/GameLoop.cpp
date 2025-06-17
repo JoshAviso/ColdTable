@@ -248,9 +248,37 @@ void ColdTable::GameLoop::onInternalStartup()
 			tempWindowSize.width / tempWindowSize.height,
 			0.1f, 100.0f
 		);
+
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui_ImplWin32_Init(_display->_windowHandle);
+	ImGui_ImplDX11_Init(_graphicsEngine->_graphicsDevice->_d3dDevice.Get(), _graphicsEngine->_deviceContext->_context.Get());
+	ImGui::StyleColorsDark();
 }
 
 void ColdTable::GameLoop::onInternalCallback()
 {
 	_graphicsEngine->Render(tempCam, _display->GetSwapChain(), tempLightBuffer, tempWindowSize);
+	
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	bool myToolActive;
+	ImGui::Begin("Hello World", &myToolActive, ImGuiWindowFlags_MenuBar);
+	
+	if (ImGui::BeginMenuBar()) {
+
+		if (ImGui::BeginMenu("File")) {
+
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMenuBar();
+	}
+	
+	ImGui::End();
+
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }

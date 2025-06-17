@@ -47,6 +47,7 @@ namespace ColdTable {
 		friend class ConstantBuffer;
 		friend class GraphicsEngine;
 		friend class ComputeShader;
+		friend class GameLoop;
 	};
 }
 

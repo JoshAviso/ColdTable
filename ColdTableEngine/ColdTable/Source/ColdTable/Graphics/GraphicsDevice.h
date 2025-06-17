@@ -51,6 +51,7 @@ namespace ColdTable
 		friend class GraphicsEngine;
 		friend class IndexBuffer;
 		friend class Texture;
+		friend class GameLoop;
 	};
 }
 
