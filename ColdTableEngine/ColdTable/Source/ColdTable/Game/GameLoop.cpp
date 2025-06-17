@@ -258,27 +258,7 @@ void ColdTable::GameLoop::onInternalStartup()
 
 void ColdTable::GameLoop::onInternalCallback()
 {
+
 	_graphicsEngine->Render(tempCam, _display->GetSwapChain(), tempLightBuffer, tempWindowSize);
-	
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
 
-	bool myToolActive;
-	ImGui::Begin("Hello World", &myToolActive, ImGuiWindowFlags_MenuBar);
-	
-	if (ImGui::BeginMenuBar()) {
-
-		if (ImGui::BeginMenu("File")) {
-
-			ImGui::EndMenu();
-		}
-
-		ImGui::EndMenuBar();
-	}
-	
-	ImGui::End();
-
-	ImGui::Render();
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }

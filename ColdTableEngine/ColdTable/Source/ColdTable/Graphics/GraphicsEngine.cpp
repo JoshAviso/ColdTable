@@ -8,6 +8,9 @@
 #include "Camera.h"
 #include "ColdTable/Math/Vertex.h"
 #include "ColdTable/Resource/Mesh/Mesh.h"
+#include "DearImGUI/imgui.h"
+#include "DearImGUI/imgui_impl_dx11.h"
+#include "DearImGUI/imgui_impl_win32.h"
 
 ColdTable::GraphicsEngine::GraphicsEngine(const GraphicsEngineDesc& desc): Base(desc.base)
 {
@@ -122,6 +125,10 @@ void ColdTable::GraphicsEngine::UpdateConstantBuffer(const ConstantBufferPtr& co
 
 void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr lightBuffer, Rect viewportSize)
 {
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
 	auto& context = *_deviceContext;
 	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});
 	context.SetViewportSize(viewportSize);
@@ -189,6 +196,28 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 
 	auto& device = *_graphicsDevice;
 	device.ExecuteCommandList(context);
+
+	ImGui::Render();
+
+	ImGui::ShowDemoWindow();
+	/*
+	bool myToolActive;
+	ImGui::Begin("Hello World", &myToolActive, ImGuiWindowFlags_MenuBar);
+
+	if (ImGui::BeginMenuBar()) {
+
+		if (ImGui::BeginMenu("File")) {
+
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMenuBar();
+	}
+
+	ImGui::End();
+	*/
+
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	swapChain.Present();
 }
