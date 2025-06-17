@@ -28,6 +28,9 @@ namespace  ColdTable
 
 	private:
 		ConstantBufferPtr _cameraBuffer;
+		float yRotation = 0;
+		float xRotation = 0;
+
 		friend class GraphicsEngine;
 	};
 }

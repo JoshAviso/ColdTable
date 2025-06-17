@@ -34,6 +34,12 @@ void ColdTable::Camera::OnKeyDown(int key)
 
 void ColdTable::Camera::OnMouseMove(Vec2 delta)
 {
-	localRotation.rotateLocal( {-1.0f, 0.0f, 0.0f}, delta.y );
-	localRotation.rotate( {0.0f, 1.0f, 0.0f}, delta.x );
+	if (xRotation + delta.y <= 90 && xRotation + delta.y >= -90)
+		xRotation += delta.y;
+
+	yRotation += delta.x;
+
+	localRotation = Quaternion::Identity;
+	localRotation.rotateLocal( {-1.0f, 0.0f, 0.0f}, xRotation );
+	localRotation.rotate( {0.0f, 1.0f, 0.0f}, yRotation );
 }
