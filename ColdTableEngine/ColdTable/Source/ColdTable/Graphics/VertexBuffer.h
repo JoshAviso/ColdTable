@@ -26,6 +26,7 @@ namespace ColdTable
 	private:
 		friend class DeviceContext;
 		friend class Renderable;
+		friend class Mesh;
 	};
 }
  

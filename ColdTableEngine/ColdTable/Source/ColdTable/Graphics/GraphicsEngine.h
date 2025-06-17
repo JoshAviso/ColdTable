@@ -18,6 +18,9 @@ namespace ColdTable
 		void RegisterRenderable(RenderablePtr renderable);
 		void UnregisterRenderable(RenderablePtr renderable);
 
+		void RegisterMesh(MeshPtr mesh);
+		void UnregisterMesh(MeshPtr mesh);
+
 		void RegisterLight(const DirectionalLightPtr& light);
 		void UnregisterLight(const DirectionalLightPtr& light);
 
@@ -55,6 +58,7 @@ namespace ColdTable
 		DeviceContextPtr _deviceContext{};
 
 		std::vector<RenderablePtr> _renderables{};
+		std::vector<MeshPtr> _meshes{};
 		std::vector<DirectionalLightPtr> _directionalLights{};
 		std::vector<SpotLightPtr> _spotLights{};
 		std::vector<PointLightPtr> _pointLights{};

@@ -112,6 +112,15 @@ void ColdTable::DeviceContext::Draw(RenderablePtr renderable)
 	}
 }
 
+void ColdTable::DeviceContext::Draw(MeshPtr mesh)
+{
+	UseShader(mesh->_material->_shader);
+	BindTexture(mesh->_material->_textures.at(0));
+	BindVertexBuffer(mesh->_vertexBuffer);
+	BindIndexBuffer(mesh->_indexBuffer);
+	DrawIndexedTriangleList(mesh->_indexBuffer->GetListSize(), 0, 0);
+}
+
 void ColdTable::DeviceContext::DrawTriangleList(UINT vertexCount, UINT startVertexIndex)
 {
 	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

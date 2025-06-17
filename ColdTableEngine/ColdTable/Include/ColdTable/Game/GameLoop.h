@@ -6,6 +6,7 @@
 
 #include "ColdTable/Graphics/Renderables/Quad.h"
 #include "ColdTable/Input/IInputListener.h"
+#include "ColdTable/Resource/Mesh/MeshManager.h"
 #include "ColdTable/Resource/Texture/TextureManager.h"
 
 namespace ColdTable
@@ -34,6 +35,7 @@ namespace ColdTable
 		bool _isRunning{ true };
 
 		TextureManager* _textureManager{};
+		MeshManager* _meshManager{};
 
 	private:
 		QuadPtr tempQ1{};

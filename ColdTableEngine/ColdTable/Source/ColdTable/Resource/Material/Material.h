@@ -50,6 +50,8 @@ private:
 	friend class DeviceContext;
 	friend class GraphicsEngine;
 	friend class Renderable;
+	friend class Mesh;
+
 };
 }
 

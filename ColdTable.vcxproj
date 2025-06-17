@@ -78,14 +78,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>Bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;Libs\DirectXTex\Include;$(IncludePath)</IncludePath>
+    <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;Libs\DirectXTex\Include;Libs\tinyobjloader\include;$(IncludePath)</IncludePath>
     <LibraryPath>Libs\DirectXTex\bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;Libs\DirectXTex\Include;$(IncludePath)</IncludePath>
+    <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;Libs\DirectXTex\Include;Libs\tinyobjloader\include;$(IncludePath)</IncludePath>
     <LibraryPath>Libs\DirectXTex\bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -195,6 +195,8 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Material\Material.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\LightSource.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\DirectionalLight.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\MeshManager.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Quaternion.h" />
@@ -245,6 +247,8 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Material\Material.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\LightSource.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\DirectionalLight.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\MeshManager.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\Mesh.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

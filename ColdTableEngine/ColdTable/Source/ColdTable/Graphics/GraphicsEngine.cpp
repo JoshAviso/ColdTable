@@ -7,6 +7,7 @@
 
 #include "Camera.h"
 #include "ColdTable/Math/Vertex.h"
+#include "ColdTable/Resource/Mesh/Mesh.h"
 
 ColdTable::GraphicsEngine::GraphicsEngine(const GraphicsEngineDesc& desc): Base(desc.base)
 {
@@ -39,6 +40,27 @@ void ColdTable::GraphicsEngine::UnregisterRenderable(RenderablePtr renderable)
 
 	if (index != _renderables.end())
 		_renderables.erase(index);
+}
+
+void ColdTable::GraphicsEngine::RegisterMesh(MeshPtr mesh)
+{
+	_meshes.push_back(mesh);
+}
+
+void ColdTable::GraphicsEngine::UnregisterMesh(MeshPtr mesh)
+{
+	std::vector<MeshPtr>::iterator index{};
+	for (auto itr = _meshes.begin(); itr != _meshes.end(); ++itr)
+	{
+		if (*itr == mesh)
+		{
+			index = itr;
+			break;
+		}
+	}
+
+	if (index != _meshes.end())
+		_meshes.erase(index);
 }
 
 void ColdTable::GraphicsEngine::RegisterLight(const DirectionalLightPtr& light)
@@ -137,6 +159,7 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 	camera->_cameraBuffer->Update(&context, &camBuffer);
 	_deviceContext->BindConstantBuffer(camera->_cameraBuffer, 1);
 
+	// Draw Renderables
 	for (auto renderable : _renderables)
 	{
 		renderable->Update(EngineTime::GetDeltaTime());
@@ -149,6 +172,19 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 		renderable->_material->SetData(&objectBuffer, sizeof(PerObjectBufferContent));
 		_deviceContext->BindConstantBuffer(renderable->_material->_constantBuffer, 2);
 		context.Draw(renderable);
+	}
+
+	// Draw Meshes
+	for (auto mesh : _meshes)
+	{
+		PerObjectBufferContent objectBuffer{
+			Mat4::Identity,
+			mesh->_material->tint
+		};
+
+		mesh->_material->SetData(&objectBuffer, sizeof(PerObjectBufferContent));
+		_deviceContext->BindConstantBuffer(mesh->_material->_constantBuffer, 2);
+		context.Draw(mesh);
 	}
 
 	auto& device = *_graphicsDevice;

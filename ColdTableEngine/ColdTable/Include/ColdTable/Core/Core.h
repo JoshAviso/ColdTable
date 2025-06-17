@@ -79,4 +79,7 @@ namespace ColdTable
 
 	class SpotLight;
 	using SpotLightPtr = std::shared_ptr<SpotLight>;
+
+	class Mesh;
+	using MeshPtr = std::shared_ptr<Mesh>;
 }

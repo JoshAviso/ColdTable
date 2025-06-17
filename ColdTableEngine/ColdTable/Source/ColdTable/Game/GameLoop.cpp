@@ -26,6 +26,7 @@ ColdTable::GameLoop::GameLoop(const GameDesc& desc):
 	_graphicsEngine->SetViewportSize(desc.windowSize);
 
 	_textureManager = new TextureManager();
+	_meshManager = new MeshManager();
 
 	ColdTableLogInfo("Game initialized.")
 }
@@ -33,6 +34,7 @@ ColdTable::GameLoop::GameLoop(const GameDesc& desc):
 ColdTable::GameLoop::~GameLoop()
 {
 	free(_textureManager);
+	free(_meshManager);
 	ColdTableLogInfo("Game is shutting down.");
 }
 
@@ -41,15 +43,16 @@ void ColdTable::GameLoop::onInternalStartup()
 	EngineTime::Initialize();
 	InputSystem::Initialize();
 
-	TexturePtr woodTex =
-		_textureManager->CreateTextureFromFile(_graphicsEngine->_graphicsDevice, L"Assets\\Textures\\wood.jpg");
-
 	tempShader = _graphicsEngine->CreateShader(L"VertexShader.hlsl", L"PixelShader.hlsl");
+
+	TexturePtr woodTex =
+		_textureManager->CreateTextureFromFile(_graphicsEngine->_graphicsDevice, L"Assets\\Textures\\brick.png");
 
 	MaterialPtr woodBox = _graphicsEngine->CreateMaterial(tempShader);
 	woodBox->SetCullMode(CULL_MODE_BACK);
 	woodBox->AddTexture(woodTex);
 
+	/*
 	QuadDesc quad1 = {
 		woodBox,
 		{{-0.5, 0.0, 0.5}, {0, 0}, { 0.0, 1, 0.0 }},
@@ -168,6 +171,10 @@ void ColdTable::GameLoop::onInternalStartup()
 	cube4->LoadVerticesInIndex(vertlist, ARRAYSIZE(vertlist), indexBuff);
 	_graphicsEngine->RegisterRenderable(cube4);
 	cube4->localPosition = { 0, 0, -2 };
+	*/
+
+	MeshPtr teapot = _meshManager->CreateMeshFromFile(_graphicsEngine->_graphicsDevice, L"Assets\\Meshes\\teapot.obj", woodBox);
+	_graphicsEngine->RegisterMesh(teapot);
 
 	LightSourceDesc dirLightDesc{
 	};

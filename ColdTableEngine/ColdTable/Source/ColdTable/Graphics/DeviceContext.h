@@ -9,6 +9,7 @@
 #include <ColdTable/Graphics/VertexBuffer.h>
 #include <ColdTable/Graphics/ConstantBuffer.h>
 #include <ColdTable/Graphics/Renderables/Renderable.h>
+#include <ColdTable/Resource/Mesh/Mesh.h>
 
 
 namespace ColdTable {
@@ -28,6 +29,7 @@ namespace ColdTable {
 
 	public:
 		void Draw(RenderablePtr renderable);
+		void Draw(MeshPtr mesh);
 
 	private:
 		void BindVertexBuffer(VertexBufferPtr vertexBuffer);
