@@ -25,11 +25,14 @@ namespace  ColdTable
 
 		void OnKeyDown(int key) override;
 		void OnMouseMove(Vec2 delta) override;
+		void OnRightMouseDown(Vec2 pos) override;
+		void OnRightMouseUp(Vec2 pos) override;
 
 	private:
 		ConstantBufferPtr _cameraBuffer;
 		float yRotation = 0;
 		float xRotation = 0;
+		bool _isControlling = false;
 
 		friend class GraphicsEngine;
 	};

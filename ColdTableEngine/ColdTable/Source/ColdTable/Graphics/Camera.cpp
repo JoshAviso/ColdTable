@@ -18,6 +18,8 @@ ColdTable::Mat4 ColdTable::Camera::viewMatrix()
 
 void ColdTable::Camera::OnKeyDown(int key)
 {
+	if (!_isControlling) return;
+
 	if (key == 'W')
 		localPosition += localRotation.rotate({0, 0, 0.1});
 	if (key == 'S')
@@ -34,6 +36,8 @@ void ColdTable::Camera::OnKeyDown(int key)
 
 void ColdTable::Camera::OnMouseMove(Vec2 delta)
 {
+	if (!_isControlling) return;
+
 	if (xRotation + delta.y <= 90 && xRotation + delta.y >= -90)
 		xRotation += delta.y;
 
@@ -42,4 +46,14 @@ void ColdTable::Camera::OnMouseMove(Vec2 delta)
 	localRotation = Quaternion::Identity;
 	localRotation.rotateLocal( {-1.0f, 0.0f, 0.0f}, xRotation );
 	localRotation.rotate( {0.0f, 1.0f, 0.0f}, yRotation );
+}
+
+void ColdTable::Camera::OnRightMouseDown(Vec2 pos)
+{
+	_isControlling = true;
+}
+
+void ColdTable::Camera::OnRightMouseUp(Vec2 pos)
+{
+	_isControlling = false;
 }

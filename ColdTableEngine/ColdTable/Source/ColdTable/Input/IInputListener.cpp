@@ -1,6 +1,5 @@
 #include <ColdTable/Input/IInputListener.h>
 
-#include "InputSystem.h"
 
 ColdTable::IInputListener::IInputListener()
 {

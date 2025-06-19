@@ -19,6 +19,8 @@ ColdTable::GameLoop::GameLoop(const GameDesc& desc):
 	tempWindowSize(desc.windowSize)
 {
 	Logger::Initialize(desc.logLevel);
+	EngineTime::Initialize();
+	InputSystem::Initialize();
 
 	_graphicsEngine = std::make_unique<GraphicsEngine>(GraphicsEngineDesc{desc.base});
 	_display = std::make_unique<Display>(DisplayDesc{desc.base,{desc.base, desc.windowSize}, _graphicsEngine->GetGraphicsDevice()});
@@ -40,9 +42,6 @@ ColdTable::GameLoop::~GameLoop()
 
 void ColdTable::GameLoop::onInternalStartup()
 {
-	EngineTime::Initialize();
-	InputSystem::Initialize();
-
 	tempShader = _graphicsEngine->CreateShader(L"VertexShader.hlsl", L"PixelShader.hlsl");
 
 	TexturePtr woodTex =
@@ -249,11 +248,15 @@ void ColdTable::GameLoop::onInternalStartup()
 			0.1f, 100.0f
 		);
 
+	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui_ImplWin32_Init(_display->_windowHandle);
 	ImGui_ImplDX11_Init(_graphicsEngine->_graphicsDevice->_d3dDevice.Get(), _graphicsEngine->_deviceContext->_context.Get());
 	ImGui::StyleColorsDark();
+
+	ImGuiStyle* style = &ImGui::GetStyle();
+	style->Colors[ImGuiCol_WindowBg] = ImVec4(0, 0, 0, 1.f);
 }
 
 void ColdTable::GameLoop::onInternalCallback()

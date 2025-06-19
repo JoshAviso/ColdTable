@@ -35,6 +35,11 @@ void ColdTable::InputSystem::SetWindowFocus(bool value)
 	_windowInFocus = value;
 }
 
+void ColdTable::InputSystem::CloseGameCallback()
+{
+	GameClosing = true;
+}
+
 void ColdTable::InputSystem::Update()
 {
 	if (!_windowInFocus) return;

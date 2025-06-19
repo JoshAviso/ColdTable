@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "ColdTable/Math/Vertex.h"
 #include "ColdTable/Resource/Mesh/Mesh.h"
+#include "ColdTable/Utility/Utils.h"
 #include "DearImGUI/imgui.h"
 #include "DearImGUI/imgui_impl_dx11.h"
 #include "DearImGUI/imgui_impl_win32.h"
@@ -125,9 +126,30 @@ void ColdTable::GraphicsEngine::UpdateConstantBuffer(const ConstantBufferPtr& co
 
 void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr lightBuffer, Rect viewportSize)
 {
+	screensize = viewportSize;
+
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+	//ImGui::ShowDemoWindow();
+
+	ImDrawList* drawList = ImGui::GetWindowDrawList();
+	ImU32 color = IM_COL32(255, 0, 0, 255);
+	for (CircleObject& circle : _circles)
+	{
+		Vec2 normalizeCircleVec = circle.circleVec.normalize();
+		Vec2 tempCirclePos = circle.circlePos + (normalizeCircleVec * circleSpeed);
+		if (tempCirclePos.x + circleRad > viewportSize.width || tempCirclePos.x - circleRad < 0)
+			circle.circleVec.x = -circle.circleVec.x;
+		else if (tempCirclePos.y + circleRad > viewportSize.height || tempCirclePos.y - circleRad < 0)
+			circle.circleVec.y = -circle.circleVec.y;
+
+		circle.circlePos = tempCirclePos;
+		ImVec2 circlepos{ circle.circlePos.x, circle.circlePos.y};
+		drawList->AddCircleFilled(circlepos, circleRad, color);
+	}
+
+	ImGui::Render();
 
 	auto& context = *_deviceContext;
 	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});
@@ -194,12 +216,10 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 		context.Draw(mesh);
 	}
 
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	auto& device = *_graphicsDevice;
 	device.ExecuteCommandList(context);
 
-	ImGui::Render();
-
-	ImGui::ShowDemoWindow();
 	/*
 	bool myToolActive;
 	ImGui::Begin("Hello World", &myToolActive, ImGuiWindowFlags_MenuBar);
@@ -217,7 +237,6 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 	ImGui::End();
 	*/
 
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	swapChain.Present();
 }
@@ -238,6 +257,36 @@ void ColdTable::GraphicsEngine::DispatchComputeShader(ComputeShaderPtr computeSh
 void ColdTable::GraphicsEngine::AwaitComputeShaderFinish()
 {
 
+}
+
+void ColdTable::GraphicsEngine::OnKeyUp(int key)
+{
+	if (key == EKeyCode::SPACEBAR)
+	{
+		CircleObject circle{};
+		circle.circlePos = Vec2(screensize.width / 2.0f, screensize.height / 2.0f);
+		circle.circleVec.x = Utils::Random(-1.0f, 1.0f);
+		circle.circleVec.y = Utils::Random(-1.0f, 1.0f);
+
+		_circles.push_back(circle);
+	}
+	if (key == EKeyCode::BACKSPACE)
+	{
+		if (_circles.size() > 0)
+			_circles.pop_back();
+	}
+	if (key == EKeyCode::DELETE_KEY)
+	{
+		_circles.clear();
+	}
+}
+
+void ColdTable::GraphicsEngine::OnKeyDown(int key)
+{
+	if (key == EKeyCode::ESCAPE_KEY)
+	{
+		InputSystem::Instance->CloseGameCallback();
+	}
 }
 
 void ColdTable::GraphicsEngine::SetViewportSize(Rect size)

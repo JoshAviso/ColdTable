@@ -6,7 +6,7 @@ int main()
 	{
 		ColdTable::GameLoop game({
 			{},
-			{1280, 720},
+			{1024, 768},
 			ColdTable::Logger::LogLevel::Info
 		});
 

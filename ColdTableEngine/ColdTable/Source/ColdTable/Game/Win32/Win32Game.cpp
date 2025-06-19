@@ -13,6 +13,7 @@ void ColdTable::GameLoop::Run()
 	while (_isRunning)
 	{
 		InputSystem::Instance->Update();
+
 		EngineTime::LogFrameStart();
 
 		// Input reading, currently funnels to window
@@ -31,6 +32,8 @@ void ColdTable::GameLoop::Run()
 		Sleep(1);
 		EngineTime::LogFrameEnd();
 		onInternalCallback();
+		if (InputSystem::Instance->GameClosing)
+			_isRunning = false;
 	}
 }
 

@@ -6,10 +6,17 @@
 #include <ColdTable/Game/EngineTime.h>
 #include <ColdTable/Resource/Material/Material.h>
 #include <vector>
+#include <ColdTable/Input/IInputListener.h>
 
 namespace ColdTable
 {
-	class GraphicsEngine final: public Base 
+	struct CircleObject
+	{
+		Vec2 circleVec{ 1, 1 };
+		Vec2 circlePos{ 0,0 };
+	};
+
+	class GraphicsEngine final: public Base , public IInputListener
 	{
 	public:
 		explicit GraphicsEngine(const GraphicsEngineDesc& desc);
@@ -71,6 +78,16 @@ namespace ColdTable
 		bool slowingDownAnim = false;
 
 		friend class GameLoop;
+
+		std::vector<CircleObject> _circles{};
+
+		float circleSpeed = 5.0f;
+		float circleRad = 50.0f;
+
+		Rect screensize{};
+
+		void OnKeyUp(int key) override;
+		void OnKeyDown(int key) override;
 	};
 }
 

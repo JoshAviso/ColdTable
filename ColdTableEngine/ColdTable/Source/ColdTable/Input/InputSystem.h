@@ -1,10 +1,8 @@
 #pragma once
 
 #include <map>
-#include <memory>
-#include <ColdTable/Input/IInputListener.h>
-#include <ColdTable/Core/Core.h>
 #include <Windows.h>
+#include <ColdTable/Input/IInputListener.h>
 #include <ColdTable/Math/Vec2.h>
 
 namespace ColdTable
@@ -22,10 +20,13 @@ public:
 	static void Initialize();
 
 	void SetWindowFocus(bool value);
+	void CloseGameCallback();
 
 	void Update();
 	void AddListener(IInputListener* listener);
 	void RemoveListener(IInputListener* listener);
+
+	bool GameClosing = false;
 
 private:
 	std::map<IInputListener*, IInputListener*> _listeners{};

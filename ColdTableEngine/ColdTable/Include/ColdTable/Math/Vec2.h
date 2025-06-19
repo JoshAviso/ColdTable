@@ -30,6 +30,8 @@ namespace ColdTable
 		//explicit operator Vec4() const;
 
 		/* COMPONENT OPERATORS */
+		Vec2 operator = (const Vec2 vec) { this->x = vec.x; this->y = vec.y; return *this; }
+
 		bool operator == (const Vec2 vec) const { return (this->x == vec.x && this->y == vec.y); }
 		bool operator != (const Vec2 vec) const { return (this->x != vec.x || this->y != vec.y); }
 

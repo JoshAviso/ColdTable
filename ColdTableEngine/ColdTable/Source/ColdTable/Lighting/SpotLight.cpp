@@ -1,7 +1,5 @@
 #include <ColdTable/Lighting/SpotLight.h>
 
-#include "ColdTable/Math/Quaternion.h"
-
 ColdTable::SpotLight::SpotLight(const LightSourceDesc& desc): LightSource(desc)
 {
 }
