@@ -3,7 +3,7 @@ struct VS_INPUT
     float4 position : POSITION0;
     float2 texcoord : TEXCOORD0;
     float3 normal : NORMAL0;
-    //float3 color : COLOR;
+    float3 vert_color : COLOR0;
     //float3 color1 : COLOR1;
 };
 
@@ -14,7 +14,7 @@ struct VS_OUTPUT
     float3 normal : TEXCOORD1;
     float3 camera_direction : TEXCOOR2;
     float3 fragPos : TEXCOORD3;
-    //float3 color : COLOR;
+    float3 vert_color : COLOR0;
     //float3 color1 : COLOR1;
 };
 
@@ -68,6 +68,7 @@ cbuffer perObjectBuffer : register(b2)
 {
     column_major float4x4 transformMat;
     float3 materialTint;
+    bool hasTexture;
 }
 
 VS_OUTPUT vsmain( VS_INPUT input )
@@ -89,7 +90,7 @@ VS_OUTPUT vsmain( VS_INPUT input )
     
     
     output.texcoord = input.texcoord;
-    //output.color = input.color;
+    output.vert_color = input.vert_color;
     //output.color1 = input.color1;
     output.normal = input.normal;
 	return output;

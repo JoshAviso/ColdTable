@@ -30,6 +30,7 @@ namespace ColdTable
 	{
 		Mat4 transformMat;
 		Vec3 materialTint;
+		bool hasMaterial;
 	};
 
 	class ConstantBuffer : public Base

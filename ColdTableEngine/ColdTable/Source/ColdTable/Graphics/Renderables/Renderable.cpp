@@ -14,6 +14,14 @@ ColdTable::Renderable::Renderable(const RenderableDesc& desc) : _shader(0), _dra
 		LoadVertices(desc.vertexList, desc.vertexCount);
 }
 
+ColdTable::Renderable::Renderable(const RenderableDesc& desc, const ShaderPtr& shader) : _shader(shader), _drawMode(desc.drawMode), _material(desc.material)
+{
+	VertexBufferDesc bufferDesc{ {} };
+	_vertexBuffer = std::make_shared<VertexBuffer>(bufferDesc);
+	if (desc.vertexCount > 0)
+		LoadVertices(desc.vertexList, desc.vertexCount);
+}
+
 ColdTable::Renderable::~Renderable()
 {
 
@@ -24,7 +32,16 @@ void ColdTable::Renderable::LoadVertices(const Vertex* vertexList, UINT listSize
 	if (_indexBuffer) _indexBuffer = nullptr;
 
 	vertexListRef = vertexList;
-	_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _material->_shader);
+
+	if (_material == nullptr)
+	{
+		_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _shader);
+
+	} else
+	{
+		_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _material->_shader);
+		
+	}
 }
 
 void ColdTable::Renderable::LoadVerticesInIndex(const Vertex* vertexList, UINT listSize, const IndexBufferPtr& indexBuffer)
@@ -32,12 +49,80 @@ void ColdTable::Renderable::LoadVerticesInIndex(const Vertex* vertexList, UINT l
 	_indexBuffer = indexBuffer;
 
 	vertexListRef = vertexList;
-	_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _material->_shader);
+
+	if (_material == nullptr)
+	{
+		_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _shader);
+
+	}
+	else
+	{
+		_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _material->_shader);
+
+	}
 }
 
 void ColdTable::Renderable::Update(const d64 deltaTime)
 {
+	localRotation.rotateLocal(rotationAxis, rotationSpeed);
 
+	/*
+	elapsedTime += deltaTime;
+	if (elapsedTime > 8.0f)
+		elapsedTime = 8.0f;
+
+	//localPosition = Vec3::lerp(lastPosition, targetPosition, elapsedTime / 2.0f);
+	localScale = Vec3::lerp(lastScale, targetScale, elapsedTime / 8.0f);
+
+	/*
+	if (localScale == targetScale)
+	{
+		targetScale = lastScale;
+		lastScale = localScale;
+	}
+	
+
+	if (localPosition == targetPosition)
+	{
+		elapsedTime = 0.0f;
+		if (tempMovingVertical)
+		{
+			if (tempMovingPositive)
+			{
+				lastPosition = { 2.0f, 2.0f, 0.0f };
+				targetPosition = { -2.0f, 2.0f, 0.0f };
+				tempMovingVertical = false;
+				tempMovingPositive = false;
+			} else
+			{
+
+				lastPosition = { -2.0f, -2.0f, 0.0f };
+				targetPosition = { 2.0f, -2.0f, 0.0f };
+				tempMovingVertical = false;
+				tempMovingPositive = true;
+			}
+		} else
+		{
+			if (tempMovingPositive)
+			{
+
+				lastPosition = { 2.0f, -2.0f, 0.0f };
+				targetPosition = { 2.0f, 2.0f, 0.0f };
+				tempMovingVertical = true;
+				tempMovingPositive = true;
+			}
+			else
+			{
+
+				lastPosition = { -2.0f, 2.0f, 0.0f };
+				targetPosition = { -2.0f, -2.0f, 0.0f };
+				tempMovingVertical = true;
+				tempMovingPositive = false;
+			}
+			
+		}
+	}
+	*/
 }
 
 void ColdTable::Renderable::SetShader(ShaderPtr shader)

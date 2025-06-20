@@ -31,6 +31,7 @@ namespace ColdTable
 	private:
 		ShaderPtr tempShader{};
 		ConstantBufferPtr tempLightBuffer{};
+		ConstantBufferPtr tempObjectBuffer{};
 
 		float tempVertexArray[36];
 

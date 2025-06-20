@@ -25,6 +25,7 @@ namespace ColdTable
 	{
 	public:
 		explicit Renderable(const RenderableDesc& desc);
+		explicit Renderable(const RenderableDesc& desc, const ShaderPtr& shader);
 		virtual ~Renderable();
 
 		virtual void LoadVertices(const Vertex* vertexList, UINT listSize);
@@ -44,7 +45,7 @@ namespace ColdTable
 		void OnLeftMouseDown(Vec2 pos) override;
 		void OnRightMouseUp(Vec2 pos) override;
 
-	private:
+	protected:
 		VertexBufferPtr _vertexBuffer;
 		IndexBufferPtr _indexBuffer;
 		EGeometryDrawmode _drawMode;
@@ -54,6 +55,18 @@ namespace ColdTable
 		TexturePtr _texture = nullptr;
 
 		const Vertex* vertexListRef;
+
+		bool tempMovingVertical = false;
+		bool tempMovingPositive = true;
+		float elapsedTime = 0;
+		Vec3 targetPosition = { 2.0, 0.0, 0.0 };
+		Vec3 lastPosition = { -2.0f, 0.0f, 0.0f };
+		Vec3 targetScale = { 10.0f, 0.01f, 10.0f };
+		Vec3 lastScale = { 1.0f };
+
+	public:
+		Vec3 rotationAxis{};
+		float rotationSpeed = 0.0f;
 
 	private:
 		friend class DeviceContext;

@@ -8,7 +8,7 @@ struct PS_INPUT
     float3 normal : TEXCOORD1;
     float3 camera_direction : TEXCOOR2;
     float3 fragPos : TEXCOORD3;
-    //float3 color : COLOR;
+    float3 vert_color : COLOR0;
     //float3 color1 : COLOR1;
 };
 
@@ -63,6 +63,7 @@ cbuffer perObjectBuffer : register(b2)
 {
     column_major float4x4   transformMat;
     float3                  materialTint;
+    bool                    hasTexture;
 }
 
 float3 CalcAmbient(float intensity, float3 color);
@@ -85,8 +86,15 @@ float4 psmain( PS_INPUT input ) : SV_TARGET
     final_light += CalcPointLight(pointlight.lightdata, pointlight.position, input.normal, input.fragPos, input.camera_direction);
     final_light += CalcSpotLight(spotlight, input.normal, input.fragPos, input.camera_direction);
     
+    float4 tex_color = float4(1.0, 1.0, 1.0, 1.0);
+    
     // TEXTURE
-    float4 tex_color = Texture.Sample(TextureSampler, input.texcoord * 0.5);
+    if (hasTexture)
+    {
+        //tex_color = Texture.Sample(TextureSampler, input.texcoord * 0.5);
+    }
+        
+    tex_color.xyz *= input.vert_color.xyz;
     tex_color.xyz *= materialTint.xyz;
     
     float3 final_color = final_light * tex_color;

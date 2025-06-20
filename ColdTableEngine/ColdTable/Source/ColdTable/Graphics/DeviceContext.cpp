@@ -88,9 +88,14 @@ void ColdTable::DeviceContext::DispatchComputeShader(UINT xThreadGroups, UINT yT
 
 void ColdTable::DeviceContext::Draw(RenderablePtr renderable)
 {
-
-	UseShader(renderable->_material->_shader);
-	BindTexture(renderable->_material->_textures.at(0));
+	if (renderable->_material != nullptr)
+	{
+		UseShader(renderable->_material->_shader);
+		BindTexture(renderable->_material->_textures.at(0));
+	} else
+	{
+		UseShader(renderable->_shader);
+	}
 
 	BindVertexBuffer(renderable->_vertexBuffer);
 

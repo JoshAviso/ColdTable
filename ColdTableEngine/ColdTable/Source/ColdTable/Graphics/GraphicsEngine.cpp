@@ -124,7 +124,7 @@ void ColdTable::GraphicsEngine::UpdateConstantBuffer(const ConstantBufferPtr& co
 }
 */
 
-void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr lightBuffer, Rect viewportSize)
+void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr perObjectBuffer, ConstantBufferPtr lightBuffer, Rect viewportSize)
 {
 	screensize = viewportSize;
 
@@ -133,6 +133,7 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 	ImGui::NewFrame();
 	//ImGui::ShowDemoWindow();
 
+	/*
 	ImDrawList* drawList = ImGui::GetWindowDrawList();
 	ImU32 color = IM_COL32(255, 0, 0, 255);
 	for (CircleObject& circle : _circles)
@@ -148,6 +149,7 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 		ImVec2 circlepos{ circle.circlePos.x, circle.circlePos.y};
 		drawList->AddCircleFilled(circlepos, circleRad, color);
 	}
+	*/
 
 	ImGui::Render();
 
@@ -195,21 +197,42 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 
 		PerObjectBufferContent objectBuffer{
 			renderable->transformMat(),
-			renderable->_material->tint
+			Vec3(1.0, 1.0, 1.0),
+			false
 		};
 
-		renderable->_material->SetData(&objectBuffer, sizeof(PerObjectBufferContent));
-		_deviceContext->BindConstantBuffer(renderable->_material->_constantBuffer, 2);
+		if (renderable->_material != nullptr)
+		{
+			renderable->_material->SetData(&objectBuffer, sizeof(PerObjectBufferContent));
+			_deviceContext->BindConstantBuffer(renderable->_material->_constantBuffer, 2);
+		} else
+		{
+			perObjectBuffer->Update(&*_deviceContext, &objectBuffer);
+			_deviceContext->BindConstantBuffer(perObjectBuffer, 2);
+
+		}
 		context.Draw(renderable);
 	}
 
 	// Draw Meshes
 	for (auto mesh : _meshes)
 	{
-		PerObjectBufferContent objectBuffer{
-			Mat4::Identity,
-			mesh->_material->tint
-		};
+		PerObjectBufferContent objectBuffer{};
+		if (mesh->_material != nullptr)
+		{
+			objectBuffer = {
+				Mat4::Identity,
+				mesh->_material->tint,
+				true
+			};
+		} else
+		{
+			objectBuffer = {
+				Mat4::Identity,
+				Vec3(1.0, 1.0, 1.0),
+				false
+			};
+		}
 
 		mesh->_material->SetData(&objectBuffer, sizeof(PerObjectBufferContent));
 		_deviceContext->BindConstantBuffer(mesh->_material->_constantBuffer, 2);
