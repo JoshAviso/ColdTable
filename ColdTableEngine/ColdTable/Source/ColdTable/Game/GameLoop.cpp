@@ -213,14 +213,14 @@ void ColdTable::GameLoop::onInternalStartup()
 	tempCam->localPosition -= {0, 0, 1};
 
 	tempCam->projectionMat =
-		Mat4::OrthoLH(20, 20, 0.1f, 20.0f);
-		/*
+		//Mat4::OrthoLH(20, 20, 0.1f, 20.0f);
+		
 		Mat4::PerspectiveFovLH(
 			1.57f,
 			tempWindowSize.width / tempWindowSize.height,
 			0.1f, 100.0f
 		);
-		*/
+		
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();

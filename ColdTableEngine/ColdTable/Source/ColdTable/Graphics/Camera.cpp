@@ -1,6 +1,7 @@
 #include <string>
 #include <ColdTable/Graphics/Camera.h>
 
+#include "GraphicsEngine.h"
 #include "ColdTable/Core/Logger.h"
 
 ColdTable::Camera::Camera(const CameraDesc& desc): _cameraBuffer(desc.constantBuffer), _windowRectInfo(desc.windowRectInfo)
@@ -72,7 +73,13 @@ void ColdTable::Camera::OnMouseMove(Vec2 delta)
 void ColdTable::Camera::OnLeftMouseDown(Vec2 pos)
 {
 	Vec2 windowPos = Vec2(pos.x, _windowRectInfo.height - pos.y);
-	RayFromScreenpoint(windowPos, 100);
+	Ray raycast = RayFromScreenpoint(windowPos, 100);
+	RenderablePtr target = GraphicsEngine::Instance->CheckHitObject(raycast);
+	if (target != nullptr)
+		ColdTable::Logger::Log(Logger::LogLevel::Info, "Target hit");
+	else
+
+		ColdTable::Logger::Log(Logger::LogLevel::Info, "No Target hit");
 }
 
 void ColdTable::Camera::OnRightMouseDown(Vec2 pos)
