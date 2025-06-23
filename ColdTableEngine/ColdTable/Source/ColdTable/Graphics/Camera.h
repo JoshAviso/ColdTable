@@ -30,6 +30,7 @@ namespace  ColdTable
 		void OnKeyDown(int key) override;
 		void OnMouseMove(Vec2 delta) override;
 		void OnLeftMouseDown(Vec2 pos) override;
+		void OnLeftMouseUp(Vec2 pos) override;
 		void OnRightMouseDown(Vec2 pos) override;
 		void OnRightMouseUp(Vec2 pos) override;
 
@@ -38,8 +39,10 @@ namespace  ColdTable
 		float yRotation = 0;
 		float xRotation = 0;
 		bool _isControlling = false;
+		bool _leftMouseDown = false;
 
 		Rect _windowRectInfo;
+		RenderablePtr selectedObject;
 
 		friend class GraphicsEngine;
 	};

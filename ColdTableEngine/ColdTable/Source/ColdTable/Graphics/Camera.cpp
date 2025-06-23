@@ -58,6 +58,12 @@ void ColdTable::Camera::OnKeyDown(int key)
 
 void ColdTable::Camera::OnMouseMove(Vec2 delta)
 {
+	if (_leftMouseDown && selectedObject != nullptr)
+	{
+		selectedObject->localPosition.x += delta.x * 0.02f;
+		selectedObject->localPosition.y += delta.y * 0.02f;
+	}
+
 	if (!_isControlling) return;
 
 	if (xRotation + delta.y <= 90 && xRotation + delta.y >= -90)
@@ -72,14 +78,25 @@ void ColdTable::Camera::OnMouseMove(Vec2 delta)
 
 void ColdTable::Camera::OnLeftMouseDown(Vec2 pos)
 {
+	_leftMouseDown = true;
 	Vec2 windowPos = Vec2(pos.x, _windowRectInfo.height - pos.y);
 	Ray raycast = RayFromScreenpoint(windowPos, 100);
 	RenderablePtr target = GraphicsEngine::Instance->CheckHitObject(raycast);
 	if (target != nullptr)
+	{
 		ColdTable::Logger::Log(Logger::LogLevel::Info, "Target hit");
+		selectedObject = target;
+	}
 	else
-
+	{
 		ColdTable::Logger::Log(Logger::LogLevel::Info, "No Target hit");
+		selectedObject = nullptr;
+	}
+}
+
+void ColdTable::Camera::OnLeftMouseUp(Vec2 pos)
+{
+	_leftMouseDown = false;
 }
 
 void ColdTable::Camera::OnRightMouseDown(Vec2 pos)
