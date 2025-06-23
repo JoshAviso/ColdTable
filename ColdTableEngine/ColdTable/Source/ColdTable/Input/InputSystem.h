@@ -35,6 +35,9 @@ private:
 	Vec2 _oldMousePosition;
 	bool _windowInFocus = true;
 
+public:
+	Vec2 _windowPos;
+
 };
 }
 

@@ -25,6 +25,7 @@ ColdTable::GameLoop::GameLoop(const GameDesc& desc):
 
 	_graphicsEngine = std::make_unique<GraphicsEngine>(GraphicsEngineDesc{desc.base});
 	_display = std::make_unique<Display>(DisplayDesc{desc.base,{desc.base, desc.windowSize}, _graphicsEngine->GetGraphicsDevice()});
+	InputSystem::Instance->_windowPos = _display->WindowPosition();
 
 	_graphicsEngine->SetViewportSize(desc.windowSize);
 
@@ -203,7 +204,8 @@ void ColdTable::GameLoop::onInternalStartup()
 	ConstantBufferPtr camBuff = _graphicsEngine->CreateConstantBuffer();
 	camBuff->LoadData(&camBuff, sizeof(CameraBufferContent));
 	CameraDesc camDesc{
-		camBuff
+		camBuff,
+		tempWindowSize
 	};
 	tempCam = std::make_shared<Camera>(camDesc);
 
@@ -232,6 +234,7 @@ void ColdTable::GameLoop::onInternalStartup()
 
 void ColdTable::GameLoop::onInternalCallback()
 {
+	InputSystem::Instance->_windowPos = _display->WindowPosition();
 
 	_graphicsEngine->Render(tempCam, _display->GetSwapChain(), tempObjectBuffer, tempLightBuffer, tempWindowSize);
 

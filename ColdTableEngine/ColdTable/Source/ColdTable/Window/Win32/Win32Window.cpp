@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <string>
 #include <ColdTable/Window/Window.h>
 #include <Windows.h>
 
@@ -101,4 +102,24 @@ void ColdTable::Window::OnLoseFocus()
 {
 	if (InputSystem::Instance != nullptr)
 		InputSystem::Instance->SetWindowFocus(false);
+}
+
+ColdTable::Vec2 ColdTable::Window::WindowPosition()
+{
+
+	RECT rect, output;
+	HWND windowHandle = static_cast<HWND>(_windowHandle);
+	GetWindowRect(windowHandle, &rect);
+
+	POINT point;
+	point.x = 0;
+	point.y = 0;
+
+	ClientToScreen(windowHandle, &point);
+	output.left = point.x;
+	output.top = point.y;
+	output.right = point.x + rect.right;
+	output.bottom = point.y + rect.bottom;
+
+	return Vec2(output.left, output.top);
 }

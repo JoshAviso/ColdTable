@@ -13,6 +13,8 @@ namespace ColdTable
 		void OnFocus();
 		void OnLoseFocus();
 
+		Vec2 WindowPosition();
+
 	protected:
 		void* _windowHandle;
 		Rect _size;

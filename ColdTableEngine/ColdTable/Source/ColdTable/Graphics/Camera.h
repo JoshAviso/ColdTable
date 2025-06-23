@@ -2,14 +2,17 @@
 #include <ColdTable/Math/Vec3.h>
 #include <ColdTable/Math/Mat4.h>
 #include <ColdTable/Math/Quaternion.h>
+#include <ColdTable/Math/Rect.h>
 
 #include "ColdTable/Input/IInputListener.h"
+#include "ColdTable/Math/Ray.h"
 
 namespace  ColdTable
 {
 	struct CameraDesc
 	{
 		const ConstantBufferPtr& constantBuffer;
+		const Rect& windowRectInfo;
 	};
 
 	class Camera: public IInputListener
@@ -22,9 +25,11 @@ namespace  ColdTable
 
 		Mat4 transformMat() const;
 		Mat4 viewMatrix();
+		Ray RayFromScreenpoint(Vec2 screenpoint, float distance);
 
 		void OnKeyDown(int key) override;
 		void OnMouseMove(Vec2 delta) override;
+		void OnLeftMouseDown(Vec2 pos) override;
 		void OnRightMouseDown(Vec2 pos) override;
 		void OnRightMouseUp(Vec2 pos) override;
 
@@ -33,6 +38,8 @@ namespace  ColdTable
 		float yRotation = 0;
 		float xRotation = 0;
 		bool _isControlling = false;
+
+		Rect _windowRectInfo;
 
 		friend class GraphicsEngine;
 	};

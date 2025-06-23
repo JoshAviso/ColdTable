@@ -1,5 +1,7 @@
 #include <ColdTable/Input/InputSystem.h>
 
+#include "ColdTable/Window/Window.h"
+
 ColdTable::InputSystem::InputSystem()
 {
 	POINT currMousePos = {};
@@ -47,6 +49,11 @@ void ColdTable::InputSystem::Update()
 	// MOUSE
 	POINT currMousePos = {};
 	::GetCursorPos(&currMousePos);
+
+		
+	currMousePos.x = currMousePos.x - _windowPos.x;
+	currMousePos.y = currMousePos.y - _windowPos.y;
+
 
 	// MOUSE MOVE EVENT
 	if (currMousePos.x != static_cast<long>(_oldMousePosition.x) || currMousePos.y != static_cast<long>(_oldMousePosition.y))

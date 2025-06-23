@@ -69,8 +69,13 @@ namespace ColdTable
 		float rotationSpeed = 0.0f;
 
 	private:
+		Vec3 aabb_min{0, 0, 0};
+		Vec3 aabb_max{0, 0, 0};
+
+	private:
 		friend class DeviceContext;
 		friend class GraphicsEngine;
+		friend class Ray;
 	};
 }
 
