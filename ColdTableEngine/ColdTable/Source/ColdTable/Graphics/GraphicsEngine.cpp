@@ -25,6 +25,25 @@ ColdTable::GraphicsEngine::~GraphicsEngine()
 {
 }
 
+ColdTable::RenderablePtr ColdTable::GraphicsEngine::CheckHitObject(Ray ray)
+{
+	RenderablePtr _hit = nullptr;
+	float closestDist = 1000000.0f;
+	for (auto renderable : _renderables)
+	{
+		float dist;
+		if (ray.TestIntersection(renderable, dist))
+		{
+			if (dist < closestDist)
+			{
+				closestDist = dist;
+				_hit = renderable;
+			}
+		}
+	}
+	return _hit;
+}
+
 void ColdTable::GraphicsEngine::RegisterRenderable(RenderablePtr renderable)
 {
 	_renderables.push_back(renderable);
