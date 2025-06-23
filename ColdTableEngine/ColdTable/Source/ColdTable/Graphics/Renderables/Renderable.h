@@ -68,7 +68,7 @@ namespace ColdTable
 		Vec3 rotationAxis{};
 		float rotationSpeed = 0.0f;
 
-	private:
+	public:
 		Vec3 aabb_min{0, 0, 0};
 		Vec3 aabb_max{0, 0, 0};
 

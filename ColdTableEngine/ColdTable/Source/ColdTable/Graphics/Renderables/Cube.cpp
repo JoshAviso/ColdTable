@@ -83,4 +83,8 @@ ColdTable::Cube::Cube(IndexBufferPtr indexBuffer, ShaderPtr shader): Renderable(
 
 	indexBuffer->LoadIndices(indexList, ARRAYSIZE(indexList));
 	LoadVerticesInIndex(vertlist, ARRAYSIZE(vertlist), indexBuffer);
+
+
+	aabb_min = Vec3{ -0.5, -0.5, -0.5 };
+	aabb_max = Vec3{ 0.5, 0.5, 0.5 };
 }
