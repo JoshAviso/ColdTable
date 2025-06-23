@@ -24,6 +24,13 @@ ColdTable::GraphicsEngine::GraphicsEngine(const GraphicsEngineDesc& desc): Base(
 ColdTable::GraphicsEngine::~GraphicsEngine()
 {
 }
+ColdTable::GraphicsEngine* ColdTable::GraphicsEngine::Instance = nullptr;
+void ColdTable::GraphicsEngine::Initialize(const GraphicsEngineDesc& desc)
+{
+	if (Instance == nullptr)
+		Instance = new GraphicsEngine(desc);
+}
+
 
 ColdTable::RenderablePtr ColdTable::GraphicsEngine::CheckHitObject(Ray ray)
 {

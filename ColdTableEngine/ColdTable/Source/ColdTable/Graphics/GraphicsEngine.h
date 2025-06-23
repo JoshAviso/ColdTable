@@ -22,6 +22,10 @@ namespace ColdTable
 		explicit GraphicsEngine(const GraphicsEngineDesc& desc);
 		virtual ~GraphicsEngine() override;
 
+
+		static GraphicsEngine* Instance;
+		static void Initialize(const GraphicsEngineDesc& desc);
+
 		RenderablePtr CheckHitObject(Ray ray);
 
 		void RegisterRenderable(RenderablePtr renderable);

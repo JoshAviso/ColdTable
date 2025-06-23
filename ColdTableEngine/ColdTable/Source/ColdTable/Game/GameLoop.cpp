@@ -22,12 +22,13 @@ ColdTable::GameLoop::GameLoop(const GameDesc& desc):
 	Logger::Initialize(desc.logLevel);
 	EngineTime::Initialize();
 	InputSystem::Initialize();
+	GraphicsEngine::Initialize(GraphicsEngineDesc{ desc.base });
 
-	_graphicsEngine = std::make_unique<GraphicsEngine>(GraphicsEngineDesc{desc.base});
-	_display = std::make_unique<Display>(DisplayDesc{desc.base,{desc.base, desc.windowSize}, _graphicsEngine->GetGraphicsDevice()});
+	//_graphicsEngine = std::make_unique<GraphicsEngine>(GraphicsEngineDesc{desc.base});
+	_display = std::make_unique<Display>(DisplayDesc{desc.base,{desc.base, desc.windowSize}, GraphicsEngine::Instance->GetGraphicsDevice()});
 	InputSystem::Instance->_windowPos = _display->WindowPosition();
 
-	_graphicsEngine->SetViewportSize(desc.windowSize);
+	GraphicsEngine::Instance->SetViewportSize(desc.windowSize);
 
 	_textureManager = new TextureManager();
 	_meshManager = new MeshManager();
@@ -44,12 +45,12 @@ ColdTable::GameLoop::~GameLoop()
 
 void ColdTable::GameLoop::onInternalStartup()
 {
-	tempShader = _graphicsEngine->CreateShader(L"VertexShader.hlsl", L"PixelShader.hlsl");
+	tempShader = GraphicsEngine::Instance->CreateShader(L"VertexShader.hlsl", L"PixelShader.hlsl");
 
 	TexturePtr woodTex =
-		_textureManager->CreateTextureFromFile(_graphicsEngine->_graphicsDevice, L"Assets\\Textures\\brick.png");
+		_textureManager->CreateTextureFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Textures\\brick.png");
 
-	MaterialPtr woodBox = _graphicsEngine->CreateMaterial(tempShader);
+	MaterialPtr woodBox = GraphicsEngine::Instance->CreateMaterial(tempShader);
 	woodBox->SetCullMode(CULL_MODE_BACK);
 	woodBox->AddTexture(woodTex);
 
@@ -57,16 +58,16 @@ void ColdTable::GameLoop::onInternalStartup()
 	// FIRST ROW
 	for (int i = 0; i < 3; i++)
 	{
-		CubePtr cube = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);
-		_graphicsEngine->RegisterRenderable(cube);
+		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+		GraphicsEngine::Instance->RegisterRenderable(cube);
 		cube->localScale = { 5.0f, 0.01f, 3.0f };
 		cube->localRotation = { {0.0, 0.0, 1.0}, 70.0f };
 		cube->localPosition = { i * 3.4f, 0.0f, 0.0f };
 	}
 	for (int i = 0; i < 3; i++)
 	{
-		CubePtr cube = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);
-		_graphicsEngine->RegisterRenderable(cube);
+		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+		GraphicsEngine::Instance->RegisterRenderable(cube);
 		cube->localScale = { 5.0f, 0.01f, 3.0f };
 		cube->localRotation = { {0.0, 0.0, -1.0}, 70.0f };
 		cube->localPosition = { i * 3.4f + 1.7f, 0.0f, 0.0f };
@@ -74,16 +75,16 @@ void ColdTable::GameLoop::onInternalStartup()
 	// SECOND ROW
 	for (int i = 0; i < 2; i++)
 	{
-		CubePtr cube = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);
-		_graphicsEngine->RegisterRenderable(cube);
+		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+		GraphicsEngine::Instance->RegisterRenderable(cube);
 		cube->localScale = { 5.0f, 0.01f, 3.0f };
 		cube->localRotation = { {0.0, 0.0, 1.0}, 70.0f };
 		cube->localPosition = { i * 3.4f + 1.7f, 4.8f, 0.0f };
 	}
 	for (int i = 0; i < 2; i++)
 	{
-		CubePtr cube = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);
-		_graphicsEngine->RegisterRenderable(cube);
+		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+		GraphicsEngine::Instance->RegisterRenderable(cube);
 		cube->localScale = { 5.0f, 0.01f, 3.0f };
 		cube->localRotation = { {0.0, 0.0, -1.0}, 70.0f };
 		cube->localPosition = { i * 3.4f + 3.4f, 4.8f, 0.0f };
@@ -91,16 +92,16 @@ void ColdTable::GameLoop::onInternalStartup()
 	// TOP
 	for (int i = 0; i < 1; i++)
 	{
-		CubePtr cube = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);
-		_graphicsEngine->RegisterRenderable(cube);
+		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+		GraphicsEngine::Instance->RegisterRenderable(cube);
 		cube->localScale = { 5.0f, 0.01f, 3.0f };
 		cube->localRotation = { {0.0, 0.0, 1.0}, 70.0f };
 		cube->localPosition = { i * 3.4f + 3.4f, 9.6f, 0.0f };
 	}
 	for (int i = 0; i < 1; i++)
 	{
-		CubePtr cube = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);
-		_graphicsEngine->RegisterRenderable(cube);
+		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+		GraphicsEngine::Instance->RegisterRenderable(cube);
 		cube->localScale = { 5.0f, 0.01f, 3.0f };
 		cube->localRotation = { {0.0, 0.0, -1.0}, 70.0f };
 		cube->localPosition = { i * 3.4f + 5.1f, 9.6f, 0.0f };
@@ -110,14 +111,14 @@ void ColdTable::GameLoop::onInternalStartup()
 	// BOTTOM ROW
 	for (int i = 0; i < 2; i++)
 	{
-		CubePtr cube = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);
-		_graphicsEngine->RegisterRenderable(cube);
+		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+		GraphicsEngine::Instance->RegisterRenderable(cube);
 		cube->localScale = { 5.0f, 0.01f, 3.0f };
 		cube->localPosition = { i * 3.4f + 2.5f, 2.4f, 0.0f };
 	}
 	// TOP ROW
-	CubePtr cube = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);
-	_graphicsEngine->RegisterRenderable(cube);
+	CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+	GraphicsEngine::Instance->RegisterRenderable(cube);
 	cube->localScale = { 5.0f, 0.01f, 3.0f };
 	cube->localPosition = {4.5f, 7.2f, 0.0f };
 
@@ -138,13 +139,13 @@ void ColdTable::GameLoop::onInternalStartup()
 	_graphicsEngine->RegisterRenderable(cube4);
 	*/
 
-	MeshPtr teapot = _meshManager->CreateMeshFromFile(_graphicsEngine->_graphicsDevice, L"Assets\\Meshes\\teapot.obj", woodBox);
+	MeshPtr teapot = _meshManager->CreateMeshFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Meshes\\teapot.obj", woodBox);
 	//_graphicsEngine->RegisterMesh(teapot);
 
 	LightSourceDesc dirLightDesc{
 	};
 	DirectionalLightPtr dirLight = std::make_shared<DirectionalLight>(dirLightDesc);
-	_graphicsEngine->RegisterLight(dirLight);
+	GraphicsEngine::Instance->RegisterLight(dirLight);
 	dirLight->data.ambientIntensity = 0.7;
 	dirLight->data.diffuseIntensity = 0.2;
 	dirLight->direction = Vec3(0, -1, 1);
@@ -153,7 +154,7 @@ void ColdTable::GameLoop::onInternalStartup()
 
 
 	DirectionalLightPtr dirLight2 = std::make_shared<DirectionalLight>(dirLightDesc);
-	_graphicsEngine->RegisterLight(dirLight2);
+	GraphicsEngine::Instance->RegisterLight(dirLight2);
 	dirLight2->data.ambientColor = Vec3{0.0, 0.0, 1.0};
 	dirLight2->data.diffuseColor = Vec3{ 0.0, 0.0, 1.0 };
 	dirLight2->data.specColor = Vec3{ 0.0, 0.0, 1.0 };
@@ -166,7 +167,7 @@ void ColdTable::GameLoop::onInternalStartup()
 	dirLight2->tempRotSpeed = 0.9f;
 
 	SpotLightPtr spotlight = std::make_shared<SpotLight>(dirLightDesc);
-	_graphicsEngine->RegisterLight(spotlight);
+	GraphicsEngine::Instance->RegisterLight(spotlight);
 	spotlight->data.diffuseColor = { 1.0, 0.0, 0.0};
 	spotlight->data.ambientIntensity = 0.0;
 	spotlight->data.diffuseIntensity = 0.0;
@@ -176,7 +177,7 @@ void ColdTable::GameLoop::onInternalStartup()
 	spotlight->data.specPhong = 2;
 
 	PointLightPtr pointlight = std::make_shared<PointLight>(dirLightDesc);
-	_graphicsEngine->RegisterLight(pointlight);
+	GraphicsEngine::Instance->RegisterLight(pointlight);
 	pointlight->data.ambientColor = { 0.0, 1.0, 0.0 };
 	pointlight->data.diffuseColor = { 0.0, 1.0, 0.0 };
 	pointlight->data.specColor = { 0.0, 1.0, 0.0 };
@@ -193,15 +194,15 @@ void ColdTable::GameLoop::onInternalStartup()
 		SpotLightContent{},
 	};
 
-	tempLightBuffer = _graphicsEngine->CreateConstantBuffer();
+	tempLightBuffer = GraphicsEngine::Instance->CreateConstantBuffer();
 	tempLightBuffer->LoadData(&constant, sizeof(LightConstantBufferContent));
 
 	PerObjectBufferContent objectBuffer{};
-	tempObjectBuffer = _graphicsEngine->CreateConstantBuffer();
+	tempObjectBuffer = GraphicsEngine::Instance->CreateConstantBuffer();
 	tempObjectBuffer->LoadData(&objectBuffer, sizeof(PerObjectBufferContent));
 
 	CameraBufferContent camBuffContent{};
-	ConstantBufferPtr camBuff = _graphicsEngine->CreateConstantBuffer();
+	ConstantBufferPtr camBuff = GraphicsEngine::Instance->CreateConstantBuffer();
 	camBuff->LoadData(&camBuff, sizeof(CameraBufferContent));
 	CameraDesc camDesc{
 		camBuff,
@@ -225,7 +226,7 @@ void ColdTable::GameLoop::onInternalStartup()
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui_ImplWin32_Init(_display->_windowHandle);
-	ImGui_ImplDX11_Init(_graphicsEngine->_graphicsDevice->_d3dDevice.Get(), _graphicsEngine->_deviceContext->_context.Get());
+	ImGui_ImplDX11_Init(GraphicsEngine::Instance->_graphicsDevice->_d3dDevice.Get(), GraphicsEngine::Instance->_deviceContext->_context.Get());
 	ImGui::StyleColorsDark();
 
 	ImGuiStyle* style = &ImGui::GetStyle();
@@ -236,6 +237,6 @@ void ColdTable::GameLoop::onInternalCallback()
 {
 	InputSystem::Instance->_windowPos = _display->WindowPosition();
 
-	_graphicsEngine->Render(tempCam, _display->GetSwapChain(), tempObjectBuffer, tempLightBuffer, tempWindowSize);
+	GraphicsEngine::Instance->Render(tempCam, _display->GetSwapChain(), tempObjectBuffer, tempLightBuffer, tempWindowSize);
 
 }
