@@ -1,5 +1,8 @@
 #pragma once
 #include <d3d11.h>
+#include <list>
+#include <vector>
+#include <ColdTable/Math/Vec3.h>
 #include <ColdTable/Core/Base.h>
 #include <ColdTable/Core/Common.h>
 
@@ -22,6 +25,7 @@ namespace ColdTable
 
 		ID3D11Buffer* _buffer;
 		ID3D11InputLayout* _layout;
+		std::vector<Vec3> _vertices;
 
 	private:
 		friend class DeviceContext;

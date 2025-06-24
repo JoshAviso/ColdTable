@@ -190,3 +190,23 @@ void ColdTable::Renderable::OnRightMouseUp(Vec2 pos)
 	localScale -= {0.1f, 0.1f, 0.1f};
 	*/
 }
+
+void ColdTable::Renderable::recalcAABB()
+{
+	Mat4 modelMat = localScale.asScaleMatrix();
+
+	float minX = 1000000.0f, minY = 1000000.0f, minZ = 1000000.0f;
+	float maxX = -1000000.0f, maxY = -1000000.0f, maxZ = -1000000.0f;
+	for (auto vert : _vertexBuffer->_vertices)
+	{
+		Vec3 transformedVert = Vec3(modelMat * Vec4(vert));
+		if (transformedVert.x < minX) minX = transformedVert.x;
+		if (transformedVert.y < minY) minY = transformedVert.y;
+		if (transformedVert.z < minZ) minZ = transformedVert.z;
+		if (transformedVert.x > maxX) maxX = transformedVert.x;
+		if (transformedVert.y > maxY) maxY = transformedVert.y;
+		if (transformedVert.z > maxZ) maxZ = transformedVert.z;
+	}
+	aabb_max = Vec3(maxX, maxY, maxZ);
+	aabb_min = Vec3(minX, minY, minZ);
+}

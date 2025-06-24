@@ -11,8 +11,10 @@ bool ColdTable::Ray::TestIntersection(const RenderablePtr& testTarget, float& in
 	float tMin = 0.0f;
 	float tMax = 100000.0f;
 
-	Vec3 aabb_min_scaled = testTarget->aabb_min * testTarget->localScale;
-	Vec3 aabb_max_scaled = testTarget->aabb_max * testTarget->localScale;
+	testTarget->recalcAABB();
+
+	Vec3 aabb_min_scaled = testTarget->aabb_min;
+	Vec3 aabb_max_scaled = testTarget->aabb_max;
 	Mat4 modelMat = testTarget->transformMat();
 	Vec3 OBBpositionWorld = Vec3(modelMat.m_mat[0][3], modelMat.m_mat[1][3], modelMat.m_mat[2][3]);
 

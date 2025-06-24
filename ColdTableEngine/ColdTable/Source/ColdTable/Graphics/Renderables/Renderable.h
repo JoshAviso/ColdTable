@@ -67,6 +67,7 @@ namespace ColdTable
 	public:
 		Vec3 rotationAxis{};
 		float rotationSpeed = 0.0f;
+		void recalcAABB();
 
 	public:
 		Vec3 aabb_min{0, 0, 0};

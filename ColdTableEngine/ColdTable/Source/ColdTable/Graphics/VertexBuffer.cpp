@@ -19,6 +19,7 @@ void ColdTable::VertexBuffer::LoadVertices(const void* list, UINT vertexSize, UI
 {
 	if (_buffer) _buffer->Release();
 	if (_layout) _layout->Release();
+	_vertices.clear();
 
 	D3D11_BUFFER_DESC bufferDesc{};
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -50,6 +51,12 @@ void ColdTable::VertexBuffer::LoadVertices(const void* list, UINT vertexSize, UI
 
 	ColdTableGraphicsLogThrowOnFail(shader->_sourceDevice->_d3dDevice->CreateInputLayout(layout, layoutSize, shader->_vertexShaderBlob->GetBufferPointer(), shader->_vertexShaderBlob->GetBufferSize(), &_layout),
 		"CreateInputLayer failed.")
+
+	const Vertex* vert = static_cast<const Vertex*>(list);
+	for (int i = 0; i < listSize; i++)
+	{
+		_vertices.push_back(Vec3((vert + i)->position));
+	}
 }
 
 UINT ColdTable::VertexBuffer::GetVertexCount()
