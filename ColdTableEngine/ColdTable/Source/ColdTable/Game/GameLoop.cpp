@@ -60,7 +60,7 @@ void ColdTable::GameLoop::onInternalStartup()
 	{
 		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
 		GraphicsEngine::Instance->RegisterRenderable(cube);
-		cube->localScale = { 5.0f, 1.0f, 3.0f };
+		//cube->localScale = { 5.0f, 1.0f, 3.0f };
 		cube->localRotation = { {0.0, 0.0, 1.0}, 70.0f };
 		cube->localPosition = { i * 3.4f, 0.0f, 0.0f };
 	}

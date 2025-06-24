@@ -35,7 +35,7 @@ ColdTable::Ray ColdTable::Camera::RayFromScreenpoint(Vec2 screenpoint, float dis
 	Vec4 farWorld   = InverseMat * farpoint  ; farWorld /= farWorld.w;
 
 	Vec3 rayDir = Vec3((farWorld - nearWorld).normalize());
-	Logger::Log(Logger::LogLevel::Info, (std::to_string(farWorld.x) + ", " + std::to_string(farWorld.y) + ", " + std::to_string(farWorld.z)).c_str());
+	//Logger::Log(Logger::LogLevel::Info, (std::to_string(farWorld.x) + ", " + std::to_string(farWorld.y) + ", " + std::to_string(farWorld.z)).c_str());
 	return Ray(Vec3(nearWorld), rayDir, distance);
 }
 
