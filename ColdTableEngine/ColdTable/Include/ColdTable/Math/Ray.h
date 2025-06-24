@@ -10,7 +10,7 @@ public:
 
 	bool TestIntersection(const RenderablePtr& testTarget, float& intersection_dist);
 
-private:
+public:
 	Vec3 _origin;
 	Vec3 _direction;
 	float _maxDist;

@@ -14,11 +14,11 @@ bool ColdTable::Ray::TestIntersection(const RenderablePtr& testTarget, float& in
 	Vec3 aabb_min = testTarget->aabb_min;
 	Vec3 aabb_max = testTarget->aabb_max;
 	Mat4 modelMat = testTarget->transformMat();
-	Vec3 OBBpositionWorld = Vec3(modelMat.m_mat[3][0], modelMat.m_mat[3][1], modelMat.m_mat[3][2]);
+	Vec3 OBBpositionWorld = Vec3(modelMat.m_mat[0][3], modelMat.m_mat[1][3], modelMat.m_mat[2][3]);
 
 	Vec3 delta = OBBpositionWorld - _origin;
 
-	Vec3 xaxis = Vec3(modelMat.m_mat[0][0], modelMat.m_mat[0][1], modelMat.m_mat[0][2]);
+	Vec3 xaxis = Vec3(modelMat.m_mat[0][0], modelMat.m_mat[1][0], modelMat.m_mat[2][0]);
 	float e = xaxis.dot(delta);
 	float f = _direction.dot(xaxis);
 	if (abs(f) < 0.001f)
@@ -35,7 +35,7 @@ bool ColdTable::Ray::TestIntersection(const RenderablePtr& testTarget, float& in
 		if (t1 > tMin) tMin = t1;
 		if (tMax < tMin) return false;
 	}
-	Vec3 yaxis = Vec3(modelMat.m_mat[1][0], modelMat.m_mat[1][1], modelMat.m_mat[1][2]);
+	Vec3 yaxis = Vec3(modelMat.m_mat[0][1], modelMat.m_mat[1][1], modelMat.m_mat[2][1]);
 	e = yaxis.dot(delta);
 	f = _direction.dot(yaxis);
 	if (abs(f) < 0.001f)
@@ -53,7 +53,7 @@ bool ColdTable::Ray::TestIntersection(const RenderablePtr& testTarget, float& in
 		if (t1 > tMin) tMin = t1;
 		if (tMax < tMin) return false;
 	}
-	Vec3 zaxis = Vec3(modelMat.m_mat[2][0], modelMat.m_mat[2][1], modelMat.m_mat[2][2]);
+	Vec3 zaxis = Vec3(modelMat.m_mat[0][2], modelMat.m_mat[1][2], modelMat.m_mat[2][2]);
 	e = zaxis.dot(delta);
 	f = _direction.dot(zaxis);
 	if (abs(f) < 0.001f)
