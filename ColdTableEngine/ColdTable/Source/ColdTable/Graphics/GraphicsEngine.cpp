@@ -35,7 +35,7 @@ void ColdTable::GraphicsEngine::Initialize(const GraphicsEngineDesc& desc)
 ColdTable::RenderablePtr ColdTable::GraphicsEngine::CheckHitObject(Ray ray)
 {
 	RenderablePtr _hit = nullptr;
-	float closestDist = 1000000.0f;
+	closestDist = 1000000.0f;
 	for (auto renderable : _renderables)
 	{
 		float dist;

@@ -26,6 +26,7 @@ namespace  ColdTable
 		Mat4 transformMat() const;
 		Mat4 viewMatrix();
 		Ray RayFromScreenpoint(Vec2 screenpoint, float distance);
+		float dist;
 
 		void OnKeyDown(int key) override;
 		void OnMouseMove(Vec2 delta) override;

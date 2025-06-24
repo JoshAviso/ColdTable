@@ -1,5 +1,6 @@
 #include <string>
 #include <ColdTable/Graphics/Camera.h>
+#include <math.h>
 
 #include "GraphicsEngine.h"
 #include "ColdTable/Core/Logger.h"
@@ -58,10 +59,9 @@ void ColdTable::Camera::OnKeyDown(int key)
 
 void ColdTable::Camera::OnMouseMove(Vec2 delta)
 {
-	if (_leftMouseDown && selectedObject != nullptr)
+ 	if (_leftMouseDown && selectedObject != nullptr)
 	{
-		selectedObject->localPosition.x += delta.x * 0.02f;
-		selectedObject->localPosition.y += delta.y * 0.02f;
+		selectedObject->localPosition +=  localRotation.rotate({ delta.x * dist * 0.002f, delta.y * dist * 0.0025f, 0});
 	}
 
 	if (!_isControlling) return;
@@ -86,6 +86,7 @@ void ColdTable::Camera::OnLeftMouseDown(Vec2 pos)
 	{
 		ColdTable::Logger::Log(Logger::LogLevel::Info, "Target hit");
 		selectedObject = target;
+		dist = GraphicsEngine::Instance->closestDist;
 	}
 	else
 	{

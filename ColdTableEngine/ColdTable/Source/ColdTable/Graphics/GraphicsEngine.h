@@ -94,6 +94,9 @@ namespace ColdTable
 
 		void OnKeyUp(int key) override;
 		void OnKeyDown(int key) override;
+
+	public:
+		float closestDist;
 	};
 }
 
