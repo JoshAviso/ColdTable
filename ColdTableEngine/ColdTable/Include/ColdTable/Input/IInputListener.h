@@ -11,7 +11,8 @@ namespace ColdTable
 		SPACEBAR = VK_SPACE,
 		DELETE_KEY = VK_DELETE,
 		BACKSPACE = VK_BACK,
-		ESCAPE_KEY = VK_ESCAPE
+		ESCAPE_KEY = VK_ESCAPE,
+		SHIFT = VK_SHIFT
 	};
 
 class IInputListener
@@ -28,6 +29,7 @@ public:
 	virtual void OnRightMouseDown(Vec2 pos);
 	virtual void OnLeftMouseUp(Vec2 pos);
 	virtual void OnRightMouseUp(Vec2 pos);
+	virtual void OnMouseScroll(f32 delta);
 };
 	
 }

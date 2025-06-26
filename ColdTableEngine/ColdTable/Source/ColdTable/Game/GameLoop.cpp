@@ -54,15 +54,20 @@ void ColdTable::GameLoop::onInternalStartup()
 	woodBox->SetCullMode(CULL_MODE_BACK);
 	woodBox->AddTexture(woodTex);
 
+	/*
 	// SLANTED CARDS
 	// FIRST ROW
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 50; i++)
 	{
+		for (int j = 0; j < 50; j++)
+		{
+			
 		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
 		GraphicsEngine::Instance->RegisterRenderable(cube);
 		//cube->localScale = { 5.0f, 1.0f, 3.0f };
 		cube->localRotation = { {0.0, 0.0, 1.0}, 70.0f };
-		cube->localPosition = { i * 3.4f, 0.0f, 0.0f };
+		cube->localPosition = { ((float)i - 25) * 2.0f, 0.0f, ((float)j - 25) * 2.0f };
+		}
 	}
 	for (int i = 0; i < 3; i++)
 	{
@@ -116,11 +121,17 @@ void ColdTable::GameLoop::onInternalStartup()
 		//cube->localScale = { 5.0f, 0.01f, 3.0f };
 		cube->localPosition = { i * 3.4f + 2.5f, 2.4f, 0.0f };
 	}
+	*/
 	// TOP ROW
 	CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
 	GraphicsEngine::Instance->RegisterRenderable(cube);
 	//cube->localScale = { 5.0f, 0.01f, 3.0f };
-	cube->localPosition = {4.5f, 7.2f, 0.0f };
+	cube->localPosition = {0.0f, 2.0f, 0.0f };
+
+	CubePtr cube2 = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+	GraphicsEngine::Instance->RegisterRenderable(cube2);
+	cube2->localScale = { 10.0f, 0.001f, 10.0f };
+	//cube2->localPosition = { 4.5f, 7.2f, 0.0f };
 
 	/*
 	CubePtr cube2 = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);

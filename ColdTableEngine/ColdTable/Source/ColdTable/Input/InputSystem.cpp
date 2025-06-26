@@ -32,6 +32,11 @@ void ColdTable::InputSystem::Initialize()
 		Instance = new InputSystem();
 }
 
+void ColdTable::InputSystem::SetScrollWheelDelta(f32 value)
+{
+	_scrollDelta = value;
+}
+
 void ColdTable::InputSystem::SetWindowFocus(bool value)
 {
 	_windowInFocus = value;
@@ -69,6 +74,13 @@ void ColdTable::InputSystem::Update()
 		_oldMousePosition.x = static_cast<float>(currMousePos.x);
 		_oldMousePosition.y = static_cast<float>(currMousePos.y);
 	}
+
+	// SCROLL WHEEL
+	for (auto listener : _listeners)
+	{
+		listener.second->OnMouseScroll(_scrollDelta);
+	}
+	_scrollDelta = 0.0f;
 
 	// KEYBOARD AND MOUSE CLICKS
 	if (::GetKeyboardState(_keyboardState))
@@ -128,6 +140,11 @@ void ColdTable::InputSystem::RemoveListener(IInputListener* listener)
 	if (itr == _listeners.end()) return;
 
 	_listeners.erase(itr);
+}
+
+bool ColdTable::InputSystem::IsKeyDown(EKeyCode keycode)
+{
+	return _keyboardState[keycode] & 0x80;
 }
 
 

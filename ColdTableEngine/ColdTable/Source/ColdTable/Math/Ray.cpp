@@ -1,3 +1,4 @@
+#include <string>
 #include <ColdTable/Math/Ray.h>
 
 #include "ColdTable/Graphics/Renderables/Renderable.h"
@@ -19,6 +20,8 @@ bool ColdTable::Ray::TestIntersection(const RenderablePtr& testTarget, float& in
 	Vec3 OBBpositionWorld = Vec3(modelMat.m_mat[0][3], modelMat.m_mat[1][3], modelMat.m_mat[2][3]);
 
 	Vec3 delta = OBBpositionWorld - _origin;
+
+	//Logger::Log(Logger::LogLevel::Info, (std::to_string(e) + ", " + std::to_string(f)).c_str());
 
 	Vec3 xaxis = Vec3(modelMat.m_mat[0][0], modelMat.m_mat[1][0], modelMat.m_mat[2][0]);
 	float e = xaxis.dot(delta);

@@ -7,6 +7,7 @@
 
 namespace ColdTable
 {
+	enum EKeyCode;
 class InputSystem
 {
 public:
@@ -19,12 +20,14 @@ public:
 	static InputSystem* Instance;
 	static void Initialize();
 
+	void SetScrollWheelDelta(f32 value);
 	void SetWindowFocus(bool value);
 	void CloseGameCallback();
 
 	void Update();
 	void AddListener(IInputListener* listener);
 	void RemoveListener(IInputListener* listener);
+	bool IsKeyDown(EKeyCode keycode);
 
 	bool GameClosing = false;
 
@@ -34,6 +37,7 @@ private:
 	unsigned char _oldKeyboardState[256] = {};
 	Vec2 _oldMousePosition;
 	bool _windowInFocus = true;
+	f32 _scrollDelta;
 
 public:
 	Vec2 _windowPos;

@@ -37,6 +37,11 @@ static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPAR
 		window->OnLoseFocus();
 		break;
 	}
+	case WM_MOUSEWHEEL:
+	{
+		if (ColdTable::InputSystem::Instance != nullptr)
+			ColdTable::InputSystem::Instance->SetScrollWheelDelta(GET_WHEEL_DELTA_WPARAM(wparam));
+	}
 
 	default:
 		return DefWindowProc(hwnd, msg, wparam, lparam);

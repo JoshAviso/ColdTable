@@ -18,3 +18,4 @@ void ColdTable::IInputListener::OnLeftMouseDown(Vec2 pos){}
 void ColdTable::IInputListener::OnRightMouseDown(Vec2 pos){}
 void ColdTable::IInputListener::OnLeftMouseUp(Vec2 pos){}
 void ColdTable::IInputListener::OnRightMouseUp(Vec2 pos){}
+void ColdTable::IInputListener::OnMouseScroll(f32 delta){}

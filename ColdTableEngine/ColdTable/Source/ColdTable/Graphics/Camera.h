@@ -34,13 +34,17 @@ namespace  ColdTable
 		void OnLeftMouseUp(Vec2 pos) override;
 		void OnRightMouseDown(Vec2 pos) override;
 		void OnRightMouseUp(Vec2 pos) override;
+		void OnMouseScroll(f32 delta) override;
 
 	private:
 		ConstantBufferPtr _cameraBuffer;
 		float yRotation = 0;
 		float xRotation = 0;
+		float _camMoveSpeed = 0.1f;
+		float _camSpeedChangeRate = 0.0001f;
 		bool _isControlling = false;
 		bool _leftMouseDown = false;
+		bool _shiftHeldDown = false;
 
 		Rect _windowRectInfo;
 		RenderablePtr selectedObject;

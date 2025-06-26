@@ -35,26 +35,32 @@ ColdTable::Ray ColdTable::Camera::RayFromScreenpoint(Vec2 screenpoint, float dis
 	Vec4 farWorld   = InverseMat * farpoint  ; farWorld /= farWorld.w;
 
 	Vec3 rayDir = Vec3((farWorld - nearWorld).normalize());
-	//Logger::Log(Logger::LogLevel::Info, (std::to_string(farWorld.x) + ", " + std::to_string(farWorld.y) + ", " + std::to_string(farWorld.z)).c_str());
 	return Ray(Vec3(nearWorld), rayDir, distance);
 }
 
+	//Logger::Log(Logger::LogLevel::Info, (std::to_string(farWorld.x) + ", " + std::to_string(farWorld.y) + ", " + std::to_string(farWorld.z)).c_str());
 void ColdTable::Camera::OnKeyDown(int key)
 {
 	if (!_isControlling) return;
 
+	_shiftHeldDown = InputSystem::Instance->IsKeyDown(EKeyCode::SHIFT);
+
+	f32 moveSpeed = _camMoveSpeed;
+	if (_shiftHeldDown)
+		moveSpeed *= 2.0f;
+
 	if (key == 'W')
-		localPosition += localRotation.rotate({0, 0, 0.1});
+		localPosition += localRotation.rotate({0, 0, moveSpeed});
 	if (key == 'S')
-		localPosition += localRotation.rotate({0, 0, -0.1});
+		localPosition += localRotation.rotate({0, 0, -moveSpeed});
 	if (key == 'E')
-		localPosition += localRotation.rotate({0, 0.1, 0});
+		localPosition += localRotation.rotate({0, moveSpeed, 0});
 	if (key == 'Q')
-		localPosition += localRotation.rotate({0, -0.1, 0});
+		localPosition += localRotation.rotate({0, -moveSpeed, 0});
 	if (key == 'D')
-		localPosition += localRotation.rotate({0.1, 0, 0});
+		localPosition += localRotation.rotate({moveSpeed, 0, 0});
 	if (key == 'A')
-		localPosition += localRotation.rotate({-0.1, 0, 0});
+		localPosition += localRotation.rotate({-moveSpeed, 0, 0});
 }
 
 void ColdTable::Camera::OnMouseMove(Vec2 delta)
@@ -108,4 +114,11 @@ void ColdTable::Camera::OnRightMouseDown(Vec2 pos)
 void ColdTable::Camera::OnRightMouseUp(Vec2 pos)
 {
 	_isControlling = false;
+}
+
+void ColdTable::Camera::OnMouseScroll(f32 delta)
+{
+	if (!_isControlling) return;
+	_camMoveSpeed += _camSpeedChangeRate * delta;
+	if (_camMoveSpeed < 0) _camMoveSpeed = 0;
 }
