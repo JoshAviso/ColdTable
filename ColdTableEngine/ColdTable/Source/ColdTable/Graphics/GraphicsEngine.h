@@ -28,6 +28,8 @@ namespace ColdTable
 
 		RenderablePtr CheckHitObject(Ray ray);
 
+		void RegisterUIScreen(UIScreenPtr uiScreen);
+
 		void RegisterRenderable(RenderablePtr renderable);
 		void UnregisterRenderable(RenderablePtr renderable);
 
@@ -71,6 +73,7 @@ namespace ColdTable
 		DeviceContextPtr _deviceContext{};
 
 		std::vector<RenderablePtr> _renderables{};
+		std::vector<UIScreenPtr> _uiScreens{};
 		std::vector<MeshPtr> _meshes{};
 		std::vector<DirectionalLightPtr> _directionalLights{};
 		std::vector<SpotLightPtr> _spotLights{};

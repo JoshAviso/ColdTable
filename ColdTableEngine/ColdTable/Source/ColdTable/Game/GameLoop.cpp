@@ -11,6 +11,7 @@
 #include "ColdTable/Graphics/IndexBuffer.h"
 #include "ColdTable/Graphics/Renderables/Cube.h"
 #include "ColdTable/Graphics/Renderables/Quad.h"
+#include "ColdTable/Graphics/UIScreens/DemoScreen.h"
 #include "ColdTable/Input/InputSystem.h"
 #include "ColdTable/Utility/ComputeShader.h"
 #include "ColdTable/Utility/Utils.h"
@@ -231,7 +232,14 @@ void ColdTable::GameLoop::onInternalStartup()
 			tempWindowSize.width / tempWindowSize.height,
 			0.1f, 100.0f
 		);
-		
+
+
+	UIScreenPtr demoscreen = std::make_shared<DemoScreen>("Demo Screen 1");
+
+	UIScreenPtr demoscreen2 = std::make_shared<DemoScreen>("Demo Screen 2");
+	GraphicsEngine::Instance->RegisterUIScreen(demoscreen);
+	GraphicsEngine::Instance->RegisterUIScreen(demoscreen2);
+
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();

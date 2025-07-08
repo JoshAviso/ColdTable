@@ -59,6 +59,9 @@ namespace ColdTable
 	class IInputListener;
 	using InputListenerPtr = std::shared_ptr<IInputListener>;
 
+	class IUIScreen;
+	using UIScreenPtr = std::shared_ptr<IUIScreen>;
+
 	class Camera;
 	using CameraPtr = std::shared_ptr<Camera>;
 

@@ -205,6 +205,8 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\MeshManager.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\Mesh.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Ray.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\IUIScreen.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\DemoScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Quaternion.h" />
@@ -266,6 +268,8 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imstb_textedit.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imstb_truetype.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Ray.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\IUIScreen.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\DemoScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

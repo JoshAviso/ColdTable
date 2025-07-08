@@ -2,6 +2,7 @@
 #include <ColdTable/Graphics/GraphicsDevice.h>
 #include <ColdTable/Graphics/DeviceContext.h>
 #include <ColdTable/Graphics/VertexBuffer.h>
+#include <ColdTable/Graphics/UIScreens/IUIScreen.h>
 #include <d3dcompiler.h>
 #include <iostream>
 
@@ -24,6 +25,7 @@ ColdTable::GraphicsEngine::GraphicsEngine(const GraphicsEngineDesc& desc): Base(
 ColdTable::GraphicsEngine::~GraphicsEngine()
 {
 }
+
 ColdTable::GraphicsEngine* ColdTable::GraphicsEngine::Instance = nullptr;
 void ColdTable::GraphicsEngine::Initialize(const GraphicsEngineDesc& desc)
 {
@@ -49,6 +51,11 @@ ColdTable::RenderablePtr ColdTable::GraphicsEngine::CheckHitObject(Ray ray)
 		}
 	}
 	return _hit;
+}
+
+void ColdTable::GraphicsEngine::RegisterUIScreen(UIScreenPtr uiScreen)
+{
+	_uiScreens.push_back(uiScreen);
 }
 
 void ColdTable::GraphicsEngine::RegisterRenderable(RenderablePtr renderable)
@@ -157,6 +164,13 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+
+	for (auto uiScreen : _uiScreens)
+	{
+		uiScreen->Render();
+	}
+
+
 	//ImGui::ShowDemoWindow();
 
 	/*
