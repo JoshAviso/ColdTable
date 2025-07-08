@@ -209,6 +209,7 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\IUIScreen.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\DemoScreen.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ShaderLibrary.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\ColorPicker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\AboutScreen.h" />
@@ -274,6 +275,7 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\IUIScreen.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\DemoScreen.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ShaderLibrary.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\ColorPicker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

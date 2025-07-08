@@ -91,10 +91,9 @@ float4 psmain( PS_INPUT input ) : SV_TARGET
     // TEXTURE
     if (hasTexture)
     {
-        //tex_color = Texture.Sample(TextureSampler, input.texcoord * 0.5);
+        tex_color = Texture.Sample(TextureSampler, input.texcoord * 0.5);
     }
         
-    tex_color.xyz *= input.vert_color.xyz;
     tex_color.xyz *= materialTint.xyz;
     
     float3 final_color = final_light * tex_color;

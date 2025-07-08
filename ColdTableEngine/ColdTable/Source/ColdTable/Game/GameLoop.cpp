@@ -17,6 +17,7 @@
 #include "ColdTable/Input/InputSystem.h"
 #include "ColdTable/Utility/ComputeShader.h"
 #include "ColdTable/Utility/Utils.h"
+#include <ColdTable/Graphics/UIScreens/ColorPicker.h>
 
 ColdTable::GameLoop::GameLoop(const GameDesc& desc):
 	Base({desc.base}),
@@ -127,7 +128,7 @@ void ColdTable::GameLoop::onInternalStartup()
 	}
 	*/
 	// TOP ROW
-	CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), ShaderLibrary::GetShader("BasicShader"));
+	CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), woodBox);
 	GraphicsEngine::Instance->RegisterRenderable(cube);
 	//cube->localScale = { 5.0f, 0.01f, 3.0f };
 	cube->localPosition = {0.0f, 2.0f, 0.0f };
@@ -243,7 +244,12 @@ void ColdTable::GameLoop::onInternalStartup()
 	/*GraphicsEngine::Instance->RegisterUIScreen(demoscreen);
 	GraphicsEngine::Instance->RegisterUIScreen(demoscreen2);*/
 
-	GraphicsEngine::Instance->RegisterUIScreen(std::make_shared<AboutScreen>());
+	TexturePtr logoTex =
+		_textureManager->CreateTextureFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Textures\\DLSULogo.png");
+
+	
+	GraphicsEngine::Instance->RegisterUIScreen(std::make_shared<AboutScreen>(logoTex));
+	GraphicsEngine::Instance->RegisterUIScreen(std::make_shared<ColorPicker>("Color Picker"));
 
 
 	IMGUI_CHECKVERSION();

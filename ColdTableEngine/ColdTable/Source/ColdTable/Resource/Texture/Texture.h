@@ -17,7 +17,9 @@ public:
 private:
 	ID3D11Resource* _texture;
 
+public:
 	ID3D11ShaderResourceView* _resourceView = nullptr;
+	int Height, Width;
 
 	friend class DeviceContext;
 };

@@ -9,7 +9,7 @@ class Cube: public Renderable
 {
 public:
 	Cube(IndexBufferPtr indexBuffer, ShaderPtr shader);
-
+	Cube(IndexBufferPtr indexBuffer, MaterialPtr material);
 };
 }
 
