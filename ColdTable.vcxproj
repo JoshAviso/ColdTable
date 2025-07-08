@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AboutScreen.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Camera.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Core\Base.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\ECSEngine.cpp" />
@@ -209,6 +210,7 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\UIScreens\DemoScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AboutScreen.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Quaternion.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Vec2.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Camera.h" />

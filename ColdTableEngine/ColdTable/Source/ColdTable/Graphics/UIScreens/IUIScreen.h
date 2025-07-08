@@ -10,6 +10,9 @@ namespace ColdTable
 
 		void Render();
 
+	public:
+		bool ShowScreen = true;
+
 	protected:
 		std::string _screenName;
 		virtual void DrawUI() = 0;

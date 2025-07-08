@@ -7,6 +7,7 @@
 #include <ColdTable/Game/Display.h>
 #include <ColdTable/Math/Vertex.h>
 
+#include "../../../../../AboutScreen.h"
 #include "ColdTable/Graphics/Camera.h"
 #include "ColdTable/Graphics/IndexBuffer.h"
 #include "ColdTable/Graphics/Renderables/Cube.h"
@@ -235,10 +236,12 @@ void ColdTable::GameLoop::onInternalStartup()
 
 
 	UIScreenPtr demoscreen = std::make_shared<DemoScreen>("Demo Screen 1");
-
 	UIScreenPtr demoscreen2 = std::make_shared<DemoScreen>("Demo Screen 2");
-	GraphicsEngine::Instance->RegisterUIScreen(demoscreen);
-	GraphicsEngine::Instance->RegisterUIScreen(demoscreen2);
+
+	/*GraphicsEngine::Instance->RegisterUIScreen(demoscreen);
+	GraphicsEngine::Instance->RegisterUIScreen(demoscreen2);*/
+
+	GraphicsEngine::Instance->RegisterUIScreen(std::make_shared<AboutScreen>());
 
 
 	IMGUI_CHECKVERSION();
