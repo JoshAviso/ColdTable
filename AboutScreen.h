@@ -16,6 +16,11 @@ namespace ColdTable
 			ImGui::Text("Developed by: Josiah Kurt B. Aviso");
 			ImGui::Separator();
 			ImGui::Text("A simple game engine and editor created in DirectX11.");
+			ImGui::Separator();
+
+			ImGui::Text("Acknowledgements:");
+			ImGui::Text("PardCode - Game Engine Programming YouTube series");
+			ImGui::Text("Dr. Neil Patrick Del Gallego - GDENG03 Professor");
 			if (ImGui::Button("Close"))
 			{
 				ShowScreen = false;
