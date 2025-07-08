@@ -7,7 +7,8 @@
 #include <ColdTable/Game/Display.h>
 #include <ColdTable/Math/Vertex.h>
 
-#include "../../../../../AboutScreen.h"
+#include <ColdTable/Graphics/UIScreens/AboutScreen.h>
+#include <ColdTable/Graphics/ShaderLibrary.h>
 #include "ColdTable/Graphics/Camera.h"
 #include "ColdTable/Graphics/IndexBuffer.h"
 #include "ColdTable/Graphics/Renderables/Cube.h"
@@ -47,12 +48,13 @@ ColdTable::GameLoop::~GameLoop()
 
 void ColdTable::GameLoop::onInternalStartup()
 {
-	tempShader = GraphicsEngine::Instance->CreateShader(L"VertexShader.hlsl", L"PixelShader.hlsl");
+	ShaderLibrary::CreateShader("BasicShader", L"Assets\\Shaders\\VertexShader.hlsl", L"Assets\\Shaders\\PixelShader.hlsl");
+	ShaderLibrary::CreateShader("BlankShader", L"Assets\\Shaders\\VertexShader.hlsl", L"Assets\\Shaders\\BlankPixelShader.hlsl");
 
 	TexturePtr woodTex =
 		_textureManager->CreateTextureFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Textures\\brick.png");
 
-	MaterialPtr woodBox = GraphicsEngine::Instance->CreateMaterial(tempShader);
+	MaterialPtr woodBox = GraphicsEngine::Instance->CreateMaterial(ShaderLibrary::GetShader("BasicShader"));
 	woodBox->SetCullMode(CULL_MODE_BACK);
 	woodBox->AddTexture(woodTex);
 
@@ -125,12 +127,12 @@ void ColdTable::GameLoop::onInternalStartup()
 	}
 	*/
 	// TOP ROW
-	CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+	CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), ShaderLibrary::GetShader("BasicShader"));
 	GraphicsEngine::Instance->RegisterRenderable(cube);
 	//cube->localScale = { 5.0f, 0.01f, 3.0f };
 	cube->localPosition = {0.0f, 2.0f, 0.0f };
 
-	CubePtr cube2 = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), tempShader);
+	CubePtr cube2 = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), ShaderLibrary::GetShader("BlankShader"));
 	GraphicsEngine::Instance->RegisterRenderable(cube2);
 	cube2->localScale = { 10.0f, 0.001f, 10.0f };
 	//cube2->localPosition = { 4.5f, 7.2f, 0.0f };

@@ -29,7 +29,6 @@ namespace ColdTable
 		void onInternalCallback();
 
 	private:
-		ShaderPtr tempShader{};
 		ConstantBufferPtr tempLightBuffer{};
 		ConstantBufferPtr tempObjectBuffer{};
 

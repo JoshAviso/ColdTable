@@ -7,6 +7,7 @@
 #include <ColdTable/Resource/Material/Material.h>
 #include <vector>
 #include <ColdTable/Input/IInputListener.h>
+#include <ColdTable/Math/Ray.h>
 
 namespace ColdTable
 {
