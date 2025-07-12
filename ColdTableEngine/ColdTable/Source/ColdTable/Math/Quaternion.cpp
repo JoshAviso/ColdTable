@@ -82,6 +82,14 @@ ColdTable::Quaternion ColdTable::Quaternion::conjugate() const
 	return Vec4(-x, -y, -z, w);
 }
 
+ColdTable::Quaternion ColdTable::Quaternion::inverse() const
+{
+	float magSqd = this->magnitudeSqrd();
+	if (magSqd == 0.0f) return Quaternion::Zero;
+
+	return this->conjugate() / magSqd;
+}
+
 ColdTable::Vec3 ColdTable::Quaternion::forward() const
 {
 	Vec3 vec = { 0.0, 0.0, 1.0 };

@@ -6,6 +6,7 @@ ColdTable::SpotLight::SpotLight(const LightSourceDesc& desc): LightSource(desc)
 
 void ColdTable::SpotLight::OnLeftMouseDown(Vec2 pos)
 {
+	return;
 	if (tempIsOn)
 	{
 		tempIsOn = false;

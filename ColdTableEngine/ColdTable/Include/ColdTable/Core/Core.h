@@ -53,6 +53,9 @@ namespace ColdTable
 	class Cube;
 	using CubePtr = std::shared_ptr<Cube>;
 
+	class IEditorPickable;
+	using IEditorPickablePtr = std::shared_ptr<IEditorPickable>;
+	
 	class InputSystem;
 	using InputSystemPtr = std::shared_ptr<InputSystem>;
 
@@ -88,4 +91,7 @@ namespace ColdTable
 
 	class Mesh;
 	using MeshPtr = std::shared_ptr<Mesh>;
+
+	class GameObject;
+	using GameObjectPtr = std::shared_ptr<GameObject>;
 }

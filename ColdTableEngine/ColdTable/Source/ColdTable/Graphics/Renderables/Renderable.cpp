@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string>
 #include <ColdTable/Graphics/Renderables/Renderable.h>
 
@@ -60,6 +61,11 @@ void ColdTable::Renderable::LoadVerticesInIndex(const Vertex* vertexList, UINT l
 		_vertexBuffer->LoadVertices(vertexList, sizeof(Vertex), listSize, _material->_shader);
 
 	}
+}
+
+void ColdTable::Renderable::ReloadVertices()
+{
+	_vertexBuffer->UpdateVertexData();
 }
 
 void ColdTable::Renderable::Update(const d64 deltaTime)
@@ -197,15 +203,21 @@ void ColdTable::Renderable::recalcAABB()
 
 	float minX = 1000000.0f, minY = 1000000.0f, minZ = 1000000.0f;
 	float maxX = -1000000.0f, maxY = -1000000.0f, maxZ = -1000000.0f;
-	for (auto vert : _vertexBuffer->_vertices)
+	if (_vertexBuffer->_vertexObjects.size() <= 0)
 	{
-		Vec3 transformedVert = Vec3(modelMat * Vec4(vert));
-		if (transformedVert.x < minX) minX = transformedVert.x;
-		if (transformedVert.y < minY) minY = transformedVert.y;
-		if (transformedVert.z < minZ) minZ = transformedVert.z;
-		if (transformedVert.x > maxX) maxX = transformedVert.x;
-		if (transformedVert.y > maxY) maxY = transformedVert.y;
-		if (transformedVert.z > maxZ) maxZ = transformedVert.z;
+		aabb_max = Vec3(0.0f, 0.0f, 0.0f);
+		aabb_min = Vec3(0.0f, 0.0f, 0.0f);
+		return;
+	}
+	for (auto vert : _vertexBuffer->_vertexObjects)
+	{
+		Vec3 transformedVert = Vec3(modelMat * vert->getActualPos());
+		minX = std::min(transformedVert.x, minX);
+		minY = std::min(transformedVert.y, minY);
+		minZ = std::min(transformedVert.z, minZ);
+		maxX = std::max(transformedVert.x, maxX);
+		maxY = std::max(transformedVert.y, maxY);
+		maxZ = std::max(transformedVert.z, maxZ);
 	}
 	aabb_max = Vec3(maxX, maxY, maxZ);
 	aabb_min = Vec3(minX, minY, minZ);

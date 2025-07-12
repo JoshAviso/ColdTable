@@ -36,6 +36,9 @@ namespace  ColdTable
 		void OnRightMouseUp(Vec2 pos) override;
 		void OnMouseScroll(f32 delta) override;
 
+		Vec3 GetClosestParallelVec(Vec3 checkVec);
+		void RotateHeld(Vec3 rotAxis, float rot);
+
 	private:
 		ConstantBufferPtr _cameraBuffer;
 		float yRotation = 0;
@@ -46,8 +49,16 @@ namespace  ColdTable
 		bool _leftMouseDown = false;
 		bool _shiftHeldDown = false;
 
+		float accumulatedMoveX = 0.0f;
+		float accumulatedMoveY = 0.0f;
+		float accumulatedMoveZ = 0.0f;
+		float accRotX = 0.0f;
+		float accRotY = 0.0f;
+		float accRotZ = 0.0f;
+
 		Rect _windowRectInfo;
-		RenderablePtr selectedObject;
+		IEditorPickablePtr selectedObject;
+		int cubeIndex = 0;
 
 		friend class GraphicsEngine;
 	};

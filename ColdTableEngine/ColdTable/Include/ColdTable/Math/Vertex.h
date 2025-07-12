@@ -2,16 +2,20 @@
 #include <ColdTable/Math/Vec3.h>
 #include <ColdTable/Math/Vec2.h>
 
+#include "ColdTable/Editor/IEditorPickable.h"
+
 namespace ColdTable
 {
 	struct Vertex
 	{
+		public:
 		Vec3 position;
 		Vec2 texcoord;
 		Vec3 normal;
 		Vec3 color;
 		//Vec3 color1;
 
+		Vertex() : position(Vec3::Zero){};
 		explicit Vertex(const Vec3& position) : position(position) {}
 		Vertex(const Vec3& position, const Vec2& texcoord, const Vec3& normal) : position(position), texcoord(texcoord), normal(normal), color(Vec3(1.0f)){}
 		Vertex(const Vec3& position, const Vec2& texcoord, const Vec3& normal, const Vec3& color) : position(position), texcoord(texcoord), normal(normal), color(color) {}
@@ -19,4 +23,6 @@ namespace ColdTable
 		//Vertex(const Vec3& position, const Vec3& color): position(position), color(color), color1(color){}
 		//Vertex(const Vec3& position, const Vec3& color, const Vec3& color1) : position(position), color(color), color1(color1) {}
 	};
+	using VertexPtr = std::shared_ptr<Vertex>;
+
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "ColdTable/Graphics/UIScreens/IUIScreen.h"
+#include "ColdTable/Editor/UIScreens/IUIScreen.h"
 #include "DearImGUI/imgui.h"
 
 class DemoScreen : public ColdTable::IUIScreen

@@ -7,17 +7,20 @@
 #include <ColdTable/Game/Display.h>
 #include <ColdTable/Math/Vertex.h>
 
-#include <ColdTable/Graphics/UIScreens/AboutScreen.h>
 #include <ColdTable/Graphics/ShaderLibrary.h>
+
+#include "ColdTable/ECS/GameObjects/GameObject.h"
+#include "ColdTable/ECS/GameObjects/GameObjectManager.h"
+#include "ColdTable/Editor/EditorUIManager.h"
+#include "ColdTable/Editor/UIScreens/AboutScreen.h"
+#include "ColdTable/Editor/UIScreens/DemoScreen.h"
 #include "ColdTable/Graphics/Camera.h"
 #include "ColdTable/Graphics/IndexBuffer.h"
 #include "ColdTable/Graphics/Renderables/Cube.h"
 #include "ColdTable/Graphics/Renderables/Quad.h"
-#include "ColdTable/Graphics/UIScreens/DemoScreen.h"
 #include "ColdTable/Input/InputSystem.h"
 #include "ColdTable/Utility/ComputeShader.h"
 #include "ColdTable/Utility/Utils.h"
-#include <ColdTable/Graphics/UIScreens/ColorPicker.h>
 
 ColdTable::GameLoop::GameLoop(const GameDesc& desc):
 	Base({desc.base}),
@@ -36,6 +39,8 @@ ColdTable::GameLoop::GameLoop(const GameDesc& desc):
 
 	_textureManager = new TextureManager();
 	_meshManager = new MeshManager();
+
+	EditorUIManager::Initialize(_display.get());
 
 	ColdTableLogInfo("Game initialized.")
 }
@@ -128,15 +133,23 @@ void ColdTable::GameLoop::onInternalStartup()
 	}
 	*/
 	// TOP ROW
-	CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), woodBox);
-	GraphicsEngine::Instance->RegisterRenderable(cube);
+	//GraphicsEngine::Instance->RegisterRenderable(cube);
 	//cube->localScale = { 5.0f, 0.01f, 3.0f };
-	cube->localPosition = {0.0f, 2.0f, 0.0f };
+	//cube->localPosition = {0.0f, 2.0f, 0.0f };
+
+	CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), woodBox);
+	GameObjectPtr cubeObject = GameObjectManager::CreateGameObject("Cube");
+	cubeObject->renderable = cube;
+	cubeObject->transform->position = { 0.0f, 2.0f, 0.0f };
 
 	CubePtr cube2 = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), ShaderLibrary::GetShader("BlankShader"));
-	GraphicsEngine::Instance->RegisterRenderable(cube2);
-	cube2->localScale = { 10.0f, 0.001f, 10.0f };
+	//GraphicsEngine::Instance->RegisterRenderable(cube2);
+	//cube2->localScale = { 10.0f, 0.001f, 10.0f };
 	//cube2->localPosition = { 4.5f, 7.2f, 0.0f };
+
+	GameObjectPtr planeObject = GameObjectManager::CreateGameObject("Plane");
+	planeObject->renderable = cube2;
+	planeObject->transform->scale = { 10.0f, 0.001f, 10.0f };
 
 	/*
 	CubePtr cube2 = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);
@@ -236,31 +249,12 @@ void ColdTable::GameLoop::onInternalStartup()
 			tempWindowSize.width / tempWindowSize.height,
 			0.1f, 100.0f
 		);
-
-
-	UIScreenPtr demoscreen = std::make_shared<DemoScreen>("Demo Screen 1");
-	UIScreenPtr demoscreen2 = std::make_shared<DemoScreen>("Demo Screen 2");
-
-	/*GraphicsEngine::Instance->RegisterUIScreen(demoscreen);
-	GraphicsEngine::Instance->RegisterUIScreen(demoscreen2);*/
-
+	
 	TexturePtr logoTex =
 		_textureManager->CreateTextureFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Textures\\DLSULogo.png");
-
 	
-	GraphicsEngine::Instance->RegisterUIScreen(std::make_shared<AboutScreen>(logoTex));
-	GraphicsEngine::Instance->RegisterUIScreen(std::make_shared<ColorPicker>("Color Picker"));
-
-
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
-	ImGui_ImplWin32_Init(_display->_windowHandle);
-	ImGui_ImplDX11_Init(GraphicsEngine::Instance->_graphicsDevice->_d3dDevice.Get(), GraphicsEngine::Instance->_deviceContext->_context.Get());
-	ImGui::StyleColorsDark();
-
-	ImGuiStyle* style = &ImGui::GetStyle();
-	style->Colors[ImGuiCol_WindowBg] = ImVec4(0, 0, 0, 1.f);
+	dynamic_cast<AboutScreen*>(EditorUIManager::GetScreen("Credits").get())->SetLogo(logoTex);
+	
 }
 
 void ColdTable::GameLoop::onInternalCallback()

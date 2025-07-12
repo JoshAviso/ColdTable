@@ -52,6 +52,7 @@ namespace ColdTable
 		friend class IndexBuffer;
 		friend class Texture;
 		friend class GameLoop;
+		friend class EditorUIManager;
 	};
 }
 

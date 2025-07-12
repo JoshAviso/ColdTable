@@ -2,17 +2,24 @@
 #include <ColdTable/Graphics/GraphicsDevice.h>
 #include <ColdTable/Graphics/DeviceContext.h>
 #include <ColdTable/Graphics/VertexBuffer.h>
-#include <ColdTable/Graphics/UIScreens/IUIScreen.h>
+#include <ColdTable/Editor/UIScreens/IUIScreen.h>
 #include <d3dcompiler.h>
 #include <iostream>
 
 #include "Camera.h"
+#include "ShaderLibrary.h"
+#include "ColdTable/ECS/GameObjects/GameObject.h"
+#include "ColdTable/ECS/GameObjects/GameObjectManager.h"
+#include "ColdTable/Editor/EditorUIManager.h"
 #include "ColdTable/Math/Vertex.h"
+#include "ColdTable/Editor/VertexObject.h"
+#include "ColdTable/Editor/UIScreens/MainMenuUI.h"
 #include "ColdTable/Resource/Mesh/Mesh.h"
 #include "ColdTable/Utility/Utils.h"
 #include "DearImGUI/imgui.h"
 #include "DearImGUI/imgui_impl_dx11.h"
 #include "DearImGUI/imgui_impl_win32.h"
+#include "Renderables/Cube.h"
 
 ColdTable::GraphicsEngine::GraphicsEngine(const GraphicsEngineDesc& desc): Base(desc.base)
 {
@@ -34,28 +41,80 @@ void ColdTable::GraphicsEngine::Initialize(const GraphicsEngineDesc& desc)
 }
 
 
-ColdTable::RenderablePtr ColdTable::GraphicsEngine::CheckHitObject(Ray ray)
+ColdTable::IEditorPickablePtr ColdTable::GraphicsEngine::CheckHitObject(Ray ray)
 {
-	RenderablePtr _hit = nullptr;
+	IEditorPickablePtr _hit = nullptr;
 	closestDist = 1000000.0f;
-	for (auto renderable : _renderables)
+
+	// Check Objects
+	for (GameObjectPtr gameObject : GameObjectManager::Instance->_registeredObjects)
 	{
 		float dist;
-		if (ray.TestIntersection(renderable, dist))
+		auto renderable = gameObject->renderable;
+		Mat4 transform = gameObject->transform->transformMat();
+		if (_pickupMode != EPickableType::PickupVertex)
 		{
-			if (dist < closestDist)
+			if (ray.TestIntersection(gameObject, dist))
 			{
-				closestDist = dist;
-				_hit = renderable;
+				if (dist < closestDist && _pickupMode == EPickableType::PickupObject)
+				{
+					closestDist = dist;
+					_hit = gameObject;
+				}
+				if (_pickupMode == EPickableType::PickupObject) continue;
+
+
+				// Check Faces
+				for (auto face : renderable->_vertexBuffer->_faceObjects)
+				{
+					if (ray.TestIntersection(face, transform, dist))
+					{
+						if (dist < closestDist && _pickupMode == EPickableType::PickupFace)
+						{
+							closestDist = dist;
+							_hit = face;
+						}
+						if (_pickupMode == EPickableType::PickupFace) continue;
+
+						// Check Edges
+						for (auto edge : face->_edges)
+						{
+							if (ray.TestIntersection(edge, transform, dist))
+							{
+								if (dist < closestDist && _pickupMode == EPickableType::PickupEdge)
+								{
+									closestDist = dist;
+									_hit = edge;
+								}
+
+							}
+						}
+					}
+				}
+			}
+		}
+		// Check Vertices
+		if (_pickupMode == EPickableType::PickupVertex)
+		{
+			for (auto vertObj : renderable->_vertexBuffer->_vertexObjects)
+			{
+				if (ray.TestIntersection(vertObj, transform, dist))
+				{
+					if (dist < closestDist)
+					{
+						closestDist = dist;
+						_hit = vertObj;
+					}
+				}
 			}
 		}
 	}
 	return _hit;
 }
 
-void ColdTable::GraphicsEngine::RegisterUIScreen(UIScreenPtr uiScreen)
+void ColdTable::GraphicsEngine::SetPickupMode(EPickableType mode)
 {
-	_uiScreens.push_back(uiScreen);
+	_pickupMode = mode;
 }
 
 void ColdTable::GraphicsEngine::RegisterRenderable(RenderablePtr renderable)
@@ -161,38 +220,6 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 {
 	screensize = viewportSize;
 
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
-	for (auto uiScreen : _uiScreens)
-	{
-		uiScreen->Render();
-	}
-
-
-	//ImGui::ShowDemoWindow();
-
-	/*
-	ImDrawList* drawList = ImGui::GetWindowDrawList();
-	ImU32 color = IM_COL32(255, 0, 0, 255);
-	for (CircleObject& circle : _circles)
-	{
-		Vec2 normalizeCircleVec = circle.circleVec.normalize();
-		Vec2 tempCirclePos = circle.circlePos + (normalizeCircleVec * circleSpeed);
-		if (tempCirclePos.x + circleRad > viewportSize.width || tempCirclePos.x - circleRad < 0)
-			circle.circleVec.x = -circle.circleVec.x;
-		else if (tempCirclePos.y + circleRad > viewportSize.height || tempCirclePos.y - circleRad < 0)
-			circle.circleVec.y = -circle.circleVec.y;
-
-		circle.circlePos = tempCirclePos;
-		ImVec2 circlepos{ circle.circlePos.x, circle.circlePos.y};
-		drawList->AddCircleFilled(circlepos, circleRad, color);
-	}
-	*/
-
-	ImGui::Render();
-
 	auto& context = *_deviceContext;
 	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});
 	context.SetViewportSize(viewportSize);
@@ -279,29 +306,62 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 		context.Draw(mesh);
 	}
 
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-	auto& device = *_graphicsDevice;
-	device.ExecuteCommandList(context);
+	// Draw Game Objects
+	if (GameObjectManager::Instance != nullptr)
+	{
+		for (const GameObjectPtr& gameObject : GameObjectManager::Instance->_registeredObjects)
+		{
+			RenderablePtr renderable = gameObject->renderable;
+			if (renderable == nullptr) continue;
+			renderable->Update(EngineTime::GetDeltaTime());
 
-	/*
-	bool myToolActive;
-	ImGui::Begin("Hello World", &myToolActive, ImGuiWindowFlags_MenuBar);
+			PerObjectBufferContent objectBuffer{
+				gameObject->transform->transformMat(),
+				Vec3(1.0, 1.0, 1.0),
+				false
+			};
 
-	if (ImGui::BeginMenuBar()) {
+			if (renderable->_material != nullptr)
+			{
+				renderable->_material->SetData(&objectBuffer, sizeof(PerObjectBufferContent));
+				_deviceContext->BindConstantBuffer(renderable->_material->_constantBuffer, 2);
+			}
+			else
+			{
+				perObjectBuffer->Update(&*_deviceContext, &objectBuffer);
+				_deviceContext->BindConstantBuffer(perObjectBuffer, 2);
 
-		if (ImGui::BeginMenu("File")) {
-
-			ImGui::EndMenu();
+			}
+			context.Draw(renderable);
 		}
-
-		ImGui::EndMenuBar();
 	}
 
-	ImGui::End();
-	*/
-
-
+	RenderUI();
+	
+	auto& device = *_graphicsDevice;
+	device.ExecuteCommandList(context);
+	
 	swapChain.Present();
+}
+
+void ColdTable::GraphicsEngine::RenderUI()
+{
+	ImGui_ImplWin32_NewFrame();
+	ImGui_ImplDX11_NewFrame();
+	ImGui::NewFrame();
+
+	MainMenuUI::DrawUI();
+	for (auto uiScreen : EditorUIManager::Instance->_screenList)
+	{
+		if (!uiScreen->ShowScreen) continue;
+
+		ImGui::Begin(uiScreen->ScreenName.c_str());
+		uiScreen->DrawUI();
+		ImGui::End();
+	}
+
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
 void ColdTable::GraphicsEngine::DispatchComputeShader(ComputeShaderPtr computeShader, UINT xThreads, UINT yThreads,
@@ -350,6 +410,7 @@ void ColdTable::GraphicsEngine::OnKeyDown(int key)
 	{
 		InputSystem::Instance->CloseGameCallback();
 	}
+
 }
 
 void ColdTable::GraphicsEngine::SetViewportSize(Rect size)

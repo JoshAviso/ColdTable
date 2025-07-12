@@ -1,5 +1,5 @@
 #pragma once
-#include <ColdTable/Graphics/UIScreens/IUIScreen.h>
+#include <ColdTable/Editor/UIScreens/IUIScreen.h>
 
 namespace ColdTable {
 

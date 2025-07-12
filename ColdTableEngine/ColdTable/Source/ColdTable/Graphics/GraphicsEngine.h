@@ -9,6 +9,8 @@
 #include <ColdTable/Input/IInputListener.h>
 #include <ColdTable/Math/Ray.h>
 
+#include "ColdTable/Editor/IEditorPickable.h"
+
 namespace ColdTable
 {
 	struct CircleObject
@@ -16,7 +18,7 @@ namespace ColdTable
 		Vec2 circleVec{ 1, 1 };
 		Vec2 circlePos{ 0,0 };
 	};
-
+	
 	class GraphicsEngine final: public Base , public IInputListener
 	{
 	public:
@@ -27,9 +29,8 @@ namespace ColdTable
 		static GraphicsEngine* Instance;
 		static void Initialize(const GraphicsEngineDesc& desc);
 
-		RenderablePtr CheckHitObject(Ray ray);
-
-		void RegisterUIScreen(UIScreenPtr uiScreen);
+		IEditorPickablePtr CheckHitObject(Ray ray);
+		void SetPickupMode(EPickableType mode);
 
 		void RegisterRenderable(RenderablePtr renderable);
 		void UnregisterRenderable(RenderablePtr renderable);
@@ -67,6 +68,8 @@ namespace ColdTable
 		void UseShader(const ShaderPtr& shader);
 		void Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr perObjectBuffer, ConstantBufferPtr lightBuffer, Rect viewportSize);
 
+		void RenderUI();
+		
 		void DispatchComputeShader(ComputeShaderPtr computeShader, UINT xThreads, UINT yThreads, UINT zThreads);
 		void AwaitComputeShaderFinish();
 
@@ -74,7 +77,6 @@ namespace ColdTable
 		DeviceContextPtr _deviceContext{};
 
 		std::vector<RenderablePtr> _renderables{};
-		std::vector<UIScreenPtr> _uiScreens{};
 		std::vector<MeshPtr> _meshes{};
 		std::vector<DirectionalLightPtr> _directionalLights{};
 		std::vector<SpotLightPtr> _spotLights{};
@@ -96,11 +98,15 @@ namespace ColdTable
 
 		Rect screensize{};
 
+
 		void OnKeyUp(int key) override;
 		void OnKeyDown(int key) override;
 
 	public:
+		EPickableType _pickupMode = EPickableType::PickupObject;
 		float closestDist;
+
+		friend class EditorUIManager;
 	};
 }
 

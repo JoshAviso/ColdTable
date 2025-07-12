@@ -48,6 +48,7 @@ namespace ColdTable {
 		friend class GraphicsEngine;
 		friend class ComputeShader;
 		friend class GameLoop;
+		friend class EditorUIManager;
 	};
 }
 

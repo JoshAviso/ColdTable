@@ -8,6 +8,7 @@
 #include "ColdTable/Input/IInputListener.h"
 #include "ColdTable/Resource/Mesh/MeshManager.h"
 #include "ColdTable/Resource/Texture/TextureManager.h"
+#include <ColdTable/Editor/UIScreens/AboutScreen.h>
 
 #include "DearImGUI/imgui.h"
 #include "DearImGUI/imgui_impl_dx11.h"

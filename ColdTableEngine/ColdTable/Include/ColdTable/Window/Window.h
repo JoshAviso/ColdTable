@@ -20,6 +20,7 @@ namespace ColdTable
 		Rect _size;
 
 		friend class GameLoop;
+		friend class EditorUIManager;
 	};
 } 
 

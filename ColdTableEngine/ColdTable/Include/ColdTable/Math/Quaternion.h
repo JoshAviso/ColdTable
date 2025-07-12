@@ -28,6 +28,7 @@ namespace ColdTable
 		explicit operator Mat4() const;
 		Mat4 asMat() const;
 		Quaternion conjugate() const;
+		Quaternion inverse() const;
 		Vec3 forward() const;
 
 		bool operator == (const Quaternion& q) const;

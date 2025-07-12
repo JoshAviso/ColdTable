@@ -1,6 +1,7 @@
 #pragma once
 
 #include <intsafe.h>
+#include <vector>
 #include <ColdTable/Core/Base.h>
 #include <ColdTable/Core/Common.h>
 #include <ColdTable/Math/Vertex.h>
@@ -8,7 +9,9 @@
 #include <ColdTable/Math/Mat4.h>
 #include <ColdTable/Math/Quaternion.h>
 
+#include "ColdTable/Editor/FaceObject.h"
 #include "ColdTable/Input/IInputListener.h"
+#include "ColdTable/Editor/IEditorPickable.h"
 
 namespace ColdTable
 {
@@ -21,7 +24,7 @@ namespace ColdTable
 		//ShaderPtr shader;
 	};
 
-	class Renderable : public IInputListener
+	class Renderable : public IInputListener, public std::enable_shared_from_this<Renderable>
 	{
 	public:
 		explicit Renderable(const RenderableDesc& desc);
@@ -30,9 +33,11 @@ namespace ColdTable
 
 		virtual void LoadVertices(const Vertex* vertexList, UINT listSize);
 		virtual void LoadVerticesInIndex(const Vertex* vertexList, UINT listSize, const IndexBufferPtr& indexBuffer);
+		void ReloadVertices();
 		virtual void Update(const d64 deltaTime);
 		void SetShader(ShaderPtr shader);
 		void SetTexture(TexturePtr texture);
+
 
 	public:
 		Vec3 localPosition = Vec3::Zero;
@@ -55,6 +60,7 @@ namespace ColdTable
 		TexturePtr _texture = nullptr;
 
 		const Vertex* vertexListRef;
+		std::vector<FaceObjectPtr> _faceObjects{};
 
 		bool tempMovingVertical = false;
 		bool tempMovingPositive = true;
@@ -77,6 +83,9 @@ namespace ColdTable
 		friend class DeviceContext;
 		friend class GraphicsEngine;
 		friend class Ray;
+		friend class VertexObject;
+		friend class EdgeObject;
+		friend class FaceObject;
 	};
 }
 

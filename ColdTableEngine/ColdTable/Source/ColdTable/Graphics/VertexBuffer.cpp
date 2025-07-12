@@ -17,6 +17,7 @@ ColdTable::VertexBuffer::~VertexBuffer()
 
 void ColdTable::VertexBuffer::LoadVertices(const void* list, UINT vertexSize, UINT listSize, ShaderPtr shader)
 {
+	_shader = shader;
 	if (_buffer) _buffer->Release();
 	if (_layout) _layout->Release();
 	_vertices.clear();
@@ -55,8 +56,66 @@ void ColdTable::VertexBuffer::LoadVertices(const void* list, UINT vertexSize, UI
 	const Vertex* vert = static_cast<const Vertex*>(list);
 	for (int i = 0; i < listSize; i++)
 	{
-		_vertices.push_back(Vec3((vert + i)->position));
+		VertexPtr vertex = std::make_shared<Vertex>( (vert + i)->position, (vert + i)->texcoord, (vert + i)->normal, (vert + i)->color );
+		_vertices.push_back(vertex);
+		_stagingVerts.push_back(*vertex);
 	}
+
+	// Create staging buffer
+	D3D11_BUFFER_DESC stagingDesc{};
+	stagingDesc.Usage = D3D11_USAGE_STAGING;
+	stagingDesc.ByteWidth = _vertexSize * _listSize;
+	stagingDesc.BindFlags = 0;
+	stagingDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	stagingDesc.MiscFlags = 0;
+
+	_stagingBuffer = nullptr;
+	ColdTableGraphicsLogThrowOnFail(
+		shader->_sourceDevice->_d3dDevice->CreateBuffer(&stagingDesc, nullptr, &_stagingBuffer),
+		"Create staging buffer fail.");
+}
+
+void ColdTable::VertexBuffer::UpdateVertexData()
+{
+	if (!_canUpdateVertex || !_isDirty || !_stagingBuffer) return;
+
+	// Copy vertex data on GPU to staging buffer
+	_shader->_sourceDevice->_d3dContext->CopyResource(_stagingBuffer, _buffer);
+	_shader->_sourceDevice->_d3dContext->Flush();
+
+	// Create Mapped Resource
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+
+	// Disable GPU access by mapping resource of staging buffer
+	_shader->_sourceDevice->_d3dContext->Map(_stagingBuffer, 0, D3D11_MAP_READ, 0, &mappedResource);
+
+	// Reset staging vertices
+	for (int i = 0; i < _vertices.size(); i++)
+	{
+		//Logger::Log(Logger::LogLevel::Info, ("Staging vert1: " + _stagingVerts[i].position.toString()).c_str());
+		_stagingVerts[i] = (*(_vertices[i]));
+	}
+
+	// Calculate and Update the vertex buffer
+	for (auto vertObj : _vertexObjects)
+	{
+		for (auto vertIndex : vertObj->_vertexIndices)
+		{
+			_stagingVerts[vertIndex].position = vertObj->getActualPos();
+		}
+	}
+
+	Vertex* bufferVertex = reinterpret_cast<Vertex*>(mappedResource.pData);
+	for (UINT i = 0; i < _listSize; i++)
+	{
+		bufferVertex[i] = _stagingVerts[i];
+		//Logger::Log(Logger::LogLevel::Info, _stagingVerts[i].position.toString().c_str());
+	}
+	_shader->_sourceDevice->_d3dContext->UpdateSubresource(_buffer, NULL, NULL, (void*)bufferVertex, NULL, NULL);
+
+	// Re-enable GPU access
+	_shader->_sourceDevice->_d3dContext->Unmap(_stagingBuffer, 0);
 }
 
 UINT ColdTable::VertexBuffer::GetVertexCount()

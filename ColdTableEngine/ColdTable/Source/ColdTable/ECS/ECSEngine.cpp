@@ -7,8 +7,6 @@ ColdTable::ECSEngine::ECSEngine(const ECSEngineDesc& desc) : Base(desc.base)
 
 ColdTable::ECSEngine::~ECSEngine()
 {
-	for (auto object : _registeredObjects)
-		delete object;
 	for (auto system : _registeredSystems) 
 		delete system;
 }
