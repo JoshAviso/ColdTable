@@ -2,6 +2,8 @@
 
 #include "GameObjectManager.h"
 #include "ColdTable/Core/Logger.h"
+#include "ColdTable/Graphics/VertexBuffer.h"
+#include "ColdTable/Graphics/Renderables/Renderable.h"
 
 ColdTable::GameObject::GameObject(String name): name(name), renderable(0), transform(new Transform())
 {
@@ -31,6 +33,13 @@ void ColdTable::GameObject::Translate(Vec3 translation)
 
 void ColdTable::GameObject::Rotate(Vec3 axis, float degree)
 {
-	Logger::Log(Logger::LogLevel::Info, axis.toString().c_str());
 	transform->rotation.rotate(axis, degree);
+}
+
+void ColdTable::GameObject::Scale(Vec3 scale)
+{
+	for (auto face : renderable->_vertexBuffer->_faceObjects)
+	{
+		face->Scale(scale);
+	}
 }

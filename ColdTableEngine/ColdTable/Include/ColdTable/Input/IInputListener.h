@@ -12,7 +12,10 @@ namespace ColdTable
 		DELETE_KEY = VK_DELETE,
 		BACKSPACE = VK_BACK,
 		ESCAPE_KEY = VK_ESCAPE,
-		SHIFT = VK_SHIFT
+		SHIFT = VK_SHIFT,
+		CTRL = VK_CONTROL,
+		LCTRL = VK_LCONTROL,
+		RCTRL = VK_RCONTROL
 	};
 
 class IInputListener

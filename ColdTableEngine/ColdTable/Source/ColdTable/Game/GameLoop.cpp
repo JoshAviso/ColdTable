@@ -140,17 +140,19 @@ void ColdTable::GameLoop::onInternalStartup()
 	CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), woodBox);
 	GameObjectPtr cubeObject = GameObjectManager::CreateGameObject("Cube");
 	cubeObject->renderable = cube;
-	cubeObject->transform->position = { 0.0f, 2.0f, 0.0f };
+	//cubeObject->transform->position = { 0.0f, 2.0f, 0.0f };
 
 	CubePtr cube2 = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), ShaderLibrary::GetShader("BlankShader"));
 	//GraphicsEngine::Instance->RegisterRenderable(cube2);
 	//cube2->localScale = { 10.0f, 0.001f, 10.0f };
 	//cube2->localPosition = { 4.5f, 7.2f, 0.0f };
 
+	/*
+	 *
 	GameObjectPtr planeObject = GameObjectManager::CreateGameObject("Plane");
 	planeObject->renderable = cube2;
 	planeObject->transform->scale = { 10.0f, 0.001f, 10.0f };
-
+	*/
 	/*
 	CubePtr cube2 = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);
 	CubePtr cube3 = std::make_shared<Cube>(_graphicsEngine->CreateIndexBuffer(), tempShader);

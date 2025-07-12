@@ -62,6 +62,13 @@ void ColdTable::Quaternion::rotateLocal(const Vec3& localAxis, const f32 angle)
 	*this = *this * Quaternion({ localAxis }, angle);
 }
 
+void ColdTable::Quaternion::rotateWorld(const Vec3& worldAxis, const f32 angle)
+{
+	Vec3 newAxis = (Vec3)(this->inverse() * worldAxis * *this);
+	Quaternion q = Quaternion(newAxis, angle);
+	*this = q * *this;
+}
+
 ColdTable::Quaternion::operator ColdTable::Mat4() const
 {
 	return {

@@ -19,6 +19,7 @@ public:
 	~GameObject();
 	void Translate(Vec3 translation) override;
 	void Rotate(Vec3 axis, float degree) override;
+	void Scale(Vec3 scale) override;
 
 };
 }

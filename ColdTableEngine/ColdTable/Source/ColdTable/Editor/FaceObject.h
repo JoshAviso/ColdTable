@@ -19,6 +19,7 @@ namespace ColdTable
 		void RecalcAABB();
 		void Translate(Vec3 translation) override;
 		void Rotate(Vec3 axis, float degree) override;
+		void Scale(Vec3 scale) override;
 
 		Vec3 aabb_min{};
 		Vec3 aabb_max{};

@@ -49,6 +49,7 @@ namespace ColdTable
 		friend class FaceObject;
 		friend class Cylinder;
 		friend class Stair;
+		friend class GameObject;
 	};
 }
  

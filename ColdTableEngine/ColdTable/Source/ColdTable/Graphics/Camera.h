@@ -38,6 +38,7 @@ namespace  ColdTable
 
 		Vec3 GetClosestParallelVec(Vec3 checkVec);
 		void RotateHeld(Vec3 rotAxis, float rot);
+		void ScaleHeld();
 
 	private:
 		ConstantBufferPtr _cameraBuffer;
@@ -48,6 +49,7 @@ namespace  ColdTable
 		bool _isControlling = false;
 		bool _leftMouseDown = false;
 		bool _shiftHeldDown = false;
+		bool _ctrlHeldDown = false;
 
 		float accumulatedMoveX = 0.0f;
 		float accumulatedMoveY = 0.0f;
@@ -55,6 +57,7 @@ namespace  ColdTable
 		float accRotX = 0.0f;
 		float accRotY = 0.0f;
 		float accRotZ = 0.0f;
+		float accScaling = 0.0f;
 
 		Rect _windowRectInfo;
 		IEditorPickablePtr selectedObject;

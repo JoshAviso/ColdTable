@@ -15,5 +15,6 @@ namespace ColdTable
 
         virtual void Translate(Vec3 translation) = 0;
         virtual void Rotate(Vec3 axis, float degree) = 0;
+        virtual void Scale(Vec3 scale) = 0;
     };
 }

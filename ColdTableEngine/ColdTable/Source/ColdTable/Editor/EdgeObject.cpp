@@ -35,6 +35,18 @@ void ColdTable::EdgeObject::Translate(Vec3 translation)
 
 void ColdTable::EdgeObject::Rotate(Vec3 axis, float degree)
 {
+	transform.rotation.rotateWorld(axis, degree);
+}
+
+void ColdTable::EdgeObject::Scale(Vec3 scale)
+{
+	transform.scale += scale;
+	_vert1->_owner->_canUpdateVertex = true;
+	_vert1->_owner->_isDirty = true;
+	_vert1->_owner->UpdateVertexData();
+	_vert2->_owner->_canUpdateVertex = true;
+	_vert2->_owner->_isDirty = true;
+	_vert2->_owner->UpdateVertexData();
 }
 
 void ColdTable::EdgeObject::AddFace(FaceObject* face)

@@ -111,7 +111,30 @@ void ColdTable::FaceObject::Translate(Vec3 translation)
 
 void ColdTable::FaceObject::Rotate(Vec3 axis, float degree)
 {
+	transform.rotation.rotateWorld(axis, degree);
+}
 
+void ColdTable::FaceObject::Scale(Vec3 scale)
+{
+	transform.scale += scale;
+
+	std::vector<VertexObjectPtr> vertlist;
+	for (auto& edge : _edges)
+	{
+		VertexObjectPtr v1 = edge->_vert1;
+		VertexObjectPtr v2 = edge->_vert2;
+		if (std::find(vertlist.begin(), vertlist.end(), v1) == vertlist.end())
+			vertlist.push_back(v1);
+		if (std::find(vertlist.begin(), vertlist.end(), v2) == vertlist.end())
+			vertlist.push_back(v2);
+	}
+
+	for (auto vertexObject : vertlist)
+	{
+		vertexObject->_owner->_canUpdateVertex = true;
+		vertexObject->_owner->_isDirty = true;
+		vertexObject->_owner->UpdateVertexData();
+	}
 }
 
 ColdTable::Mat4 ColdTable::FaceObject::currentTransform()

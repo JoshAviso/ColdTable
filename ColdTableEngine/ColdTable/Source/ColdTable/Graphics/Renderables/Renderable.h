@@ -86,6 +86,7 @@ namespace ColdTable
 		friend class VertexObject;
 		friend class EdgeObject;
 		friend class FaceObject;
+		friend class GameObject;
 	};
 }
 

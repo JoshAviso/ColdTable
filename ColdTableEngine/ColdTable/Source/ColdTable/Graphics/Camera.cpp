@@ -55,7 +55,8 @@ void ColdTable::Camera::OnKeyDown(int key)
 
 	}
 	_shiftHeldDown = InputSystem::Instance->IsKeyDown(EKeyCode::SHIFT);
-	if (_shiftHeldDown && !_isControlling)
+	_ctrlHeldDown = InputSystem::Instance->IsKeyDown(EKeyCode::CTRL);
+	if (!_isControlling)
 	{
 		float rotSpeed = 10.0f;
 		if (key == 'W') RotateHeld(Vec3::Right, -rotSpeed);
@@ -97,7 +98,7 @@ void ColdTable::Camera::OnMouseMove(Vec2 delta)
 		accumulatedMoveX += yVec.x + xVec.x;
 		accumulatedMoveY += yVec.y + xVec.y;
 
-		if (GameObjectManager::Instance == nullptr)
+		if (GameObjectManager::Instance == nullptr || !_ctrlHeldDown)
 		{
 			selectedObject->Translate(Vec3::Up * accumulatedMoveY);
 			selectedObject->Translate(Vec3::Right * accumulatedMoveX);
@@ -206,8 +207,19 @@ void ColdTable::Camera::OnMouseScroll(f32 delta)
 	{
 		_camMoveSpeed += _camSpeedChangeRate * delta;
 		if (_camMoveSpeed < 0) _camMoveSpeed = 0;
+		accScaling = 0.0f;
 		return;
 	}
+
+	if (selectedObject == nullptr)
+	{
+		accScaling = 0.0f;
+		return;
+	}
+
+	accScaling += delta * 0.01f;
+	ScaleHeld();
+
 }
 
 ColdTable::Vec3 ColdTable::Camera::GetClosestParallelVec(Vec3 checkVec)
@@ -235,9 +247,9 @@ void ColdTable::Camera::RotateHeld(Vec3 rotAxis, float rot)
 {
 	if (selectedObject != nullptr)
 	{
-		if (GameObjectManager::Instance == nullptr)
+		if (GameObjectManager::Instance == nullptr || !_ctrlHeldDown)
 		{
-
+			selectedObject->Rotate(rotAxis, rot);
 		}
 		else
 		{
@@ -281,6 +293,31 @@ void ColdTable::Camera::RotateHeld(Vec3 rotAxis, float rot)
 					selectedObject->Rotate(Vec3::Back, gridSnapping);
 				}
 			}
+		}
+	}
+}
+
+void ColdTable::Camera::ScaleHeld()
+{
+	if (GameObjectManager::Instance == nullptr || !_ctrlHeldDown)
+	{
+		selectedObject->Scale(Vec3(accScaling));
+		accScaling = 0.0f;
+	} else
+	{
+		float snapping = GameObjectManager::Instance->scaleSnapping;
+		while (abs(accScaling) >= snapping)
+		{
+			if (accScaling >= 0) {
+				accScaling -= snapping;
+				selectedObject->Scale(Vec3(snapping, snapping, snapping));
+			}
+			else {
+				accScaling += snapping;
+				selectedObject->Scale(Vec3(-snapping, -snapping, -snapping));
+			}
+
+
 		}
 	}
 }

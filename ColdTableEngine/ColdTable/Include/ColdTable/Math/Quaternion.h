@@ -42,5 +42,6 @@ namespace ColdTable
 		void rotate(const Vec3& worldAxis, const f32 angle);
 
 		void rotateLocal(const Vec3& localAxis, const f32 angle);
+		void rotateWorld(const Vec3& worldAxis, const f32 angle);
 	};
 }

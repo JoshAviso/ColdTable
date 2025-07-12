@@ -54,6 +54,10 @@ void ColdTable::VertexObject::Rotate(Vec3 axis, float degree)
 	_owner->UpdateVertexData();
 }
 
+void ColdTable::VertexObject::Scale(Vec3 scale)
+{
+}
+
 ColdTable::Vec3 ColdTable::VertexObject::getActualPos()
 {
 	Vec3 transformedVec = (Vec3)(	transform.transformMat() * vert()->position.asTranslationMatrix().inverse() * vert()->position);
