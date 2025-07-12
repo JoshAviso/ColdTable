@@ -401,3 +401,4 @@ FodyWeavers.xsd
 *.sln.iml
 x64/Debug/ColdTable.pdb
 x64/Debug/ColdTable.pdb
+/x64/Debug
