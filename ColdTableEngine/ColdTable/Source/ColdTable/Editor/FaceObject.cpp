@@ -17,7 +17,7 @@ ColdTable::FaceObject::FaceObject(EdgeObjectPtr edge1, EdgeObjectPtr edge2, Edge
 	Vec3 originalCenter = (edge1->originalTransform.position + edge2->originalTransform.position + edge3->originalTransform.position) * 1.0f / 3.0f;
 	Quaternion origRot = Quaternion::Identity;
 	originalTransform.position = originalCenter;
-	originalTransform.rotation = origRot;
+	originalTransform.rotation = Vec3::Zero;
 	transform = originalTransform;
 
 	edge1->AddFace(this);
@@ -35,7 +35,7 @@ ColdTable::FaceObject::FaceObject(EdgeObjectPtr edge1, EdgeObjectPtr edge2, Edge
 	Vec3 originalCenter = (edge1->originalTransform.position + edge2->originalTransform.position + edge3->originalTransform.position + edge4->originalTransform.position) * 0.25f;
 	Quaternion origRot = Quaternion::Identity;
 	originalTransform.position = originalCenter;
-	originalTransform.rotation = origRot;
+	originalTransform.rotation = Vec3::Zero;
 	transform = originalTransform;
 
 	edge1->AddFace(this);
@@ -58,7 +58,7 @@ void ColdTable::FaceObject::AddEdge(EdgeObjectPtr edge)
 
 	Quaternion origRot = Quaternion::Identity;
 	originalTransform.position = originalCenter;
-	originalTransform.rotation = origRot;
+	originalTransform.rotation = Vec3::Zero;
 	transform = originalTransform;
 }
 
@@ -83,8 +83,6 @@ void ColdTable::FaceObject::RecalcAABB()
 	}
 	aabb_min = Vec3(minX, minY, minZ);
 	aabb_max = Vec3(maxX, maxY, maxZ);
-	Logger::Log(Logger::LogLevel::Info, aabb_max.toString().c_str());
-	Logger::Log(Logger::LogLevel::Info, aabb_min.toString().c_str());
 }
 
 void ColdTable::FaceObject::Translate(Vec3 translation)
@@ -111,7 +109,7 @@ void ColdTable::FaceObject::Translate(Vec3 translation)
 
 void ColdTable::FaceObject::Rotate(Vec3 axis, float degree)
 {
-	transform.rotation.rotateWorld(axis, degree);
+	transform.rotation += axis * degree;
 }
 
 void ColdTable::FaceObject::Scale(Vec3 scale)
@@ -149,5 +147,5 @@ ColdTable::Mat4 ColdTable::FaceObject::currentTransform()
 		runningTotal += (vert1 + vert2) * 0.5f;
 	}
 	Vec3 center = runningTotal / (float)_edges.size();
-	return transform.rotation.asMat() * center.asTranslationMatrix();
+	return center.asTranslationMatrix();
 }

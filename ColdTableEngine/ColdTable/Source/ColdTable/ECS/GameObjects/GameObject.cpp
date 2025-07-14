@@ -33,7 +33,7 @@ void ColdTable::GameObject::Translate(Vec3 translation)
 
 void ColdTable::GameObject::Rotate(Vec3 axis, float degree)
 {
-	transform->rotation.rotate(axis, degree);
+	transform->rotation += axis * degree;
 }
 
 void ColdTable::GameObject::Scale(Vec3 scale)

@@ -5,7 +5,10 @@
 ColdTable::Mat4 ColdTable::Transform::transformMat() const
 {
 	return
-		scale.asScaleMatrix() *
-		rotation.asMat() *
-		position.asTranslationMatrix();
+		position.asTranslationMatrix() *
+		Quaternion(Vec3::Forward, rotation.z).asMat() *
+		Quaternion(Vec3::Up, rotation.y).asMat() *
+		Quaternion(Vec3::Right, rotation.x).asMat() *
+		scale.asScaleMatrix()
+	;
 }

@@ -7,7 +7,7 @@ ColdTable::EdgeObject::EdgeObject(VertexObjectPtr vert1, VertexObjectPtr vert2) 
 	Vec3 originalCenter = (vert1->transform.position + vert2->transform.position) * 0.5f;
 	Quaternion origRot = Quaternion::Identity;
 	originalTransform.position = originalCenter;
-	originalTransform.rotation = origRot;
+	originalTransform.rotation = Vec3::Zero;
 	transform = originalTransform;
 
 	vert1->AddEdge(this);
@@ -35,7 +35,7 @@ void ColdTable::EdgeObject::Translate(Vec3 translation)
 
 void ColdTable::EdgeObject::Rotate(Vec3 axis, float degree)
 {
-	transform.rotation.rotateWorld(axis, degree);
+	transform.rotation += axis * degree;
 }
 
 void ColdTable::EdgeObject::Scale(Vec3 scale)

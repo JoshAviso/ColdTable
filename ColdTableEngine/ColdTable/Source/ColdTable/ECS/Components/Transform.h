@@ -9,7 +9,7 @@ namespace ColdTable
 	public:
 		Vec3 position	= Vec3::Zero;
 		Vec3 scale		= Vec3::Identity;
-		Quaternion rotation	= Quaternion::Identity;
+		Vec3 rotation	= Vec3::Zero;
 
 		Mat4 transformMat() const;
 	};

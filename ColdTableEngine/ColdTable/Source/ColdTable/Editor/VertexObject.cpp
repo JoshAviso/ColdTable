@@ -48,7 +48,7 @@ void ColdTable::VertexObject::Translate(Vec3 translation)
 void ColdTable::VertexObject::Rotate(Vec3 axis, float degree)
 {
 	Quaternion rotation(axis, degree);
-	transform.rotation.rotate(rotation);
+	transform.rotation += axis * degree;
 	_owner->_canUpdateVertex = true;
 	_owner->_isDirty = true;
 	_owner->UpdateVertexData();
