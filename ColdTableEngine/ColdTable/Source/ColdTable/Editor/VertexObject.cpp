@@ -64,6 +64,9 @@ ColdTable::Vec3 ColdTable::VertexObject::getActualPos()
 
 	std::vector<FaceObject*> intersectingFaces;
 	Vec3 blendedVecToEdges = Vec3::Zero;
+	Vec3 accumulatedTranslation = Vec3::Zero;
+	Vec3 accumulatedScaling = Vec3::Identity;
+	Mat4 accRotMat = Mat4::Identity;
 	for (auto edge : _owningEdges)
 	{
 		for (auto face : edge->_owningFaces)
@@ -72,17 +75,31 @@ ColdTable::Vec3 ColdTable::VertexObject::getActualPos()
 				intersectingFaces.push_back(face);
 		}
 
-		blendedVecToEdges += (Vec3)(edge->transform.transformMat() * edge->originalTransform.transformMat().inverse() * transformedVec);
+		accumulatedTranslation += edge->transform.position - edge->originalTransform.position;
+		accumulatedScaling *= edge->transform.scale;
+		accRotMat = 
+			edge->transform.position.asTranslationMatrix() *
+			edge->transform.rotation.asRotationMatrix() *
+			edge->transform.position.asTranslationMatrix().inverse() *
+			accRotMat;
+		//blendedVecToEdges += (Vec3)(edge->transform.transformMat() * edge->originalTransform.transformMat().inverse() * transformedVec);
 	}
 	blendedVecToEdges *= 1.0f / (float)_owningEdges.size();
 	Vec3 blendedVecToFaces = Vec3::Zero;
 	for (auto face : intersectingFaces)
 	{
-		blendedVecToFaces += (Vec3)(face->transform.transformMat() * face->originalTransform.transformMat().inverse() * transformedVec);
+		accumulatedTranslation += face->transform.position - face->originalTransform.position;
+		accumulatedScaling *= face->transform.scale;
+		accRotMat =
+			face->transform.position.asTranslationMatrix() *
+			face->transform.rotation.asRotationMatrix() *
+			face->transform.position.asTranslationMatrix().inverse() *
+			accRotMat;
+		//blendedVecToFaces += (Vec3)((face->transform.rotation.asRotationMatrix() * (face->transform.position.asTranslationMatrix() * face->transform.scale.asScaleMatrix() * face->originalTransform.transformMat().inverse() * transformedVec) - face->transform.position) + (face->transform.position));
 	}
 	blendedVecToFaces *= 1.0f / (float)intersectingFaces.size();
 
-	Vec3 blendedVec = (blendedVecToEdges + blendedVecToFaces) * 0.5f;
+	Vec3 blendedVec = (Vec3)(accumulatedTranslation.asTranslationMatrix() * accRotMat * accumulatedScaling.asScaleMatrix() * transformedVec);
 
 	return blendedVec;
 

@@ -55,10 +55,9 @@ void ColdTable::Camera::OnKeyDown(int key)
 
 	}
 	_shiftHeldDown = InputSystem::Instance->IsKeyDown(EKeyCode::SHIFT);
-	_ctrlHeldDown = InputSystem::Instance->IsKeyDown(EKeyCode::CTRL);
 	if (!_isControlling)
 	{
-		float rotSpeed = 10.0f;
+		float rotSpeed = 2.0f;
 		if (key == 'W') RotateHeld(Vec3::Right, -rotSpeed);
 		if (key == 'S') RotateHeld(Vec3::Right, rotSpeed);
 		if (key == 'E') RotateHeld(Vec3::Forward, rotSpeed);
@@ -90,6 +89,7 @@ void ColdTable::Camera::OnKeyDown(int key)
 
 void ColdTable::Camera::OnMouseMove(Vec2 delta)
 {
+	_ctrlHeldDown = InputSystem::Instance->IsKeyDown(EKeyCode::CTRL);
  	if (_leftMouseDown && selectedObject != nullptr)
 	{
 		Vec3 yVec = GetClosestParallelVec(localRotation.rotate(Vec3::Up)) * delta.y * dist * 0.002f;
@@ -217,7 +217,7 @@ void ColdTable::Camera::OnMouseScroll(f32 delta)
 		return;
 	}
 
-	accScaling += delta * 0.01f;
+	accScaling += delta * 0.001f;
 	ScaleHeld();
 
 }
@@ -245,15 +245,23 @@ ColdTable::Vec3 ColdTable::Camera::GetClosestParallelVec(Vec3 checkVec)
 
 void ColdTable::Camera::RotateHeld(Vec3 rotAxis, float rot)
 {
+	_ctrlHeldDown = InputSystem::Instance->IsKeyDown(EKeyCode::CTRL);
 	if (selectedObject != nullptr)
 	{
 		if (GameObjectManager::Instance == nullptr || !_ctrlHeldDown)
 		{
+			accRotX = 0.0f;
+			accRotY = 0.0f;
+			accRotZ = 0.0f;
 			selectedObject->Rotate(rotAxis, rot);
 		}
 		else
 		{
-			float gridSnapping = GameObjectManager::Instance->gridSnapping;
+			accRotX += (rotAxis.x * rot);
+			accRotY += (rotAxis.y * rot);
+			accRotZ += (rotAxis.z * rot);
+
+			float gridSnapping = GameObjectManager::Instance->rotSnapping;
 			while (abs(accRotY) >= gridSnapping)
 			{
 				if (accRotY >= 0)
@@ -299,6 +307,7 @@ void ColdTable::Camera::RotateHeld(Vec3 rotAxis, float rot)
 
 void ColdTable::Camera::ScaleHeld()
 {
+	_ctrlHeldDown = InputSystem::Instance->IsKeyDown(EKeyCode::CTRL);
 	if (GameObjectManager::Instance == nullptr || !_ctrlHeldDown)
 	{
 		selectedObject->Scale(Vec3(accScaling));

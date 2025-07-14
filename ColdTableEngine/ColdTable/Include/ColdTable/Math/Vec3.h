@@ -76,5 +76,7 @@ namespace ColdTable
 		Mat4 asTranslationMatrix() const;
 
 		Mat4 asScaleMatrix() const;
+
+		Mat4 asRotationMatrix() const;
 	};
 }

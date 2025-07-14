@@ -150,6 +150,14 @@ ColdTable::Mat4 ColdTable::Vec3::asScaleMatrix() const
 	};
 }
 
+ColdTable::Mat4 ColdTable::Vec3::asRotationMatrix() const
+{
+	return
+		Quaternion(Vec3::Forward, this->z).asMat()*
+		Quaternion(Vec3::Up, this->y).asMat()*
+		Quaternion(Vec3::Right, this->x).asMat();
+}
+
 ColdTable::Vec3::operator ColdTable::Vec4() const { return ColdTable::Vec4(this->x, this->y, this->z, 1.0); }
 
 std::string ColdTable::Vec3::toString() const
