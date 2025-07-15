@@ -25,10 +25,13 @@ ColdTable::Cylinder::Cylinder(CylinderDesc desc, IndexBufferPtr indexBuffer, Sha
 	unsigned int indexTracker = 0;
 	unsigned int vertexTracker = 0;
 
+	Vec3 capForward = forward;
+	if (desc._sideCount % 2 == 0)
+		capForward = forward.rotateAroundAxis(up, -(anglePerSide / 2.0f));
 	// Generate Top
-	GenerateCap(up * desc._length / 2.0f, up, forward, desc._radius, anglePerSide, desc._sideCount, vertlist, indexList, &vertexTracker, &indexTracker);
+	GenerateCap(up * desc._length / 2.0f, up, capForward, desc._radius, anglePerSide, desc._sideCount, vertlist, indexList, &vertexTracker, &indexTracker);
 	// Generate Bottom
-	GenerateCap(-up * desc._length / 2.0f, -up, forward, desc._radius, anglePerSide, desc._sideCount, vertlist, indexList, &vertexTracker, &indexTracker);
+	GenerateCap(-up * desc._length / 2.0f, -up, capForward, desc._radius, anglePerSide, desc._sideCount, vertlist, indexList, &vertexTracker, &indexTracker);
 
 	for (int i = 0; i < desc._sideCount; i++)
 	{
