@@ -25,10 +25,7 @@ namespace ColdTable
 	class ComputeShader;
 
 	// ECS Engine Classes
-	class ECSEngine;
 	class GameObject;
-	class Component;
-	class GameSystem;
 
 	class Renderable;
 	class Quad;
@@ -49,6 +46,8 @@ namespace ColdTable
 	using ShaderPtr = std::shared_ptr<EngineShader>;
 	using ComputeShaderPtr = std::shared_ptr<ComputeShader>;
 	using QuadPtr = std::shared_ptr<Quad>;
+
+	using String = std::string;
 
 	class Cube;
 	using CubePtr = std::shared_ptr<Cube>;

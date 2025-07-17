@@ -40,6 +40,8 @@ namespace  ColdTable
 		void RotateHeld(Vec3 rotAxis, float rot);
 		void ScaleHeld();
 
+		MeshPtr targetMesh{};
+
 	private:
 		ConstantBufferPtr _cameraBuffer;
 		float yRotation = 0;

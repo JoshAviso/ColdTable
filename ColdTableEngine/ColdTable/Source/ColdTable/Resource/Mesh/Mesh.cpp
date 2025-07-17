@@ -46,12 +46,24 @@ ColdTable::Mesh::Mesh(GraphicsDevicePtr sourceDevice, const wchar_t* fullpath, M
 				tinyobj::real_t vy = attribs.vertices[index.vertex_index * 3 + 1];
 				tinyobj::real_t vz = attribs.vertices[index.vertex_index * 3 + 2];
 
-				tinyobj::real_t tx = attribs.texcoords[index.texcoord_index * 2 + 0];
-				tinyobj::real_t ty = attribs.texcoords[index.texcoord_index * 2 + 1];
+				tinyobj::real_t tx = 0;
+				tinyobj::real_t ty = 0;
+				if (attribs.texcoords.size() > index.texcoord_index * 2 + 1)
+				{
+					tx = attribs.texcoords[index.texcoord_index * 2 + 0];
+					ty = attribs.texcoords[index.texcoord_index * 2 + 1];
+				}
 
-				tinyobj::real_t nx = attribs.normals[index.normal_index * 3 + 0];
-				tinyobj::real_t ny = attribs.normals[index.normal_index * 3 + 1];
-				tinyobj::real_t nz = attribs.normals[index.normal_index * 3 + 2];
+				tinyobj::real_t nx = 0;
+				tinyobj::real_t ny = 1;
+				tinyobj::real_t nz = 0;
+
+				if (attribs.texcoords.size() > index.normal_index * 3 + 2)
+				{
+					nx = attribs.normals[index.normal_index * 3 + 0];
+					ny = attribs.normals[index.normal_index * 3 + 1];
+					nz = attribs.normals[index.normal_index * 3 + 2];
+				}
 
 				Vertex vert(Vec3(vx, vy, vz), Vec2(tx, ty), Vec3(nx, ny, nz));
 				list_vertices.push_back(vert);

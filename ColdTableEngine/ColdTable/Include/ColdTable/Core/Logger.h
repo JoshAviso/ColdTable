@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <string>
 
 namespace ColdTable
 {
@@ -19,6 +20,12 @@ namespace ColdTable
 		explicit Logger(LogLevel logLevel = LogLevel::Error);
 		~Logger();
 		static void Log(LogLevel level, const char* message);
+		static void Log(const char* message);
+		static void LogWarning(const char* message);
+		static void LogError(const char* message);
+		static void Log(std::string message);
+		static void LogWarning(std::string message);
+		static void LogError(std::string message);
 
 	protected:
 		Logger(const Logger&) = delete;

@@ -371,6 +371,8 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\SelectorTypeScreen.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\SpawnCylinderScreen.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\SpawnStairsScreen.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\DebugBlurbSystem.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\DebugBlurbComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\EditorUIManager.h" />
@@ -452,6 +454,8 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\SelectorTypeScreen.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\SpawnCylinderScreen.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\SpawnStairsScreen.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\DebugBlurbSystem.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\DebugBlurbComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ColdTableEngine\ColdTable\Source\ColdTable\Physics\" />

@@ -288,14 +288,14 @@ void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, C
 		if (mesh->_material != nullptr)
 		{
 			objectBuffer = {
-				Mat4::Identity,
+				mesh->transform.transformMat(),
 				mesh->_material->tint,
 				true
 			};
 		} else
 		{
 			objectBuffer = {
-				Mat4::Identity,
+				mesh->transform.transformMat(),
 				Vec3(1.0, 1.0, 1.0),
 				false
 			};

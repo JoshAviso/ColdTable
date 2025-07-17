@@ -1,47 +1,174 @@
+#include <string>
 #include <ColdTable/ECS/ECSEngine.h>
 
-ColdTable::ECSEngine::ECSEngine(const ECSEngineDesc& desc) : Base(desc.base)
-{
+#include "GameSystems/DebugBlurbSystem.h"
 
+ColdTable::ECSEngine* ColdTable::ECSEngine::Instance = nullptr;
+ColdTable::ECSEngine::ECSEngine()
+{
+	RegisterSystem<DebugBlurbSystem>();
+}
+
+ColdTable::ECSEngine* ColdTable::ECSEngine::GetInstance()
+{
+	if (Instance == nullptr)
+		Instance = new ECSEngine();
+
+	return Instance;
 }
 
 ColdTable::ECSEngine::~ECSEngine()
 {
-	for (auto system : _registeredSystems) 
-		delete system;
+
 }
 
-// Called at the very start of the game
+bool ColdTable::ECSEngine::RegisterComponent(const ComponentPtr& component)
+{
+	bool wasInserted = false;
+	for (auto componentType : component->ComponentTypes)
+	{
+		std::vector<ComponentPtr>& componentList = _componentList[componentType];
+		auto it = std::find(componentList.begin(), componentList.end(), component);
+		if (it != componentList.end())
+		{
+			Logger::LogWarning(("Component of type " + std::to_string(componentType) + " already exists").c_str());
+			continue;
+		}
+
+		componentList.push_back(component);
+		wasInserted = true;
+	}
+	return wasInserted;
+}
+
+void ColdTable::ECSEngine::UnregisterComponent(const ComponentPtr& component)
+{
+	for (auto componentType : component->ComponentTypes)
+	{
+		std::vector<ComponentPtr>& componentList = _componentList[componentType];
+		auto it = std::find(componentList.begin(), componentList.end(), component);
+		
+		if (it != componentList.end())
+			componentList.erase(it);
+	}
+}
+
 void ColdTable::ECSEngine::Start()
 {
-
+	for (const GameSystemPtr& system : _registeredSystems)
+	{
+		for (auto componentTypes : system->TargetComponentTypes)
+		{
+			auto it = _componentList.find(componentTypes);
+			if (it != _componentList.end())
+			{
+				system->Start(it->second);
+			}
+		}
+	}
 }
 
-void ColdTable::ECSEngine::OnInput()
+void ColdTable::ECSEngine::EarlyUpdate()
 {
-
+	for (const GameSystemPtr& system : _registeredSystems)
+	{
+		for (auto componentTypes : system->TargetComponentTypes)
+		{
+			auto it = _componentList.find(componentTypes);
+			if (it != _componentList.end())
+			{
+				system->EarlyUpdate(it->second);
+			}
+		}
+	}
 }
 
 void ColdTable::ECSEngine::Update()
 {
-
+	for (const GameSystemPtr& system : _registeredSystems)
+	{
+		for (auto componentTypes : system->TargetComponentTypes)
+		{
+			auto it = _componentList.find(componentTypes);
+			if (it != _componentList.end())
+			{
+				system->Update(it->second);
+			}
+		}
+	}
 }
 
 void ColdTable::ECSEngine::LateUpdate()
 {
+	for (const GameSystemPtr& system : _registeredSystems)
+	{
+		for (auto componentTypes : system->TargetComponentTypes)
+		{
+			auto it = _componentList.find(componentTypes);
+			if (it != _componentList.end())
+			{
+				system->LateUpdate(it->second);
+			}
+		}
+	}
+}
 
+void ColdTable::ECSEngine::FixedUpdate()
+{
+	for (const GameSystemPtr& system : _registeredSystems)
+	{
+		for (auto componentTypes : system->TargetComponentTypes)
+		{
+			auto it = _componentList.find(componentTypes);
+			if (it != _componentList.end())
+			{
+				system->FixedUpdate(it->second);
+			}
+		}
+	}
 }
 
 void ColdTable::ECSEngine::Render()
 {
+	for (const GameSystemPtr& system : _registeredSystems)
+	{
+		for (auto componentTypes : system->TargetComponentTypes)
+		{
+			auto it = _componentList.find(componentTypes);
+			if (it != _componentList.end())
+			{
+				system->Render(it->second);
+			}
+		}
+	}
 }
 
-void ColdTable::ECSEngine::RegisterObject(GameObject& object)
+template <typename TGameSystem>
+std::shared_ptr<TGameSystem> ColdTable::ECSEngine::GetSystem()
 {
-	_registeredObjects.push_back(&object);
+	static_assert(std::is_base_of<GameSystem, TGameSystem>::value, "TGameSystem must inherit from GameSystem");
+	auto it = _systemMap.find(typeid(TGameSystem).name());
+	if (it != _systemMap.end())
+	{
+		return std::dynamic_pointer_cast<TGameSystem>(it->second);
+	}
+	return nullptr;
 }
 
-void ColdTable::ECSEngine::RegisterSystem(GameSystem& system)
+template <typename TGameSystem>
+bool ColdTable::ECSEngine::RegisterSystem()
 {
-	_registeredSystems.push_back(&system);
+	static_assert(std::is_base_of<GameSystem, TGameSystem>::value, "TGameSystem must inherit from GameSystem");
+
+	auto it = _systemMap.find(typeid(TGameSystem).name());
+	if (it != _systemMap.end())
+	{
+		Logger::Log("GameSystem of already exists");
+		return false;
+	}
+
+	GameSystemPtr system = std::make_shared<TGameSystem>();
+	_registeredSystems.push_back(system);
+	_systemMap[typeid(TGameSystem).name()] = system;
+	return true;
 }

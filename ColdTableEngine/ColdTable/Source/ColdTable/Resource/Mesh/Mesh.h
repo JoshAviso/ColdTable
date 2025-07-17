@@ -11,6 +11,8 @@ public:
 	Mesh(GraphicsDevicePtr sourceDevice, const wchar_t* fullpath, MaterialPtr material);
 	virtual ~Mesh() override;
 
+	Transform transform{};
+
 private:
 	VertexBufferPtr _vertexBuffer;
 	IndexBufferPtr _indexBuffer;

@@ -4,10 +4,13 @@
 #include <ColdTable/Game/EngineTime.h>
 #include "ColdTable/Game/Display.h"
 #include <ColdTable/Input/InputSystem.h>
+#include <ColdTable/ECS/ECSEngine.h>
+
 
 void ColdTable::GameLoop::Run()
 {
 	onInternalStartup();
+	ECSEngine::GetInstance()->Start();
 
 	MSG message{};
 	while (_isRunning)
@@ -28,9 +31,14 @@ void ColdTable::GameLoop::Run()
 			TranslateMessage(&message);
 			DispatchMessage(&message);
 		}
-
+		;
 		Sleep(1);
+		ECSEngine::GetInstance()->EarlyUpdate();
+		ECSEngine::GetInstance()->Update();
+		ECSEngine::GetInstance()->LateUpdate();
+
 		EngineTime::LogFrameEnd();
+
 		onInternalCallback();
 		if (InputSystem::Instance->GameClosing)
 			_isRunning = false;

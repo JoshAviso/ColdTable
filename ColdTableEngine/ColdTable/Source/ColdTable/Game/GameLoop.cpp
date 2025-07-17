@@ -9,6 +9,7 @@
 
 #include <ColdTable/Graphics/ShaderLibrary.h>
 
+#include "ColdTable/ECS/Components/DebugBlurbComponent.h"
 #include "ColdTable/ECS/GameObjects/GameObject.h"
 #include "ColdTable/ECS/GameObjects/GameObjectManager.h"
 #include "ColdTable/Editor/EditorUIManager.h"
@@ -171,7 +172,16 @@ void ColdTable::GameLoop::onInternalStartup()
 	*/
 
 	MeshPtr teapot = _meshManager->CreateMeshFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Meshes\\teapot.obj", woodBox);
-	//_graphicsEngine->RegisterMesh(teapot);
+	GraphicsEngine::Instance->RegisterMesh(teapot);
+
+	MeshPtr armadillo = _meshManager->CreateMeshFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Meshes\\armadillo.obj", woodBox);
+	GraphicsEngine::Instance->RegisterMesh(armadillo);
+	armadillo->transform.position = { 2,0,0 };
+
+	MeshPtr bunny = _meshManager->CreateMeshFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Meshes\\bunny.obj", woodBox);
+	GraphicsEngine::Instance->RegisterMesh(bunny);
+	bunny->transform.position = { -2,0,0 };
+	bunny->transform.scale = { 5,5,5};
 
 	LightSourceDesc dirLightDesc{
 	};
@@ -251,7 +261,8 @@ void ColdTable::GameLoop::onInternalStartup()
 			tempWindowSize.width / tempWindowSize.height,
 			0.1f, 100.0f
 		);
-	
+	tempCam->targetMesh = teapot;
+
 	TexturePtr logoTex =
 		_textureManager->CreateTextureFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Textures\\DLSULogo.png");
 	

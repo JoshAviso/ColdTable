@@ -66,6 +66,8 @@ void ColdTable::Camera::OnKeyDown(int key)
 		if (key == 'A') RotateHeld(Vec3::Up, rotSpeed);
 	}
 
+	if (key == 'R' && targetMesh != nullptr) targetMesh->transform.scale += 0.05f;
+	if (key == 'F' && targetMesh != nullptr) targetMesh->transform.scale -= 0.05f;
 
 	if (!_isControlling) return;
 
