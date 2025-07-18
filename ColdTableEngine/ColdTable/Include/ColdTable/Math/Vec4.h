@@ -1,6 +1,5 @@
 #pragma once
 #include <ColdTable/Core/Core.h>
-#include <ColdTable/Math/Vec3.h>
 #include <cmath>
 
 namespace ColdTable
@@ -23,6 +22,7 @@ namespace ColdTable
 
 		/* CONVERSIONS */
 		explicit operator Vec3() const;
+		std::string toString() const;
 
 		/* COMPONENT OPERATORS */
 		bool operator == (const Vec4 vec) const;

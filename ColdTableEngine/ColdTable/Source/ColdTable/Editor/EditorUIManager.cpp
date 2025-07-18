@@ -8,6 +8,7 @@
 #include "UIScreens/ColorPicker.h"
 #include "UIScreens/HierarchyScreen.h"
 #include "UIScreens/InspectorScreen.h"
+#include "UIScreens/ScenePlayScreen.h"
 #include "UIScreens/SelectorTypeScreen.h"
 #include "UIScreens/SpawnCylinderScreen.h"
 #include "UIScreens/SpawnStairsScreen.h"
@@ -78,6 +79,7 @@ void ColdTable::EditorUIManager::InitializeScreens()
     RegisterScreen(colorPicker);
     RegisterScreen(std::make_shared<HierarchyScreen>());
     RegisterScreen(std::make_shared<InspectorScreen>());
+    RegisterScreen(std::make_shared<ScenePlayScreen>());
 
     RegisterScreen(std::make_shared<SelectorTypeScreen>());
     RegisterScreen(spawnCylinder);

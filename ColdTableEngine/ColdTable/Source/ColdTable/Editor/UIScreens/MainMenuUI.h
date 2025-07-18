@@ -14,6 +14,7 @@ private:
 	static void ToolsMenu();
 	static void AddObjectMenu();
 	static void SpawnCube();
+	static void SpawnPhysicsCubes(int count);
 };
 }
 

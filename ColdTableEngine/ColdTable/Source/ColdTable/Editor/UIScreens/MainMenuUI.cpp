@@ -1,5 +1,6 @@
 #include "MainMenuUI.h"
 
+#include "ColdTable/ECS/Components/PhysicsComponent.h"
 #include "ColdTable/ECS/GameObjects/GameObjectManager.h"
 #include "ColdTable/Editor/EditorUIManager.h"
 #include "ColdTable/Graphics/ShaderLibrary.h"
@@ -65,6 +66,11 @@ void ColdTable::MainMenuUI::AddObjectMenu()
 			if (spawnMenu) spawnMenu->ShowScreen = !spawnMenu->ShowScreen;
 		}
 
+		if (ImGui::MenuItem("Physics Cubes"))
+		{
+			SpawnPhysicsCubes(20);
+		}
+
 		ImGui::EndMenu();
 	}
 }
@@ -74,4 +80,18 @@ void ColdTable::MainMenuUI::SpawnCube()
 	GameObjectPtr cube = GameObjectManager::CreateGameObject("Cube");
 	cube->renderable = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), ShaderLibrary::GetShader("BlankShader"));
 	
+}
+
+void ColdTable::MainMenuUI::SpawnPhysicsCubes(int count)
+{
+
+	for (int i = 0; i < count; i++)
+	{
+		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), ShaderLibrary::GetShader("BlankShader"));
+		GameObjectPtr cubeObject = GameObjectManager::CreateGameObject("Cube");
+		cubeObject->renderable = cube;
+		cubeObject->transform->position.y = 10.0f;
+		PhysicsComponent* rb = cubeObject->AddComponent<PhysicsComponent>(1.0f);
+		rb->_rigidBody->enableGravity(true);
+	}
 }

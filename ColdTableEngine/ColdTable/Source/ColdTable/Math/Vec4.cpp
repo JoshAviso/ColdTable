@@ -1,5 +1,7 @@
 
+#include <string>
 #include <ColdTable/Math/Vec4.h>
+#include <ColdTable/Math/Vec3.h>
 
 const ColdTable::Vec4 ColdTable::Vec4::Zero = { 0.0, 0.0, 0.0 , 0.0 };
 
@@ -92,3 +94,8 @@ ColdTable::f32 ColdTable::Vec4::distFrom(const Vec4 vec) const
 { return (*this - vec).magnitude(); }
 
 ColdTable::Vec4::operator ColdTable::Vec3() const { return Vec3(this->x, this->y, this->z); }
+
+std::string ColdTable::Vec4::toString() const
+{
+	return "(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ", " + std::to_string(w) + ")";
+}

@@ -15,6 +15,7 @@ namespace ColdTable {
 		bool RegisterComponent(const ComponentPtr& component);
 		void UnregisterComponent(const ComponentPtr& component);
 
+		static void Initialize();
 		void Start();
 		void EarlyUpdate();
 		void Update();  

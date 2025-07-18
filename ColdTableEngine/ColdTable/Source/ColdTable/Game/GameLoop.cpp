@@ -10,6 +10,7 @@
 #include <ColdTable/Graphics/ShaderLibrary.h>
 
 #include "ColdTable/ECS/Components/DebugBlurbComponent.h"
+#include "ColdTable/ECS/Components/PhysicsComponent.h"
 #include "ColdTable/ECS/GameObjects/GameObject.h"
 #include "ColdTable/ECS/GameObjects/GameObjectManager.h"
 #include "ColdTable/Editor/EditorUIManager.h"
@@ -31,6 +32,7 @@ ColdTable::GameLoop::GameLoop(const GameDesc& desc):
 	EngineTime::Initialize();
 	InputSystem::Initialize();
 	GraphicsEngine::Initialize(GraphicsEngineDesc{ desc.base });
+	ECSEngine::Initialize();
 
 	//_graphicsEngine = std::make_unique<GraphicsEngine>(GraphicsEngineDesc{desc.base});
 	_display = std::make_unique<Display>(DisplayDesc{desc.base,{desc.base, desc.windowSize}, GraphicsEngine::Instance->GetGraphicsDevice()});
@@ -138,9 +140,29 @@ void ColdTable::GameLoop::onInternalStartup()
 	//cube->localScale = { 5.0f, 0.01f, 3.0f };
 	//cube->localPosition = {0.0f, 2.0f, 0.0f };
 
-	CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), woodBox);
-	GameObjectPtr cubeObject = GameObjectManager::CreateGameObject("Cube");
-	cubeObject->renderable = cube;
+	CubePtr plane = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), ShaderLibrary::GetShader("BlankShader"));
+	GameObjectPtr planeObj = GameObjectManager::CreateGameObject("Plane");
+	planeObj->renderable = plane;
+	planeObj->transform->position = { 0.0f, 0.0f, 0.0f };
+	planeObj->transform->scale = { 10.0f, 0.01f, 10.0f };
+	PhysicsComponent* planeRB = planeObj->AddComponent<PhysicsComponent>(0.0f);
+	planeRB->_rigidBody->setType(BodyType::STATIC);
+
+
+	//CubePtr originCube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), woodBox);
+	//GameObjectPtr ocObj = GameObjectManager::CreateGameObject("Origin Cube");
+	//ocObj->renderable = originCube;
+
+	for (int i = 0; i < 20; i ++)
+	{
+		CubePtr cube = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), woodBox);
+		GameObjectPtr cubeObject = GameObjectManager::CreateGameObject("Cube (" + std::to_string(i) + ")");
+		cubeObject->renderable = cube;
+		cubeObject->transform->position.y = 10.0f;
+		PhysicsComponent* rb = cubeObject->AddComponent<PhysicsComponent>(1.0f);
+		rb->_rigidBody->enableGravity(true);
+	}
+	
 	//cubeObject->transform->position = { 0.0f, 2.0f, 0.0f };
 
 	CubePtr cube2 = std::make_shared<Cube>(GraphicsEngine::Instance->CreateIndexBuffer(), ShaderLibrary::GetShader("BlankShader"));
@@ -171,6 +193,7 @@ void ColdTable::GameLoop::onInternalStartup()
 	_graphicsEngine->RegisterRenderable(cube4);
 	*/
 
+	/*
 	MeshPtr teapot = _meshManager->CreateMeshFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Meshes\\teapot.obj", woodBox);
 	GraphicsEngine::Instance->RegisterMesh(teapot);
 
@@ -182,6 +205,7 @@ void ColdTable::GameLoop::onInternalStartup()
 	GraphicsEngine::Instance->RegisterMesh(bunny);
 	bunny->transform.position = { -2,0,0 };
 	bunny->transform.scale = { 5,5,5};
+	 */
 
 	LightSourceDesc dirLightDesc{
 	};
@@ -261,7 +285,7 @@ void ColdTable::GameLoop::onInternalStartup()
 			tempWindowSize.width / tempWindowSize.height,
 			0.1f, 100.0f
 		);
-	tempCam->targetMesh = teapot;
+	//tempCam->targetMesh = teapot;
 
 	TexturePtr logoTex =
 		_textureManager->CreateTextureFromFile(GraphicsEngine::Instance->_graphicsDevice, L"Assets\\Textures\\DLSULogo.png");

@@ -2,18 +2,17 @@
 #include <ColdTable/ECS/ECSEngine.h>
 
 #include "GameSystems/DebugBlurbSystem.h"
+#include "GameSystems/PhysicsSystem.h"
 
 ColdTable::ECSEngine* ColdTable::ECSEngine::Instance = nullptr;
 ColdTable::ECSEngine::ECSEngine()
 {
 	RegisterSystem<DebugBlurbSystem>();
+	RegisterSystem<PhysicsSystem>();
 }
 
 ColdTable::ECSEngine* ColdTable::ECSEngine::GetInstance()
 {
-	if (Instance == nullptr)
-		Instance = new ECSEngine();
-
 	return Instance;
 }
 
@@ -51,6 +50,13 @@ void ColdTable::ECSEngine::UnregisterComponent(const ComponentPtr& component)
 		if (it != componentList.end())
 			componentList.erase(it);
 	}
+}
+
+void ColdTable::ECSEngine::Initialize()
+{
+	if (Instance != nullptr) return;
+
+	Instance = new ECSEngine();
 }
 
 void ColdTable::ECSEngine::Start()

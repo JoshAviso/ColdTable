@@ -3,9 +3,9 @@
 
 #include "ColdTable/Core/Core.h"
 
-
 namespace ColdTable
 {
+	class GameObject;
 	enum EComponentType
 	{
 		None,
@@ -16,8 +16,8 @@ namespace ColdTable
 	class Component
 	{
 	public:
-		Component(const std::initializer_list<EComponentType> componentTypes);
-		Component(const EComponentType componentTypes[]);
+		Component(GameObjectPtr Owner, const std::initializer_list<EComponentType> componentTypes);
+		Component(GameObjectPtr Owner, const EComponentType componentTypes[]);
 
 	private:
 		std::vector<EComponentType> ComponentTypes;

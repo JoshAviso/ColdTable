@@ -1,5 +1,7 @@
 #include <ColdTable/Math/Quaternion.h>
-
+#include <ColdTable/Math/Mat4.h>
+#include <ColdTable/Math/Vec3.h>
+#include <ColdTable/Math/Vec4.h>
 
 const ColdTable::Quaternion ColdTable::Quaternion::Identity = Vec4(0.0f, 0.0f, 0.0f, 1.0f);
 const ColdTable::Quaternion ColdTable::Quaternion::Zero = Vec4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -67,6 +69,15 @@ void ColdTable::Quaternion::rotateWorld(const Vec3& worldAxis, const f32 angle)
 	Vec3 newAxis = (Vec3)(this->inverse() * worldAxis * *this);
 	Quaternion q = Quaternion(newAxis, angle);
 	*this = q * *this;
+}
+
+ColdTable::Vec3 ColdTable::Quaternion::toEulerAngles() const
+{
+	float roll, pitch, yaw;
+	roll = std::atan2(2.0f * (y * z + w * x), 1.0f - 2.0f * (x * x + y * y));
+	pitch = std::asin(2.0f * (w * y - x * z));
+	yaw = std::atan2(2.0f * (x * y + w * z), 1.0f - 2.0f * (y * y + z * z));
+	return { roll * 180.0f / M_PIf, pitch * 180.0f / M_PIf, yaw * 180.0f / M_PIf };
 }
 
 ColdTable::Quaternion::operator ColdTable::Mat4() const

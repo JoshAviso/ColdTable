@@ -7,7 +7,7 @@ namespace ColdTable
 	class DebugBlurbComponent : public Component
 	{
 	public:
-		DebugBlurbComponent(const String& blurbText = "") : Component({ EComponentType::Debug }), _blurbText(blurbText){}
+		DebugBlurbComponent(GameObjectPtr Owner, const String& blurbText = "") : Component(Owner, { EComponentType::Debug }), _blurbText(blurbText){}
 
 	private:
 		String _blurbText;

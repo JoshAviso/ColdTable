@@ -3,6 +3,7 @@
 #include <ColdTable/Math/Vec3.h>
 
 #include "ColdTable/Math/Quaternion.h"
+#include <ColdTable/Math/Mat4.h>
 
 const ColdTable::Vec3 ColdTable::Vec3::Zero		= { 0.0, 0.0, 0.0 };
 const ColdTable::Vec3 ColdTable::Vec3::Identity = { 1.0, 1.0, 1.0 };
@@ -156,6 +157,14 @@ ColdTable::Mat4 ColdTable::Vec3::asRotationMatrix() const
 		Quaternion(Vec3::Forward, this->z).asMat()*
 		Quaternion(Vec3::Up, this->y).asMat()*
 		Quaternion(Vec3::Right, this->x).asMat();
+}
+
+ColdTable::Quaternion ColdTable::Vec3::asRotationQuaternion() const
+{
+	return
+		Quaternion(Vec3::Forward, this->z)*
+		Quaternion(Vec3::Up, this->y)*
+		Quaternion(Vec3::Right, this->x);
 }
 
 ColdTable::Vec3::operator ColdTable::Vec4() const { return ColdTable::Vec4(this->x, this->y, this->z, 1.0); }

@@ -2,7 +2,11 @@
 
 #include <unordered_set>
 
-ColdTable::Component::Component(const std::initializer_list<EComponentType> componentTypes)
+#include <ColdTable/Math/Mat4.h>
+
+#include <ColdTable/ECS/GameObjects/GameObject.h>
+
+ColdTable::Component::Component(GameObjectPtr Owner, const std::initializer_list<EComponentType> componentTypes) : Owner(Owner)
 {
 	std::unordered_set<EComponentType> seen(ComponentTypes.begin(), ComponentTypes.end());
 	for (EComponentType componentType : componentTypes)
@@ -14,7 +18,7 @@ ColdTable::Component::Component(const std::initializer_list<EComponentType> comp
 	}
 }
 
-ColdTable::Component::Component(const EComponentType componentTypes[])
+ColdTable::Component::Component(GameObjectPtr Owner, const EComponentType componentTypes[]) : Owner(Owner)
 {
 	// std::unordered_set<EComponentType> seen(ComponentTypes.begin(), ComponentTypes.end());
 	// for (EComponentType componentType : componentTypes)

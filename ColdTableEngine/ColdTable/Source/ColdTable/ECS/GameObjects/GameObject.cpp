@@ -44,10 +44,3 @@ void ColdTable::GameObject::Scale(Vec3 scale)
 		face->Scale(scale);
 	}
 }
-
-void ColdTable::GameObject::AddComponent(ComponentPtr component)
-{
-	component->Owner = std::make_shared<GameObject>(*this);
-	_components.push_back(component);
-	ECSEngine::GetInstance()->RegisterComponent(component);
-}

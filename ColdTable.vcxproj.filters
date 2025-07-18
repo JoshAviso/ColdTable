@@ -237,6 +237,15 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\DebugBlurbComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\PhysicsSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\PhysicsComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\ScenePlayScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Core\Base.h">
@@ -480,6 +489,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\DebugBlurbComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\PhysicsSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\PhysicsComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\ScenePlayScreen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

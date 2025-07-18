@@ -79,14 +79,14 @@
     <OutDir>Bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;Libs\DirectXTex\Include;Libs\tinyobjloader\include;$(IncludePath)</IncludePath>
-    <LibraryPath>Libs\DirectXTex\bin;$(LibraryPath)</LibraryPath>
+    <LibraryPath>Libs\DirectXTex\bin;Libs\ReactPhysics3D\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>ColdTableEngine/ColdTable/Source;ColdTableEngine/ColdTable/Include;Libs\DirectXTex\Include;Libs\tinyobjloader\include;$(IncludePath)</IncludePath>
-    <LibraryPath>Libs\DirectXTex\bin;$(LibraryPath)</LibraryPath>
+    <LibraryPath>Libs\DirectXTex\bin;Libs\ReactPhysics3D\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,13 +124,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);NOMINMAX;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>Libs\ReactPhysics3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;DirectXTexD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;reactphysics3d.lib;DirectXTexD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Josh\localRepos\ColdTable\Libs\ReactPhysics3D\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,17 +141,19 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);NOMINMAX;NOMINMAX</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);NOMINMAX;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>Libs\ReactPhysics3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;reactphysics3d.lib;DirectXTex.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Josh\localRepos\ColdTable\Libs\ReactPhysics3D\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -373,6 +377,9 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\SpawnStairsScreen.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\DebugBlurbSystem.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\DebugBlurbComponent.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\PhysicsSystem.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\PhysicsComponent.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\ScenePlayScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\EditorUIManager.h" />
@@ -456,6 +463,9 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\SpawnStairsScreen.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\DebugBlurbSystem.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\DebugBlurbComponent.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\PhysicsSystem.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\PhysicsComponent.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\ScenePlayScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ColdTableEngine\ColdTable\Source\ColdTable\Physics\" />

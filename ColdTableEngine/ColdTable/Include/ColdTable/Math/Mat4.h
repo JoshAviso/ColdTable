@@ -16,11 +16,13 @@ namespace ColdTable
 		static const Mat4 Zero;
 		static const Mat4 Identity;
 
+		/* CONVERSION */
+		
+
 		/* UTILITY */
 		static Mat4 lerp(Mat4 initial, Mat4 final, f32 delta);
 
 		static Mat4 OrthoProjection(f32 right, f32 left, f32 top, f32 bottom, f32 near_plane, f32 far_plane);
-
 
 		static Mat4 OrthoLH(f32 width, f32 height, f32 near_plane, f32 far_plane);
 

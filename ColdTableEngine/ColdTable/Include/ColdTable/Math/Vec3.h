@@ -1,12 +1,12 @@
 #pragma once
 #include <ColdTable/Core/Core.h>
 #include <cmath>
-#include <ColdTable/Math/Mat4.h>
 
 namespace ColdTable
 {
 	class Vec4;
 	class Mat4;
+	class Quaternion;
 
 	class Vec3
 	{
@@ -78,5 +78,7 @@ namespace ColdTable
 		Mat4 asScaleMatrix() const;
 
 		Mat4 asRotationMatrix() const;
+
+		Quaternion asRotationQuaternion() const;
 	};
 }

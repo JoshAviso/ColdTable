@@ -1,15 +1,17 @@
 #pragma once
-#include <ColdTable/Math/Vec4.h>
-#include <ColdTable/Math/Mat4.h>
-#include <ColdTable/Math/Vec3.h>
+#include <ColdTable/Core/Core.h>
 #include <iostream>
-
 #include <cmath>
+#include <ColdTable/Math/Vec4.h>
+
 #define M_PIf 3.14159265358979323846f
 #define M_PI 3.14159265358979323846
 
 namespace ColdTable
 {
+	class Vec3;
+	class Mat4;
+	
 	class Quaternion : public Vec4
 	{
 	public:
@@ -43,5 +45,7 @@ namespace ColdTable
 
 		void rotateLocal(const Vec3& localAxis, const f32 angle);
 		void rotateWorld(const Vec3& worldAxis, const f32 angle);
+
+		Vec3 toEulerAngles() const;
 	};
 }

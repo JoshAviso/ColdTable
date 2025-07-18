@@ -4,9 +4,12 @@
 #include "ColdTable/ECS/Components/Component.h"
 #include "ColdTable/ECS/Components/Transform.h"
 #include "ColdTable/Editor/IEditorPickable.h"
+#include <memory>
+
+#include "ColdTable/ECS/ECSEngine.h"
 
 namespace ColdTable {
-class GameObject : public IEditorPickable
+class GameObject : public IEditorPickable, public std::enable_shared_from_this<GameObject>
 {
 public:
 	String name;
@@ -22,7 +25,15 @@ public:
 	void Rotate(Vec3 axis, float degree) override;
 	void Scale(Vec3 scale) override;
 
-	void AddComponent(ComponentPtr component);
+	template <typename TComponent, typename... Args>
+	TComponent* AddComponent(Args&&... args){
+		static_assert(std::is_base_of<Component, TComponent>::value, "TComponent must inherit from Component");
+
+		std::shared_ptr<TComponent> component = std::make_shared<TComponent>(shared_from_this(), std::forward<Args>(args)...);
+		_components.push_back(component);
+		ECSEngine::GetInstance()->RegisterComponent(component);
+		return component.get();
+	}
 
 private:
 	std::vector<ComponentPtr> _components;
