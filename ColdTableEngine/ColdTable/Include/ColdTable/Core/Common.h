@@ -32,11 +32,6 @@ namespace ColdTable
 		GraphicsDevicePtr graphicsDevice;
 	};
 
-	struct GraphicsEngineDesc
-	{
-		BaseDesc base;
-	};
-
 	struct GraphicsDeviceDesc
 	{
 		BaseDesc base;
@@ -59,12 +54,6 @@ namespace ColdTable
 	struct VertexBufferDesc
 	{
 		BaseDesc base;
-	};
-
-	struct ConstantBufferDesc
-	{
-		BaseDesc base;
-		GraphicsDevicePtr graphicsDevice;
 	};
 
 	struct ShaderDesc

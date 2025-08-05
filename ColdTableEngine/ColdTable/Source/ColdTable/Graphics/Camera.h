@@ -11,7 +11,6 @@ namespace  ColdTable
 {
 	struct CameraDesc
 	{
-		const ConstantBufferPtr& constantBuffer;
 		const Rect& windowRectInfo;
 	};
 
@@ -43,7 +42,6 @@ namespace  ColdTable
 		MeshPtr targetMesh{};
 
 	private:
-		ConstantBufferPtr _cameraBuffer;
 		float yRotation = 0;
 		float xRotation = 0;
 		float _camMoveSpeed = 0.1f;

@@ -21,12 +21,12 @@ namespace ColdTable
 		UINT vertexCount;
 		EGeometryDrawmode drawMode;
 		MaterialPtr material;
-		//ShaderPtr shader;
 	};
 
-	class Renderable : public IInputListener, public std::enable_shared_from_this<Renderable>
+	class Renderable : public std::enable_shared_from_this<Renderable>
 	{
 	public:
+		Renderable(const Renderable& other);
 		explicit Renderable(const RenderableDesc& desc);
 		explicit Renderable(const RenderableDesc& desc, const ShaderPtr& shader);
 		virtual ~Renderable();
@@ -34,45 +34,25 @@ namespace ColdTable
 		virtual void LoadVertices(const Vertex* vertexList, UINT listSize);
 		virtual void LoadVerticesInIndex(const Vertex* vertexList, UINT listSize, const IndexBufferPtr& indexBuffer);
 		void ReloadVertices();
-		virtual void Update(const d64 deltaTime);
-		void SetShader(ShaderPtr shader);
-		void SetTexture(TexturePtr texture);
-
 
 	public:
 		Vec3 localPosition = Vec3::Zero;
 		Vec3 localScale = Vec3::Identity;
 		Quaternion localRotation = Quaternion::Identity;
 		Mat4 transformMat() const;
-		void OnKeyDown(int key) override;
-		void OnKeyUp(int key) override;
-		void OnMouseMove(Vec2 delta) override;
-		void OnLeftMouseDown(Vec2 pos) override;
-		void OnRightMouseUp(Vec2 pos) override;
 
 	protected:
-		VertexBufferPtr _vertexBuffer;
-		IndexBufferPtr _indexBuffer;
-		EGeometryDrawmode _drawMode;
+		VertexBufferPtr		_vertexBuffer;
+		IndexBufferPtr		_indexBuffer;
+		EGeometryDrawmode	_drawMode;
 
-		MaterialPtr _material;
-		ShaderPtr _shader;
-		TexturePtr _texture = nullptr;
+		MaterialPtr			_material;
+		ShaderPtr			_shader;
 
 		const Vertex* vertexListRef;
 		std::vector<FaceObjectPtr> _faceObjects{};
 
-		bool tempMovingVertical = false;
-		bool tempMovingPositive = true;
-		float elapsedTime = 0;
-		Vec3 targetPosition = { 2.0, 0.0, 0.0 };
-		Vec3 lastPosition = { -2.0f, 0.0f, 0.0f };
-		Vec3 targetScale = { 10.0f, 0.01f, 10.0f };
-		Vec3 lastScale = { 1.0f };
-
 	public:
-		Vec3 rotationAxis{};
-		float rotationSpeed = 0.0f;
 		void recalcAABB();
 
 	public:
@@ -87,6 +67,7 @@ namespace ColdTable
 		friend class EdgeObject;
 		friend class FaceObject;
 		friend class GameObject;
+		friend class Mesh;
 	};
 }
 

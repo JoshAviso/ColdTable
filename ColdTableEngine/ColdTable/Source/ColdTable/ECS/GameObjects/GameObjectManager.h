@@ -10,9 +10,14 @@ namespace ColdTable
 class GameObjectManager
 {
 public:
+	static void Initialize();
 	static GameObjectPtr CreateGameObject(String objectName);
+	static GameObjectPtr FindGameObject(String name);
 	static bool RegisterObject(GameObject* gameObject);
+	static bool RegisterObject(GameObjectPtr gameObject);
 	static bool UnregisterObject(GameObject* gameObject);
+
+	static void ClearAllObjects();
 
 private:
 	static GameObjectManager* Instance;
@@ -28,6 +33,7 @@ private:
 	friend class HierarchyScreen;
 	friend class Camera;
 	friend class SelectorTypeScreen;
+	friend class SceneManager;
 };
 }
 

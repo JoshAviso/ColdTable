@@ -6,7 +6,6 @@
 
 namespace ColdTable
 {
-	
 	class ShaderLibrary
 	{
 	private:
@@ -15,7 +14,8 @@ namespace ColdTable
 		std::map<std::string, ShaderPtr> _internalShaders;
 	
 	public:
-		static bool CreateShader(std::string key, const wchar_t* vertex_shader_src, const wchar_t* pixel_shader_src);
+		static void Initialize();
+		static ShaderPtr CreateShader(std::string key, const wchar_t* vertex_shader_src, const wchar_t* pixel_shader_src);
 		static ShaderPtr GetShader(std::string key);
 	};
 }

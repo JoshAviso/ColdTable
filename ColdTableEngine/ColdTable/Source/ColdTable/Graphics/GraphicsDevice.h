@@ -26,7 +26,7 @@ namespace ColdTable
 		SwapChainPtr CreateSwapChain(const SwapChainDesc& desc) const;
 		DeviceContextPtr CreateDeviceContext();
 		VertexBufferPtr CreateVertexBuffer();
-		ConstantBufferPtr CreateConstantBuffer();
+		ConstantBufferPtr CreateConstantBuffer(UINT bufferSize);
 		IndexBufferPtr CreateIndexBuffer();
 		ShaderPtr CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc);
 		ComputeShaderPtr CreateComputeShader(DeviceContextPtr context, const wchar_t* sourceFile, const float* inputArray);

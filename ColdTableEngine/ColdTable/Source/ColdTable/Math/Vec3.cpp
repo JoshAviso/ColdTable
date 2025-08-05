@@ -5,6 +5,8 @@
 #include "ColdTable/Math/Quaternion.h"
 #include <ColdTable/Math/Mat4.h>
 
+#include "ColdTable/Utility/JsonParser.h"
+
 const ColdTable::Vec3 ColdTable::Vec3::Zero		= { 0.0, 0.0, 0.0 };
 const ColdTable::Vec3 ColdTable::Vec3::Identity = { 1.0, 1.0, 1.0 };
 const ColdTable::Vec3 ColdTable::Vec3::Up		= { 0.0, 1.0, 0.0 };
@@ -46,6 +48,24 @@ ColdTable::Vec3 ColdTable::Vec3::max(Vec3 vec1, Vec3 vec2)
 		std::max(vec1.y, vec2.y),
 		std::max(vec1.z, vec2.z)
 	);
+}
+
+ColdTable::Vec3 ColdTable::Vec3::FromJson(const JsonValue& json)
+{
+	Vec3 vec;
+	vec.x = static_cast<float>(json["x"].AsNumber());
+	vec.y = static_cast<float>(json["y"].AsNumber());
+	vec.z = static_cast<float>(json["z"].AsNumber());
+	return vec;
+}
+
+ColdTable::JsonValue ColdTable::Vec3::ToJson(const Vec3& vec)
+{
+	JsonValue json;
+	json["x"] = vec.x;
+	json["y"] = vec.y;
+	json["z"] = vec.z;
+	return json;
 }
 
 bool ColdTable::Vec3::operator==(const Vec3 vec) const

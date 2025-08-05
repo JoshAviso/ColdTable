@@ -6,6 +6,8 @@
 #include "ColdTable/Utility/ComputeShader.h"
 #include <ColdTable/Resource/Texture/Texture.h>
 
+#include "ColdTable/ECS/Components/MaterialComponent.h"
+#include "ColdTable/Resource/ShaderLibrary.h"
 #include "ColdTable/Resource/Material/Material.h"
 
 ColdTable::DeviceContext::DeviceContext(const GraphicsResourceDesc& desc): GraphicsResource(desc)
@@ -42,6 +44,7 @@ void ColdTable::DeviceContext::SetViewportSize(Rect size)
 
 void ColdTable::DeviceContext::BindTexture(TexturePtr texture)
 {
+	if (texture == nullptr) return;
 	if (texture->_resourceView == nullptr) return;
 
 	_context->VSSetShaderResources(0, 1, &texture->_resourceView);
@@ -86,16 +89,15 @@ void ColdTable::DeviceContext::DispatchComputeShader(UINT xThreadGroups, UINT yT
 	_context->Dispatch(xThreadGroups, yThreadGroups, zThreadGroups);
 }
 
-void ColdTable::DeviceContext::Draw(RenderablePtr renderable)
+void ColdTable::DeviceContext::Draw(RenderablePtr renderable, MaterialComponentPtr material)
 {
-	if (renderable->_material != nullptr)
-	{
-		UseShader(renderable->_material->_shader);
-		BindTexture(renderable->_material->_textures.at(0));
-	} else
-	{
-		UseShader(renderable->_shader);
-	}
+	if (material == nullptr) return;
+
+	UseShader(material->_material->_shader);
+	if (material->_material->_textures.size() > 0)
+		BindTexture(material->_material->_textures.at(0));
+	else
+		BindTexture(nullptr);
 
 	BindVertexBuffer(renderable->_vertexBuffer);
 
@@ -124,6 +126,34 @@ void ColdTable::DeviceContext::Draw(MeshPtr mesh)
 	BindVertexBuffer(mesh->_vertexBuffer);
 	BindIndexBuffer(mesh->_indexBuffer);
 	DrawIndexedTriangleList(mesh->_indexBuffer->GetListSize(), 0, 0);
+}
+
+void ColdTable::DeviceContext::Draw(MeshComponentPtr mesh, MaterialComponentPtr material)
+{
+	if (mesh == nullptr) return;
+	if (mesh->Mesh == nullptr) return;
+	if (material == nullptr)
+	{
+		UseShader(ShaderLibrary::GetShader("BlankShader"));
+		BindTexture(nullptr);
+	} else
+	{
+		UseShader(material->_material->_shader);
+		if (material->_material->_textures.size() > 0)
+			BindTexture(material->_material->_textures.at(0));
+		else BindTexture(nullptr);
+	}
+
+	BindVertexBuffer(mesh->Mesh->_vertexBuffer);
+
+	if (mesh->Mesh->_indexBuffer == nullptr)
+	{
+		DrawTriangleList(mesh->Mesh->_vertexBuffer->GetVertexCount(), 0);
+	} else
+	{
+		BindIndexBuffer(mesh->Mesh->_indexBuffer);
+		DrawIndexedTriangleList(mesh->Mesh->_indexBuffer->GetListSize(), 0, 0);
+	}
 }
 
 void ColdTable::DeviceContext::DrawTriangleList(UINT vertexCount, UINT startVertexIndex)

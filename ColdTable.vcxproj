@@ -157,6 +157,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\ActionManager.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\MeshComponent.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\LightComponent.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditFloatAction.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditVec3Action.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditQuatAction.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditMeshAction.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditMatAction.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditRBTypeAction.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\EnterFilepathScreen.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\ConsoleScreen.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\EditorUIManager.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\IEditorPickable.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -323,6 +334,9 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec4.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Vec2.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\PointLight.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Material\MaterialLibrary.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Scenes\Scene.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Scenes\SceneManager.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_demo.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_draw.cpp" />
@@ -364,7 +378,7 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\MeshManager.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\Mesh.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Math\Ray.cpp" />
-    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ShaderLibrary.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\ShaderLibrary.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameObjects\GameObjectManager.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\Transform.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\HierarchyScreen.cpp" />
@@ -380,8 +394,23 @@
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\PhysicsSystem.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\PhysicsComponent.cpp" />
     <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\ScenePlayScreen.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\MaterialComponent.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\JsonParser.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\IEditAction.cpp" />
+    <ClCompile Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditIntAction.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\ActionManager.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\MeshComponent.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\LightComponent.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditFloatAction.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditVec3Action.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditQuatAction.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditMeshAction.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditMatAction.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditRBTypeAction.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\EnterFilepathScreen.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\ConsoleScreen.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\EditorUIManager.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\IEditorPickable.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\AboutScreen.h" />
@@ -391,6 +420,7 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\VertexObject.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Quaternion.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Vec2.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\IInspectorViewable.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Cylinder.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Renderables\Stair.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\Camera.h" />
@@ -425,6 +455,9 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\Component.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\GameSystem.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\PointLight.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Material\MaterialLibrary.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Scenes\Scene.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Scenes\SceneManager.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ComputeShader.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Game\EngineTime.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\IndexBuffer.h" />
@@ -441,6 +474,7 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Lighting\DirectionalLight.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\MeshManager.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\Mesh\Mesh.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\ISerializeable.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imconfig.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imgui_impl_dx11.h" />
@@ -450,7 +484,7 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imstb_textedit.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\DearImGUI\imstb_truetype.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Include\ColdTable\Math\Ray.h" />
-    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Graphics\ShaderLibrary.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Resource\ShaderLibrary.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameObjects\GameObjectManager.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\Transform.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\HierarchyScreen.h" />
@@ -466,6 +500,10 @@
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\GameSystems\PhysicsSystem.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\PhysicsComponent.h" />
     <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\UIScreens\ScenePlayScreen.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\ECS\Components\MaterialComponent.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Utility\JsonParser.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\IEditAction.h" />
+    <ClInclude Include="ColdTableEngine\ColdTable\Source\ColdTable\Editor\ActionTracking\EditActions\EditIntAction.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ColdTableEngine\ColdTable\Source\ColdTable\Physics\" />

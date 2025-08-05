@@ -11,7 +11,7 @@
 namespace ColdTable
 {
 
-	class VertexBuffer : public Base
+	class VertexBuffer : public Base, public std::enable_shared_from_this<VertexBuffer>
 	{
 	public:
 		explicit VertexBuffer(VertexBufferDesc desc);

@@ -3,6 +3,7 @@
 #include <vector>
 #include <ColdTable/Core/Core.h>
 
+#include "ColdTable/ECS/Components/Component.h"
 #include "ColdTable/Math/Vec3.h"
 
 namespace ColdTable
@@ -10,7 +11,6 @@ namespace ColdTable
 	struct MaterialDesc
 	{
 		const ShaderPtr& shader;
-		const ConstantBufferPtr& constantBuffer;
 		const DeviceContextPtr& context;
 	};
 

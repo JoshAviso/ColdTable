@@ -59,9 +59,9 @@ VertexBufferPtr GraphicsDevice::CreateVertexBuffer()
 	return std::make_shared<VertexBuffer>(desc);
 }
 
-ConstantBufferPtr GraphicsDevice::CreateConstantBuffer()
+ConstantBufferPtr GraphicsDevice::CreateConstantBuffer(UINT bufferSize)
 {
-	ConstantBufferDesc desc{{}, shared_from_this()};
+	ConstantBufferDesc desc{{}, shared_from_this(), bufferSize};
 	return std::make_shared<ConstantBuffer>(desc);
 }
 

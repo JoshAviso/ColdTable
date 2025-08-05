@@ -4,7 +4,7 @@
 #include "ColdTable/Core/Logger.h"
 #include "ColdTable/ECS/GameObjects/GameObjectManager.h"
 #include "ColdTable/Graphics/GraphicsEngine.h"
-#include "ColdTable/Graphics/ShaderLibrary.h"
+#include "ColdTable/Resource/ShaderLibrary.h"
 #include "ColdTable/Graphics/Renderables/Cylinder.h"
 #include "DearImGUI/imgui.h"
 

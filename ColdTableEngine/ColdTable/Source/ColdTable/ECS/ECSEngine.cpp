@@ -61,6 +61,7 @@ void ColdTable::ECSEngine::Initialize()
 
 void ColdTable::ECSEngine::Start()
 {
+	if (_editorMode != EEditorMode::Playing && !_doFrameStep) return;
 	for (const GameSystemPtr& system : _registeredSystems)
 	{
 		for (auto componentTypes : system->TargetComponentTypes)
@@ -76,6 +77,7 @@ void ColdTable::ECSEngine::Start()
 
 void ColdTable::ECSEngine::EarlyUpdate()
 {
+	if (_editorMode != EEditorMode::Playing && !_doFrameStep) return;
 	for (const GameSystemPtr& system : _registeredSystems)
 	{
 		for (auto componentTypes : system->TargetComponentTypes)
@@ -91,6 +93,7 @@ void ColdTable::ECSEngine::EarlyUpdate()
 
 void ColdTable::ECSEngine::Update()
 {
+	if (_editorMode != EEditorMode::Playing && !_doFrameStep) return;
 	for (const GameSystemPtr& system : _registeredSystems)
 	{
 		for (auto componentTypes : system->TargetComponentTypes)
@@ -106,6 +109,7 @@ void ColdTable::ECSEngine::Update()
 
 void ColdTable::ECSEngine::LateUpdate()
 {
+	if (_editorMode != EEditorMode::Playing && !_doFrameStep) return;
 	for (const GameSystemPtr& system : _registeredSystems)
 	{
 		for (auto componentTypes : system->TargetComponentTypes)
@@ -121,6 +125,7 @@ void ColdTable::ECSEngine::LateUpdate()
 
 void ColdTable::ECSEngine::FixedUpdate()
 {
+	if (_editorMode != EEditorMode::Playing && !_doFrameStep) return;
 	for (const GameSystemPtr& system : _registeredSystems)
 	{
 		for (auto componentTypes : system->TargetComponentTypes)
@@ -136,6 +141,7 @@ void ColdTable::ECSEngine::FixedUpdate()
 
 void ColdTable::ECSEngine::Render()
 {
+	if (_editorMode != EEditorMode::Playing && !_doFrameStep) return;
 	for (const GameSystemPtr& system : _registeredSystems)
 	{
 		for (auto componentTypes : system->TargetComponentTypes)
@@ -147,6 +153,16 @@ void ColdTable::ECSEngine::Render()
 			}
 		}
 	}
+}
+
+std::vector<ColdTable::ComponentPtr> ColdTable::ECSEngine::GetComponents(EComponentType type) const
+{
+	auto it = _componentList.find(type);
+	if (it != _componentList.end())
+	{
+		return it->second;
+	}
+	return {};
 }
 
 template <typename TGameSystem>

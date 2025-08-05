@@ -1,10 +1,13 @@
 #pragma once
 #include <ColdTable/Core/Common.h>
 #include <map>
+#include <vector>
+
+#include "ColdTable/Utility/ISerializeable.h"
 
 namespace ColdTable {
 
-class Scene
+class Scene : public ISerializeable
 {
 public:
 	Scene(String name);
@@ -12,14 +15,14 @@ public:
 public:
 	String SceneName;
 
-	void AddObject(GameObjectPtr object);
-	void RemoveObject(GameObjectPtr object);
-	void LoadScene();
+	void FromJson(const JsonValue& json) override;
+	JsonValue ToJson() const override;
 
 private:
-	std::map<String, GameObjectPtr> _sceneObjects;
+	std::vector<GameObjectPtr> _sceneObjects;
 
-
+	friend class SceneManager;
 };
+using ScenePtr = std::shared_ptr<Scene>;
 }
 

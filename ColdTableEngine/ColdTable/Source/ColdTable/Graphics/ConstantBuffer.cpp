@@ -5,23 +5,22 @@
 #include <ColdTable/Graphics/GraphicsDevice.h>
 #include <ColdTable/Graphics/GraphicsLogUtil.h>
 
-ColdTable::ConstantBuffer::ConstantBuffer(ConstantBufferDesc desc) : Base(desc.base), _graphicsDevice(desc.graphicsDevice), _buffer(0)
-{
-}
+ColdTable::ConstantBuffer::ConstantBuffer(ConstantBufferDesc desc) :
+	Base(desc.base), _graphicsDevice(desc.graphicsDevice), _buffer(0), _bufferSize(desc.bufferSize)
+{}
 
 ColdTable::ConstantBuffer::~ConstantBuffer()
 {
-	if (_buffer)
-	_buffer->Release();
+	if (_buffer) _buffer->Release();
 }
 
-void ColdTable::ConstantBuffer::LoadData(void* buffer, UINT bufferSize)
+void ColdTable::ConstantBuffer::LoadData(void* buffer)
 {
 	if (_buffer) _buffer->Release();
 
 	D3D11_BUFFER_DESC bufferDesc{};
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.ByteWidth = bufferSize;
+	bufferDesc.ByteWidth = _bufferSize;
 	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
@@ -37,10 +36,7 @@ void ColdTable::ConstantBuffer::LoadData(void* buffer, UINT bufferSize)
 
 void ColdTable::ConstantBuffer::Update(DeviceContext* context, void* buffer)
 {
-	context->_context->UpdateSubresource(this->_buffer, NULL, NULL, buffer, NULL, NULL);
-}
+	if (_buffer == nullptr) LoadData(buffer);
 
-void ColdTable::ConstantBuffer::Update(ID3D11DeviceContext* context, void* buffer)
-{
-	context->UpdateSubresource(this->_buffer, NULL, NULL, buffer, NULL, NULL);
+	context->_context->UpdateSubresource(this->_buffer, NULL, NULL, buffer, NULL, NULL);
 }

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "IInspectorViewable.h"
 #include "ColdTable/Math/Vec3.h"
 
 namespace ColdTable
@@ -8,7 +9,7 @@ namespace ColdTable
         PickupObject, PickupVertex, PickupFace, PickupEdge
     };
     
-    class IEditorPickable
+    class IEditorPickable : public IInspectorViewable
     {
     public:
         virtual ~IEditorPickable() = default;

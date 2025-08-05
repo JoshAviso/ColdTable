@@ -11,6 +11,9 @@
 #include <ColdTable/Graphics/Renderables/Renderable.h>
 #include <ColdTable/Resource/Mesh/Mesh.h>
 
+#include "ColdTable/ECS/Components/MaterialComponent.h"
+#include "ColdTable/ECS/Components/MeshComponent.h"
+
 
 namespace ColdTable {
 
@@ -28,8 +31,9 @@ namespace ColdTable {
 		void DispatchComputeShader(UINT xThreadGroups, UINT yThreadGroups, UINT zThreadGroups);
 
 	public:
-		void Draw(RenderablePtr renderable);
+		void Draw(RenderablePtr renderable, MaterialComponentPtr material);
 		void Draw(MeshPtr mesh);
+		void Draw(MeshComponentPtr mesh, MaterialComponentPtr material);
 
 	private:
 		void BindVertexBuffer(VertexBufferPtr vertexBuffer);

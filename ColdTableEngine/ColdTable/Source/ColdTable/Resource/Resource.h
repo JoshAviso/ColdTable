@@ -6,6 +6,7 @@ namespace ColdTable
 class Resource
 {
 public:
+	Resource();
 	Resource(const wchar_t* fullpath);
 	virtual ~Resource();
 

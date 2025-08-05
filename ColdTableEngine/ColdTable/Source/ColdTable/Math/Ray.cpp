@@ -10,6 +10,7 @@ ColdTable::Ray::Ray(const Vec3& origin, const Vec3& direction, float maxDist): _
 
 bool ColdTable::Ray::TestIntersection(const GameObjectPtr& testTarget, float& intersectionDist)
 {
+	if (testTarget->renderable == nullptr) return false;
 	testTarget->renderable->recalcAABB();
 	return TestIntersection(testTarget->transform->transformMat(), testTarget->renderable->aabb_min, testTarget->renderable->aabb_max, intersectionDist);
 }

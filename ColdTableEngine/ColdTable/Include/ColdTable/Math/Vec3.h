@@ -2,6 +2,8 @@
 #include <ColdTable/Core/Core.h>
 #include <cmath>
 
+#include "ColdTable/Utility/ISerializeable.h"
+
 namespace ColdTable
 {
 	class Vec4;
@@ -34,6 +36,10 @@ namespace ColdTable
 		static Vec3 lerp(Vec3 initial, Vec3 final, f32 delta);;
 		static Vec3 min(Vec3 vec1, Vec3 vec2);
 		static Vec3 max(Vec3 vec1, Vec3 vec2);
+
+		/* SERIALIZATION */
+		static Vec3 FromJson(const JsonValue& json);
+		static JsonValue ToJson(const Vec3& vec);
 
 		/* CONVERSION */
 		explicit operator Vec4() const;

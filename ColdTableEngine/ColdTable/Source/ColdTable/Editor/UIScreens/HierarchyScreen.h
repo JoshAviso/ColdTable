@@ -1,5 +1,6 @@
 #pragma once
 #include "IUIScreen.h"
+#include "ColdTable/ECS/GameObjects/GameObject.h"
 
 namespace ColdTable
 {
@@ -8,6 +9,9 @@ namespace ColdTable
 	public:
 		HierarchyScreen();
 		void DrawUI() override;
+
+	private:
+		void DrawGameObject(GameObject* gameObject, float width);
 	};
 }
 

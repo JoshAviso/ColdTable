@@ -24,11 +24,12 @@ namespace ColdTable
         std::vector<UIScreenPtr> _screenList{};
         std::map<std::string, UIScreenPtr> _screenMap{};
 
-        GameObjectPtr InspectorSelected = nullptr;
+        GameObject* InspectorSelected = nullptr;
         Display* _display;
         
         friend class GraphicsEngine;
         friend class HierarchyScreen;
         friend class InspectorScreen;
+        friend class ScenePlayScreen;
     };
 }

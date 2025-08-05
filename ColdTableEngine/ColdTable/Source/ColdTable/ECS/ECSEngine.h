@@ -5,6 +5,11 @@
 #include <ColdTable/ECS/GameSystems/GameSystem.h>  
 
 namespace ColdTable {
+	enum EEditorMode
+	{
+		Playing, Editing, Paused
+	};
+
 	class ECSEngine  
 	{  
 	public:
@@ -23,14 +28,19 @@ namespace ColdTable {
 		void FixedUpdate();
 		void Render();
 
-
 		template <typename TGameSystem>
 		std::shared_ptr<TGameSystem> GetSystem();
+
+		std::vector<ComponentPtr> GetComponents(EComponentType type) const;
 
 		template <typename TGameSystem>  
 		bool RegisterSystem();  
 
 	private:
+		EEditorMode											_editorMode = EEditorMode::Editing;
+		friend class ScenePlayScreen;
+		bool												_doFrameStep = false;
+		friend class GameLoop;
 
 		std::vector<GameSystemPtr>							_registeredSystems;  
 		std::map<String, GameSystemPtr>						_systemMap;

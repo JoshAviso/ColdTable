@@ -4,6 +4,8 @@
 #include <cmath>
 #include <ColdTable/Math/Vec4.h>
 
+#include "ColdTable/Utility/ISerializeable.h"
+
 #define M_PIf 3.14159265358979323846f
 #define M_PI 3.14159265358979323846
 
@@ -26,6 +28,10 @@ namespace ColdTable
 		Quaternion(const Vec3& axis, const f32 angle);
 		Quaternion(const Quaternion& q);
 		Quaternion& operator = (const Quaternion& q);
+
+		/* SERIALIZATION */
+		static Quaternion FromJson(const JsonValue& json);
+		static JsonValue ToJson(const Quaternion& q);
 
 		explicit operator Mat4() const;
 		Mat4 asMat() const;

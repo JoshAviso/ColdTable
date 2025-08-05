@@ -4,17 +4,12 @@
 
 namespace ColdTable
 {
-struct DirectionalLightContent
-{
-	LightContent data;
-	Vec3 direction;
-};
-
 class DirectionalLight: public LightSource
 {
 
 public:
 	explicit DirectionalLight(const LightSourceDesc& desc);
+	LightContent GenerateLightData() override;
 
 public:
 	Vec3 direction = {0.0, -1.0, 0.0};

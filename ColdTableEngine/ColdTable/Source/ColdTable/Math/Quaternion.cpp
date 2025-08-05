@@ -3,6 +3,8 @@
 #include <ColdTable/Math/Vec3.h>
 #include <ColdTable/Math/Vec4.h>
 
+#include "ColdTable/Utility/JsonParser.h"
+
 const ColdTable::Quaternion ColdTable::Quaternion::Identity = Vec4(0.0f, 0.0f, 0.0f, 1.0f);
 const ColdTable::Quaternion ColdTable::Quaternion::Zero = Vec4(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -22,6 +24,26 @@ ColdTable::Quaternion::Quaternion(const Quaternion& q) = default;
 
 ColdTable::Quaternion& ColdTable::Quaternion::operator=(const Quaternion& q)
 { this->x = q.x; this->y = q.y; this->z = q.z; this->w = q.w; return *this; }
+
+ColdTable::Quaternion ColdTable::Quaternion::FromJson(const JsonValue& json)
+{
+	Quaternion q;
+	q.x = static_cast<float>(json["x"].AsNumber());
+	q.y = static_cast<float>(json["y"].AsNumber());
+	q.z = static_cast<float>(json["z"].AsNumber());
+	q.w = static_cast<float>(json["w"].AsNumber());
+	return q;
+}
+
+ColdTable::JsonValue ColdTable::Quaternion::ToJson(const Quaternion& q)
+{
+	JsonValue json;
+	json["x"] = JsonValue(q.x);
+	json["y"] = JsonValue(q.y);
+	json["z"] = JsonValue(q.z);
+	json["w"] = JsonValue(q.w);
+	return json;
+}
 
 bool ColdTable::Quaternion::operator==(const Quaternion& q) const
 { return Vec4(*this) == Vec4(q); }

@@ -6,6 +6,7 @@
 #include "DearImGUI/imgui_impl_win32.h"
 #include "UIScreens/AboutScreen.h"
 #include "UIScreens/ColorPicker.h"
+#include "UIScreens/ConsoleScreen.h"
 #include "UIScreens/HierarchyScreen.h"
 #include "UIScreens/InspectorScreen.h"
 #include "UIScreens/ScenePlayScreen.h"
@@ -23,6 +24,7 @@ void ColdTable::EditorUIManager::Initialize(Display* display)
 
 bool ColdTable::EditorUIManager::RegisterScreen(UIScreenPtr screen)
 {
+    if (Instance == nullptr) return false;
     if (Instance->_screenMap.count(screen->ScreenName) > 0) return false;
     
     Instance->_screenList.push_back(screen);
@@ -32,6 +34,7 @@ bool ColdTable::EditorUIManager::RegisterScreen(UIScreenPtr screen)
 
 bool ColdTable::EditorUIManager::UnregisterScreen(UIScreenPtr screen)
 {
+    if (Instance == nullptr) return false;
     if (Instance->_screenMap.count(screen->ScreenName) <= 0) return false;
 
     Instance->_screenMap.erase(screen->ScreenName);
@@ -42,6 +45,7 @@ bool ColdTable::EditorUIManager::UnregisterScreen(UIScreenPtr screen)
 
 ColdTable::UIScreenPtr ColdTable::EditorUIManager::GetScreen(std::string name)
 {
+    if (Instance == nullptr) return nullptr;
     if (Instance->_screenMap.count(name) <= 0) return nullptr;
     return Instance->_screenMap[name];
 }
@@ -81,9 +85,11 @@ void ColdTable::EditorUIManager::InitializeScreens()
     RegisterScreen(std::make_shared<InspectorScreen>());
     RegisterScreen(std::make_shared<ScenePlayScreen>());
 
-    RegisterScreen(std::make_shared<SelectorTypeScreen>());
+    //RegisterScreen(std::make_shared<SelectorTypeScreen>());
     RegisterScreen(spawnCylinder);
     RegisterScreen(spawnStairs);
+
+    RegisterScreen(std::make_shared<ConsoleScreen>());
 }
 
 

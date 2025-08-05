@@ -11,102 +11,87 @@
 
 #include "ColdTable/Editor/IEditorPickable.h"
 
+#include <ColdTable/Game/Display.h>
+
 namespace ColdTable
 {
-	struct CircleObject
+	struct GraphicsEngineDesc
 	{
-		Vec2 circleVec{ 1, 1 };
-		Vec2 circlePos{ 0,0 };
+		BaseDesc base;
+		Rect windowSize{};
 	};
-	
-	class GraphicsEngine final: public Base , public IInputListener
+	class GraphicsEngine final: public Base, public IInputListener
 	{
 	public:
-		explicit GraphicsEngine(const GraphicsEngineDesc& desc);
-		virtual ~GraphicsEngine() override;
-
-
-		static GraphicsEngine* Instance;
-		static void Initialize(const GraphicsEngineDesc& desc);
-
+		/* ========== Public Utility Functions ========== */
 		IEditorPickablePtr CheckHitObject(Ray ray);
 		void SetPickupMode(EPickableType mode);
 
-		void RegisterRenderable(RenderablePtr renderable);
-		void UnregisterRenderable(RenderablePtr renderable);
+		void RegisterCamera(CameraPtr camera);
+		void UnregisterCamera(CameraPtr camera);
 
-		void RegisterMesh(MeshPtr mesh);
-		void UnregisterMesh(MeshPtr mesh);
-
-		void RegisterLight(const DirectionalLightPtr& light);
-		void UnregisterLight(const DirectionalLightPtr& light);
-
-		void RegisterLight(const SpotLightPtr& light);
-		void UnregisterLight(const SpotLightPtr& light);
-
-		void RegisterLight(const PointLightPtr& light);
-		void UnregisterLight(const PointLightPtr& light);
+		void RegisterLight(const LightSourcePtr& light);
+		void UnregisterLight(const LightSourcePtr& light);
 
 		void RegisterComputeShader(ComputeShaderPtr computeShader);
 
 		GraphicsDevicePtr GetGraphicsDevice() noexcept;
-		//void UpdateConstantBuffer(const ConstantBufferPtr& constantBuffer, ConstantBufferContent content);
 
-		void SetViewportSize(Rect size);
 		ShaderPtr CreateShader(const wchar_t* vertexShaderSrc, const wchar_t* pixelShaderSrc);
 		ComputeShaderPtr CreateComputeShader(const wchar_t* sourceFile, const float* inputArray);
 		void BindComputeShader(ComputeShaderPtr computeShader);
 
-		void BindMaterial(MaterialPtr material);
-
 		MaterialPtr CreateMaterial(ShaderPtr shader);
 		VertexBufferPtr CreateVertexBuffer();
-		ConstantBufferPtr CreateConstantBuffer();
 		IndexBufferPtr CreateIndexBuffer();
 
+		/* =========== Public References =========== */
+		Display* GetDisplay() const noexcept { return _display.get(); }
+
 	private:
-		void UseShader(const ShaderPtr& shader);
-		void Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr perObjectBuffer, ConstantBufferPtr lightBuffer, Rect viewportSize);
-
-		void RenderUI();
-		
-		void DispatchComputeShader(ComputeShaderPtr computeShader, UINT xThreads, UINT yThreads, UINT zThreads);
-		void AwaitComputeShaderFinish();
-
-		std::shared_ptr<GraphicsDevice> _graphicsDevice{};
-		DeviceContextPtr _deviceContext{};
-
-		std::vector<RenderablePtr> _renderables{};
-		std::vector<MeshPtr> _meshes{};
-		std::vector<DirectionalLightPtr> _directionalLights{};
-		std::vector<SpotLightPtr> _spotLights{};
-		std::vector<PointLightPtr> _pointLights{};
-
-		ID3D11Query* _computeShaderQuery;
-
-		double runningTime = 0.0;
-		double animationTime = 2.0;
-		bool transitioningToOriginalPosition = false;
-		bool slowingDownAnim = false;
-
+		/* ========== Friended Classes and Functions ========== */
+		void Render();
 		friend class GameLoop;
+		
+	public:
+		/* =========== Initialization and Private Members ========== */
+		static GraphicsEngine* Instance;
+		static void Initialize(const GraphicsEngineDesc& desc);
 
-		std::vector<CircleObject> _circles{};
+	private:
+		explicit GraphicsEngine(const GraphicsEngineDesc& desc);
+		virtual ~GraphicsEngine() override;
+		
+		std::unique_ptr<Display>	_display;
+		Rect						_windowSize{};
 
-		float circleSpeed = 5.0f;
-		float circleRad = 50.0f;
+	private:
+		/* ========= Private Helper Functions ========= */
+		void PassPerFrameConstantBuffers();
+		void RenderObjects();
+		void RenderUI();
 
-		Rect screensize{};
+		CameraPtr ActiveCamera() const noexcept {
+			return _cameras.empty() ? nullptr : _cameras.back();
+		}
 
+		std::shared_ptr<GraphicsDevice>		_graphicsDevice{};
+		DeviceContextPtr					_deviceContext{};
+		ConstantBufferPtr					_lightingBuffer{};
+		ConstantBufferPtr					_objectBuffer{};
+		ConstantBufferPtr					_cameraBuffer{};
 
-		void OnKeyUp(int key) override;
+		std::vector<CameraPtr>				_cameras{};
+		std::vector<LightSourcePtr>			_lights{};
+
 		void OnKeyDown(int key) override;
 
 	public:
 		EPickableType _pickupMode = EPickableType::PickupObject;
-		float closestDist;
+		float closestDist{};
 
 		friend class EditorUIManager;
+		friend class MeshManager;
 	};
 }
 

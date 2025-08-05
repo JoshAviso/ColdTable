@@ -3,13 +3,13 @@
 #include <math.h>
 
 #include "GraphicsEngine.h"
-#include "ShaderLibrary.h"
+#include <ColdTable/Resource/ShaderLibrary.h>
 #include "ColdTable/Core/Logger.h"
 #include "ColdTable/ECS/GameObjects/GameObject.h"
 #include "ColdTable/ECS/GameObjects/GameObjectManager.h"
 #include "Renderables/Cube.h"
 
-ColdTable::Camera::Camera(const CameraDesc& desc): _cameraBuffer(desc.constantBuffer), _windowRectInfo(desc.windowRectInfo)
+ColdTable::Camera::Camera(const CameraDesc& desc): _windowRectInfo(desc.windowRectInfo)
 {
 }
 

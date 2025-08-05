@@ -12,9 +12,7 @@ namespace ColdTable
 	__declspec(align(16))
 	struct LightConstantBufferContent
 	{
-		DirectionalLightContent directionalLight[2];
-		PointLightContent pointlight;
-		SpotLightContent spotlight;
+		LightContent lights[32];
 	};
 
 	__declspec(align(16))
@@ -33,19 +31,24 @@ namespace ColdTable
 		bool hasMaterial;
 	};
 
+	struct ConstantBufferDesc
+	{
+		BaseDesc			base;
+		GraphicsDevicePtr	graphicsDevice;
+		UINT				bufferSize;
+	};
 	class ConstantBuffer : public Base
 	{
 	public:
 		explicit ConstantBuffer(ConstantBufferDesc desc);
 		virtual ~ConstantBuffer() override;
-		void LoadData(void* buffer, UINT bufferSize);
 		void Update(DeviceContext* context, void* buffer);
-		void Update(ID3D11DeviceContext* context, void* buffer);
 
 	private:
+		void LoadData(void* buffer);
 		GraphicsDevicePtr _graphicsDevice{};
-
 		ID3D11Buffer* _buffer;
+		UINT _bufferSize;
 
 	private:
 		friend class DeviceContext;

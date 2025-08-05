@@ -1,40 +1,53 @@
 #pragma once
+#include "ColdTable/ECS/ECSEngine.h"
 #include "ColdTable/ECS/GameSystems/PhysicsSystem.h"
+#include "ColdTable/Editor/EditorUIManager.h"
 #include "ColdTable/Editor/UIScreens/IUIScreen.h"
+#include "ColdTable/Scenes/SceneManager.h"
 #include "DearImGUI/imgui.h"
 
 namespace ColdTable
-{class ScenePlayScreen : public IUIScreen
+{
+
+class ScenePlayScreen : public IUIScreen
 {
 public:
 	ScenePlayScreen() : IUIScreen("Scene Play Screen") {}
 	void DrawUI() override
 	{
-		ColdTable::PhysicsSystem::GetInstance()->_isPaused = !_isPlaying;
-		if (_isPlaying)
+		EEditorMode editorMode = ECSEngine::GetInstance()->_editorMode;
+
+		if (editorMode == EEditorMode::Editing && ImGui::Button("Play"))
 		{
-			if (ImGui::Button("Stop"))
-			{
-				_isPlaying = false;
-				ColdTable::PhysicsSystem::GetInstance()->_isPaused = true;
-			}
-			if (ImGui::Button("Pause"))
-			{
-				_isPlaying = false;
-				ColdTable::PhysicsSystem::GetInstance()->_isPaused = true;
-			}
-		} else
+			EditorUIManager::Instance->InspectorSelected = nullptr;
+			SceneManager::Instance->CopyObjectManagerToCurrentScene();
+			//SceneManager::Instance->SaveCurrentScene(L"D:\\OneDrive\\Downloads");
+			ECSEngine::GetInstance()->_editorMode = EEditorMode::Playing;
+		}
+
+		if ((editorMode == EEditorMode::Playing || editorMode == EEditorMode::Paused)
+			&& ImGui::Button("Stop"))
 		{
-			if (ImGui::Button("Play"))
-			{
-				_isPlaying = true;
-				ColdTable::PhysicsSystem::GetInstance()->_isPaused = false;
-			}
+			EditorUIManager::Instance->InspectorSelected = nullptr;
+			//SceneManager::Instance->LoadSceneFromFile(L"D:\\OneDrive\\Downloads\\DefaultScene.salad");
+			SceneManager::Instance->ReloadCurrentScene();
+			ECSEngine::GetInstance()->_editorMode = EEditorMode::Editing;
+		}
+
+		ImGui::SameLine();
+		if (editorMode == EEditorMode::Playing && ImGui::Button("Pause"))
+			ECSEngine::GetInstance()->_editorMode = EEditorMode::Paused;
+
+		ImGui::SameLine();
+		if (editorMode == EEditorMode::Paused && ImGui::Button("Resume"))
+			ECSEngine::GetInstance()->_editorMode = EEditorMode::Playing;
+		
+		ImGui::SameLine();
+		if (editorMode == EEditorMode::Paused && ImGui::Button("Frame Step"))
+		{
+			ECSEngine::GetInstance()->_doFrameStep = true;
 		}
 	}
-
-private:
-	bool _isPlaying = false;
 };
 }
 

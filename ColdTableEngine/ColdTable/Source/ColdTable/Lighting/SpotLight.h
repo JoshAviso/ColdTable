@@ -19,6 +19,7 @@ class SpotLight: public LightSource, public IInputListener
 
 public:
 	explicit SpotLight(const LightSourceDesc& desc);
+	LightContent GenerateLightData() override;
 
 	void OnLeftMouseDown(Vec2 pos) override;
 

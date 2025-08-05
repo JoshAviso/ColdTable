@@ -4,7 +4,6 @@ struct VS_INPUT
     float2 texcoord : TEXCOORD0;
     float3 normal : NORMAL0;
     float3 vert_color : COLOR0;
-    //float3 color1 : COLOR1;
 };
 
 struct VS_OUTPUT
@@ -15,11 +14,11 @@ struct VS_OUTPUT
     float3 camera_direction : TEXCOOR2;
     float3 fragPos : TEXCOORD3;
     float3 vert_color : COLOR0;
-    //float3 color1 : COLOR1;
 };
 
 struct LightData
 {
+    int lightType; // 0: Directional, 1: Point, 2: Spot
     float ambient_intensity;
     float3 ambient_color;
     float diffuse_intensity;
@@ -27,34 +26,16 @@ struct LightData
     float spec_intensity;
     float3 spec_color;
     float spec_phong;
+    float3 direction; // For Directional and Spot lights
+    float3 position; // For Point and Spot lights
+    float innerCutoff; // For Spotlights
+    float outerCutoff; // For Spotlights
 };
 
-struct DirectionalLight
-{
-    LightData lightdata;
-    float3 direction;
-};
-
-struct PointLight
-{
-    LightData lightdata;
-    float3 position;
-};
-
-struct SpotLight
-{
-    PointLight baseLight;
-    float3 direction;
-    float innerCutoff;
-    float outerCutoff;
-};
-
-static const int NumberOfDirLights = 2;
+static const int MaxNumberOfLights = 20;
 cbuffer lightBuffer : register(b0)
 {
-    DirectionalLight dirLight[NumberOfDirLights];
-    SpotLight spotlight;
-    PointLight pointlight;
+    LightData lights[MaxNumberOfLights];
 };
 
 cbuffer cameraBuffer : register(b1)

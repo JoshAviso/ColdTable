@@ -7,6 +7,12 @@
 
 ColdTable::GameObjectManager* ColdTable::GameObjectManager::Instance = nullptr;
 
+void ColdTable::GameObjectManager::Initialize()
+{
+	if (Instance != nullptr) return;
+	Instance = new GameObjectManager();
+}
+
 ColdTable::GameObjectPtr ColdTable::GameObjectManager::CreateGameObject(String objectName)
 {
 	if (Instance == nullptr) Instance = new GameObjectManager();
@@ -50,6 +56,16 @@ ColdTable::GameObjectPtr ColdTable::GameObjectManager::CreateGameObject(String o
 	return objectPtr;
 }
 
+ColdTable::GameObjectPtr ColdTable::GameObjectManager::FindGameObject(String name)
+{
+	if (Instance == nullptr) return nullptr;
+	for (auto object : Instance->_registeredObjects)
+	{
+		if (object->name == name) return object;
+	}
+	return nullptr;
+}
+
 bool ColdTable::GameObjectManager::RegisterObject(GameObject* gameObject)
 {
 	if (Instance == nullptr) Instance = new GameObjectManager();
@@ -63,6 +79,17 @@ bool ColdTable::GameObjectManager::RegisterObject(GameObject* gameObject)
 	return true;
 }
 
+bool ColdTable::GameObjectManager::RegisterObject(GameObjectPtr gameObject)
+{
+	if (Instance == nullptr) Instance = new GameObjectManager();
+
+	auto itr = std::find(Instance->_registeredObjects.begin(), Instance->_registeredObjects.end(), gameObject);
+	if (itr != Instance->_registeredObjects.end()) return false;
+
+	Instance->_registeredObjects.push_back(gameObject);
+	return true;
+}
+
 bool ColdTable::GameObjectManager::UnregisterObject(GameObject* gameObject)
 {
 	if (Instance == nullptr) return false;
@@ -72,6 +99,19 @@ bool ColdTable::GameObjectManager::UnregisterObject(GameObject* gameObject)
 
 	Instance->_registeredObjects.erase(itr);*/
 	return true;
+}
+
+void ColdTable::GameObjectManager::ClearAllObjects()
+{
+	if (Instance == nullptr) return;
+	for (auto& object : Instance->_registeredObjects)
+	{
+		if (object != nullptr)
+		{
+			object->Destroy();
+		}
+	}
+	Instance->_registeredObjects.clear();
 }
 
 ColdTable::GameObjectManager::GameObjectManager()

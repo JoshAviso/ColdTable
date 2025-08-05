@@ -7,7 +7,9 @@
 #include <iostream>
 
 #include "Camera.h"
-#include "ShaderLibrary.h"
+#include <ColdTable/Resource/ShaderLibrary.h>
+#include "ColdTable/ECS/Components/MaterialComponent.h"
+#include "ColdTable/ECS/Components/MeshComponent.h"
 #include "ColdTable/ECS/GameObjects/GameObject.h"
 #include "ColdTable/ECS/GameObjects/GameObjectManager.h"
 #include "ColdTable/Editor/EditorUIManager.h"
@@ -21,12 +23,21 @@
 #include "DearImGUI/imgui_impl_win32.h"
 #include "Renderables/Cube.h"
 
-ColdTable::GraphicsEngine::GraphicsEngine(const GraphicsEngineDesc& desc): Base(desc.base)
+ColdTable::GraphicsEngine::GraphicsEngine(const GraphicsEngineDesc& desc):
+	Base(desc.base), _windowSize(desc.windowSize)
 {
+	// Device and Context Setup
 	_graphicsDevice = std::make_shared<GraphicsDevice>(GraphicsDeviceDesc{desc.base});
+	_deviceContext = _graphicsDevice->CreateDeviceContext();
 
-	auto& device = *_graphicsDevice;
-	_deviceContext = device.CreateDeviceContext();
+	// Display Setup
+	_display = std::make_unique<Display>(DisplayDesc{ desc.base,{desc.base, desc.windowSize}, _graphicsDevice});
+	_deviceContext->SetViewportSize(desc.windowSize);
+
+	// Buffer Setup
+	_lightingBuffer = _graphicsDevice->CreateConstantBuffer(sizeof(LightConstantBufferContent));
+	_objectBuffer = _graphicsDevice->CreateConstantBuffer(sizeof(PerObjectBufferContent));
+	_cameraBuffer = _graphicsDevice->CreateConstantBuffer(sizeof(CameraBufferContent));
 }
 
 ColdTable::GraphicsEngine::~GraphicsEngine()
@@ -117,57 +128,35 @@ void ColdTable::GraphicsEngine::SetPickupMode(EPickableType mode)
 	_pickupMode = mode;
 }
 
-void ColdTable::GraphicsEngine::RegisterRenderable(RenderablePtr renderable)
+void ColdTable::GraphicsEngine::RegisterCamera(CameraPtr camera)
 {
-	_renderables.push_back(renderable);
+	_cameras.push_back(camera);
 }
 
-void ColdTable::GraphicsEngine::UnregisterRenderable(RenderablePtr renderable)
+void ColdTable::GraphicsEngine::UnregisterCamera(CameraPtr camera)
 {
-	std::vector<RenderablePtr>::iterator index{};
-	for (auto itr = _renderables.begin(); itr != _renderables.end(); ++itr)
+	std::vector<CameraPtr>::iterator index{};
+	for (auto itr = _cameras.begin(); itr != _cameras.end(); ++itr)
 	{
-		if (*itr == renderable)
+		if (*itr == camera)
 		{
 			index = itr;
 			break;
 		}
 	}
-
-	if (index != _renderables.end())
-		_renderables.erase(index);
+	if (index != _cameras.end())
+		_cameras.erase(index);
 }
 
-void ColdTable::GraphicsEngine::RegisterMesh(MeshPtr mesh)
+void ColdTable::GraphicsEngine::RegisterLight(const LightSourcePtr& light)
 {
-	_meshes.push_back(mesh);
+	_lights.push_back(light);
 }
 
-void ColdTable::GraphicsEngine::UnregisterMesh(MeshPtr mesh)
+void ColdTable::GraphicsEngine::UnregisterLight(const LightSourcePtr& light)
 {
-	std::vector<MeshPtr>::iterator index{};
-	for (auto itr = _meshes.begin(); itr != _meshes.end(); ++itr)
-	{
-		if (*itr == mesh)
-		{
-			index = itr;
-			break;
-		}
-	}
-
-	if (index != _meshes.end())
-		_meshes.erase(index);
-}
-
-void ColdTable::GraphicsEngine::RegisterLight(const DirectionalLightPtr& light)
-{
-	_directionalLights.push_back(light);
-}
-
-void ColdTable::GraphicsEngine::UnregisterLight(const DirectionalLightPtr& light)
-{
-	std::vector<DirectionalLightPtr>::iterator index{};
-	for (auto itr = _directionalLights.begin(); itr != _directionalLights.end(); ++itr)
+	std::vector<LightSourcePtr>::iterator index{};
+	for (auto itr = _lights.begin(); itr != _lights.end(); ++itr)
 	{
 		if (*itr == light)
 		{
@@ -176,26 +165,8 @@ void ColdTable::GraphicsEngine::UnregisterLight(const DirectionalLightPtr& light
 		}
 	}
 
-	if (index != _directionalLights.end())
-		_directionalLights.erase(index);
-}
-
-void ColdTable::GraphicsEngine::RegisterLight(const SpotLightPtr& light)
-{
-	_spotLights.push_back(light);
-}
-
-void ColdTable::GraphicsEngine::UnregisterLight(const SpotLightPtr& light)
-{
-}
-
-void ColdTable::GraphicsEngine::RegisterLight(const PointLightPtr& light)
-{
-	_pointLights.push_back(light);
-}
-
-void ColdTable::GraphicsEngine::UnregisterLight(const PointLightPtr& light)
-{
+	if (index != _lights.end())
+		_lights.erase(index);
 }
 
 void ColdTable::GraphicsEngine::RegisterComputeShader(ComputeShaderPtr computeShader)
@@ -208,140 +179,85 @@ ColdTable::GraphicsDevicePtr ColdTable::GraphicsEngine::GetGraphicsDevice() noex
 	return _graphicsDevice;
 }
 
-/*
-void ColdTable::GraphicsEngine::UpdateConstantBuffer(const ConstantBufferPtr& constantBuffer, ConstantBufferContent content)
+void ColdTable::GraphicsEngine::Render()
 {
-	constantBuffer->Update(&*_deviceContext, &content);
-	_deviceContext->BindConstantBuffer(constantBuffer, 0);
+	if (_cameras.empty()) return;
+
+	_deviceContext->ClearAndSetBackBuffer(_display->GetSwapChain(), {0.2, 0.2, 0.5, 1});
+	_deviceContext->SetViewportSize(_windowSize);
+
+	PassPerFrameConstantBuffers();
+	RenderObjects();
+	RenderUI();
+	
+	auto& device = *_graphicsDevice;
+	device.ExecuteCommandList(*(_deviceContext.get()));
+	
+	_display->GetSwapChain().Present();
 }
-*/
 
-void ColdTable::GraphicsEngine::Render(CameraPtr camera, SwapChain& swapChain, ConstantBufferPtr perObjectBuffer, ConstantBufferPtr lightBuffer, Rect viewportSize)
+void ColdTable::GraphicsEngine::PassPerFrameConstantBuffers()
 {
-	screensize = viewportSize;
+	std::vector<ComponentPtr> lights = ECSEngine::GetInstance()->GetComponents(EComponentType::Light);
 
-	auto& context = *_deviceContext;
-	context.ClearAndSetBackBuffer(swapChain, {0.2, 0.2, 0.5, 1});
-	context.SetViewportSize(viewportSize);
 
-	for (auto dirLight : _directionalLights)
+	LightConstantBufferContent lightBufferContent{};
+	for (int i = 0; i < 32; i++)
 	{
-		dirLight->Update();
+		if (i < _lights.size())
+		{
+			//LightComponentPtr light = std::dynamic_pointer_cast<LightComponent>(lights[i]);
+			lightBufferContent.lights[i] = _lights[i]->GenerateLightData();
+		}
+		else lightBufferContent.lights[i] = LightContent{};
 	}
 
-	_spotLights[0]->position = camera->localPosition;
-	_spotLights[0]->direction = camera->localRotation.forward();
-
-	LightConstantBufferContent lightBufferContent{
-		{
-		{_directionalLights[0]->data, _directionalLights[0]->direction},
-		{_directionalLights[1]->data, _directionalLights[1]->direction}
-		},
-		{_pointLights[0]->data, _pointLights[0]->position},
-		SpotLightContent{
-			_spotLights[0]->data,
-			_spotLights[0]->position,
-			_spotLights[0]->direction,
-			_spotLights[0]->innerCutoff,
-			_spotLights[0]->outerCutoff
-		},
-	};
-	lightBuffer->Update(&context, &lightBufferContent);
-	_deviceContext->BindConstantBuffer(lightBuffer, 0);
+	_lightingBuffer->Update(_deviceContext.get(), &lightBufferContent);
+	_deviceContext->BindConstantBuffer(_lightingBuffer, 0);
 
 	CameraBufferContent camBuffer{
-		camera->viewMatrix(),
-		camera->projectionMat,
-		camera->localPosition
+		ActiveCamera()->viewMatrix(),
+		ActiveCamera()->projectionMat,
+		ActiveCamera()->localPosition
 	};
-	camera->_cameraBuffer->Update(&context, &camBuffer);
-	_deviceContext->BindConstantBuffer(camera->_cameraBuffer, 1);
+	_cameraBuffer->Update(_deviceContext.get(), &camBuffer);
+	_deviceContext->BindConstantBuffer(_cameraBuffer, 1);
+}
 
-	// Draw Renderables
-	for (auto renderable : _renderables)
-	{
-		renderable->Update(EngineTime::GetDeltaTime());
-
-		PerObjectBufferContent objectBuffer{
-			renderable->transformMat(),
-			Vec3(1.0, 1.0, 1.0),
-			false
-		};
-
-		if (renderable->_material != nullptr)
-		{
-			renderable->_material->SetData(&objectBuffer, sizeof(PerObjectBufferContent));
-			_deviceContext->BindConstantBuffer(renderable->_material->_constantBuffer, 2);
-		} else
-		{
-			perObjectBuffer->Update(&*_deviceContext, &objectBuffer);
-			_deviceContext->BindConstantBuffer(perObjectBuffer, 2);
-
-		}
-		context.Draw(renderable);
-	}
-
-	// Draw Meshes
-	for (auto mesh : _meshes)
-	{
-		PerObjectBufferContent objectBuffer{};
-		if (mesh->_material != nullptr)
-		{
-			objectBuffer = {
-				mesh->transform.transformMat(),
-				mesh->_material->tint,
-				true
-			};
-		} else
-		{
-			objectBuffer = {
-				mesh->transform.transformMat(),
-				Vec3(1.0, 1.0, 1.0),
-				false
-			};
-		}
-
-		mesh->_material->SetData(&objectBuffer, sizeof(PerObjectBufferContent));
-		_deviceContext->BindConstantBuffer(mesh->_material->_constantBuffer, 2);
-		context.Draw(mesh);
-	}
-
+void ColdTable::GraphicsEngine::RenderObjects()
+{
 	// Draw Game Objects
 	if (GameObjectManager::Instance != nullptr)
 	{
 		for (const GameObjectPtr& gameObject : GameObjectManager::Instance->_registeredObjects)
 		{
-			RenderablePtr renderable = gameObject->renderable;
-			if (renderable == nullptr) continue;
-			renderable->Update(EngineTime::GetDeltaTime());
+			if (!gameObject->enabled) continue;
 
-			PerObjectBufferContent objectBuffer{
-				gameObject->transform->transformMat(),
-				Vec3(1.0, 1.0, 1.0),
-				false
-			};
+			auto meshes = gameObject->GetComponents<MeshComponent>();
+			auto materials = gameObject->GetComponents<MaterialComponent>();
 
-			if (renderable->_material != nullptr)
+			for (int i = 0; i < meshes.size(); i++)
 			{
-				renderable->_material->SetData(&objectBuffer, sizeof(PerObjectBufferContent));
-				_deviceContext->BindConstantBuffer(renderable->_material->_constantBuffer, 2);
-			}
-			else
-			{
-				perObjectBuffer->Update(&*_deviceContext, &objectBuffer);
-				_deviceContext->BindConstantBuffer(perObjectBuffer, 2);
+				if (!meshes[i]->enabled) continue;
 
+				MaterialComponentPtr material = nullptr;
+				if (i < materials.size() && materials[i]->enabled) material = materials[i];
+
+				PerObjectBufferContent objectBuffer = {
+					gameObject->transform->transformMat(),
+					material == nullptr ?
+						Vec3(1.0, 1.0, 1.0) :
+						material->_material->tint,
+					material != nullptr
+				};
+
+				_objectBuffer->Update(&*_deviceContext, &objectBuffer);
+				_deviceContext->BindConstantBuffer(_objectBuffer, 2);
+
+				_deviceContext->Draw(meshes[i], material);
 			}
-			context.Draw(renderable);
 		}
 	}
-
-	RenderUI();
-	
-	auto& device = *_graphicsDevice;
-	device.ExecuteCommandList(context);
-	
-	swapChain.Present();
 }
 
 void ColdTable::GraphicsEngine::RenderUI()
@@ -364,68 +280,17 @@ void ColdTable::GraphicsEngine::RenderUI()
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
-void ColdTable::GraphicsEngine::DispatchComputeShader(ComputeShaderPtr computeShader, UINT xThreads, UINT yThreads,
-	UINT zThreads)
-{
-	/*D3D11_QUERY_DESC queryDesc{
-
-	};
-	_graphicsDevice->_d3dDevice->CreateQuery(&queryDesc, &_computeShaderQuery);
-	_deviceContext->_context->Begin(_computeShaderQuery);*/
-
-	_deviceContext->BindComputeShader(computeShader);
-	_deviceContext->DispatchComputeShader(xThreads, yThreads, zThreads);
-}
-
-void ColdTable::GraphicsEngine::AwaitComputeShaderFinish()
-{
-
-}
-
-void ColdTable::GraphicsEngine::OnKeyUp(int key)
-{
-	if (key == EKeyCode::SPACEBAR)
-	{
-		CircleObject circle{};
-		circle.circlePos = Vec2(screensize.width / 2.0f, screensize.height / 2.0f);
-		circle.circleVec.x = Utils::Random(-1.0f, 1.0f);
-		circle.circleVec.y = Utils::Random(-1.0f, 1.0f);
-
-		_circles.push_back(circle);
-	}
-	if (key == EKeyCode::BACKSPACE)
-	{
-		if (_circles.size() > 0)
-			_circles.pop_back();
-	}
-	if (key == EKeyCode::DELETE_KEY)
-	{
-		_circles.clear();
-	}
-}
-
 void ColdTable::GraphicsEngine::OnKeyDown(int key)
 {
 	if (key == EKeyCode::ESCAPE_KEY)
 	{
 		InputSystem::Instance->CloseGameCallback();
 	}
-
-}
-
-void ColdTable::GraphicsEngine::SetViewportSize(Rect size)
-{
-	_deviceContext->SetViewportSize(size);
 }
 
 ColdTable::VertexBufferPtr ColdTable::GraphicsEngine::CreateVertexBuffer()
 {
 	return _graphicsDevice->CreateVertexBuffer();
-}
-
-ColdTable::ConstantBufferPtr ColdTable::GraphicsEngine::CreateConstantBuffer()
-{
-	return _graphicsDevice->CreateConstantBuffer();
 }
 
 ColdTable::IndexBufferPtr ColdTable::GraphicsEngine::CreateIndexBuffer()
@@ -445,27 +310,12 @@ ColdTable::ComputeShaderPtr ColdTable::GraphicsEngine::CreateComputeShader(const
 
 void ColdTable::GraphicsEngine::BindComputeShader(ComputeShaderPtr computeShader)
 {
-	//_deviceContext->BindComputeShader(computeShader);
 	_graphicsDevice->_d3dContext->CSSetShader(computeShader->_computeShader, nullptr, 0);
-
 	_graphicsDevice->_d3dContext->CSSetShaderResources(0, 1, &computeShader->resourceView);
 	_graphicsDevice->_d3dContext->CSSetUnorderedAccessViews(0, 1, &computeShader->unorderedAccessView, nullptr);
 }
 
-void ColdTable::GraphicsEngine::BindMaterial(MaterialPtr material)
-{
-	
-}
-
 ColdTable::MaterialPtr ColdTable::GraphicsEngine::CreateMaterial(ShaderPtr shader)
 {
-	MaterialDesc desc{
-		shader, CreateConstantBuffer(), _deviceContext
-	};
-	return std::make_shared<Material>(desc);
-}
-
-void ColdTable::GraphicsEngine::UseShader(const ShaderPtr& shader)
-{
-	//_deviceContext->UseShader(shader);
+	return std::make_shared<ColdTable::Material>(MaterialDesc {shader, _deviceContext});
 }

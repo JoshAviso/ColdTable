@@ -15,6 +15,7 @@ class PointLight : public LightSource
 
 public:
 	explicit PointLight(const LightSourceDesc& desc);
+	LightContent GenerateLightData() override;
 
 public:
 	Vec3 position = Vec3::Zero;

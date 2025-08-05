@@ -2,6 +2,26 @@
 
 ColdTable::SpotLight::SpotLight(const LightSourceDesc& desc): LightSource(desc)
 {
+	lightType = ELightType::Spot;
+}
+
+ColdTable::LightContent ColdTable::SpotLight::GenerateLightData()
+{
+   ColdTable::LightContent lightContent;
+   lightContent.lightType = lightType;
+   lightContent.ambientIntensity = ambientIntensity;
+   lightContent.ambientColor = ambientColor;
+   lightContent.diffuseIntensity = diffuseIntensity;
+   lightContent.diffuseColor = diffuseColor;
+   lightContent.specIntensity = specIntensity;
+   lightContent.specColor = specColor;
+   lightContent.specPhong = specPhong;
+   lightContent.direction = direction; // For directional and spot light
+   lightContent.position = position; // For point and spot light
+   lightContent.innerCutoff = innerCutoff; // For spotlight
+   lightContent.outerCutoff = outerCutoff; // For spotlight
+   return lightContent;
+
 }
 
 void ColdTable::SpotLight::OnLeftMouseDown(Vec2 pos)
@@ -10,14 +30,14 @@ void ColdTable::SpotLight::OnLeftMouseDown(Vec2 pos)
 	if (tempIsOn)
 	{
 		tempIsOn = false;
-		data.diffuseIntensity = 0;
-		data.specIntensity = 0;
-		data.ambientIntensity = 0;
+		diffuseIntensity = 0;
+		specIntensity = 0;
+		ambientIntensity = 0;
 	} else
 	{
 		tempIsOn = true;
-		data.diffuseIntensity = 10;
-		data.specIntensity = 1;
-		data.ambientIntensity = 1;
+		diffuseIntensity = 10;
+		specIntensity = 1;
+		ambientIntensity = 1;
 	}
 }

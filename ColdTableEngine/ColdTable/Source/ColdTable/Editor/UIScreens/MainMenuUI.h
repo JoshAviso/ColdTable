@@ -11,6 +11,7 @@ public:
 
 private:
 	static void AboutMenu();
+	static void EditMenu();
 	static void ToolsMenu();
 	static void AddObjectMenu();
 	static void SpawnCube();

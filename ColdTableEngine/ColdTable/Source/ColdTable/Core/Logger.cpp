@@ -1,6 +1,9 @@
 #include <ColdTable/Core/Logger.h>
 #include <iostream>
 
+#include "ColdTable/Editor/EditorUIManager.h"
+#include "ColdTable/Editor/UIScreens/ConsoleScreen.h"
+
 std::unique_ptr<ColdTable::Logger> ColdTable::Logger::shared_instance = nullptr;
 
 void ColdTable::Logger::Initialize(LogLevel loglevel)
@@ -41,7 +44,11 @@ void ColdTable::Logger::Log(LogLevel level, const char* message)
 
 	if (level > shared_instance->_logLevel) return;
 
-	std::clog << "[ColdTable-" << logLevelToString(level) << "]: " << message << "\n";
+	String output = "[" + std::string(logLevelToString(level)) + "]: " + message;
+
+	ConsoleScreen* console = dynamic_cast<ConsoleScreen*>(EditorUIManager::GetScreen("Console").get());
+	if (console != nullptr) console->AddLog(level, output);
+	else std::clog << output.c_str() << "\n";
 }
 
 void ColdTable::Logger::Log(const char* message)

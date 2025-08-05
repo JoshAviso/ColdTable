@@ -3,7 +3,7 @@
 #include "ColdTable/Core/Core.h"
 #include "ColdTable/Core/Logger.h"
 #include "ColdTable/ECS/GameObjects/GameObjectManager.h"
-#include "ColdTable/Graphics/ShaderLibrary.h"
+#include "ColdTable/Resource/ShaderLibrary.h"
 #include "ColdTable/Graphics/Renderables/Stair.h"
 
 void ColdTable::SpawnStairsScreen::DrawUI()

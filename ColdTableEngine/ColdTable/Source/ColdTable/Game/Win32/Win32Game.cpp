@@ -38,6 +38,7 @@ void ColdTable::GameLoop::Run()
 		ECSEngine::GetInstance()->LateUpdate();
 
 		EngineTime::LogFrameEnd();
+		ECSEngine::GetInstance()->_doFrameStep = false;
 
 		onInternalCallback();
 		if (InputSystem::Instance->GameClosing)
