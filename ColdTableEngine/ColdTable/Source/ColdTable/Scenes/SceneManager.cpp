@@ -138,7 +138,12 @@ void ColdTable::SceneManager::LoadSceneFromFile(const wchar_t* filepath)
 	std::wifstream file(filepath);
 	if (!file.is_open())
 	{
-		ColdTableLogError("Failed to open scene file: %ls", filepath);
+		ColdTableLogError("Failed to open scene file:");
+		size_t size_needed = wcstombs(nullptr, filepath, 0) + 1;
+		char* narrowStr = new char[size_needed];
+		wcstombs(narrowStr, filepath, size_needed);
+		ColdTableLogError(narrowStr);
+		delete[] narrowStr;
 		return;
 	}
 

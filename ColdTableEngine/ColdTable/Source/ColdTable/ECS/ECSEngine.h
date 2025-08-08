@@ -39,6 +39,7 @@ namespace ColdTable {
 	private:
 		EEditorMode											_editorMode = EEditorMode::Editing;
 		friend class ScenePlayScreen;
+		friend class MainMenuUI;
 		bool												_doFrameStep = false;
 		friend class GameLoop;
 

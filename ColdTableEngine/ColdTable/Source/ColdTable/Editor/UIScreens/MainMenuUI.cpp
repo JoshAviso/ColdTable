@@ -7,6 +7,7 @@
 #include "ColdTable/Resource/ShaderLibrary.h"
 #include "ColdTable/Graphics/Renderables/Cube.h"
 #include "ColdTable/Resource/Mesh/MeshManager.h"
+#include "ColdTable/Scenes/SceneManager.h"
 #include "DearImGUI/imgui.h"
 
 void ColdTable::MainMenuUI::DrawUI()
@@ -54,6 +55,8 @@ void ColdTable::MainMenuUI::EditMenu()
 	}
 }
 
+char ColdTable::MainMenuUI::sceneFileToLoad[] = "";
+char ColdTable::MainMenuUI::sceneSavePath[] = "";
 void ColdTable::MainMenuUI::ToolsMenu()
 {
 	if (ImGui::BeginMenu("Tools"))
@@ -63,8 +66,67 @@ void ColdTable::MainMenuUI::ToolsMenu()
 			IUIScreen* colorPicker = EditorUIManager::GetScreen("Color Picker").get();
 			if (colorPicker) colorPicker->ShowScreen = !colorPicker->ShowScreen;
 		}
+		ImportMenu();
+		ExportMenu();
 		ImGui::EndMenu();
 	}
+}
+
+void ColdTable::MainMenuUI::ExportMenu()
+{
+	EEditorMode editorMode = ECSEngine::GetInstance()->_editorMode;
+	ImGui::BeginDisabled(editorMode != EEditorMode::Editing);
+	if (ImGui::BeginMenu("Export Scene"))
+	{
+		ImGui::Text("Export Location:"); ImGui::SameLine();
+		ImGui::InputText("##ExportTextbox", sceneSavePath, IM_ARRAYSIZE(sceneSavePath));
+		struct stat info;
+		ImGui::BeginDisabled(
+			sceneSavePath == nullptr || sceneSavePath[0] == '\0' ||
+			stat(sceneSavePath, &info) != 0
+		);
+		if (ImGui::Button("Export"))
+		{
+			size_t len = strlen(sceneSavePath);
+			wchar_t* wBuffer = new wchar_t[len + 1];
+			mbstowcs(wBuffer, sceneSavePath, len + 1);
+			SceneManager::Instance->SaveCurrentScene(wBuffer);
+			delete[] wBuffer;
+		}
+		ImGui::EndDisabled();
+
+		ImGui::EndMenu();
+	}
+	ImGui::EndDisabled();
+}
+
+void ColdTable::MainMenuUI::ImportMenu()
+{
+	EEditorMode editorMode = ECSEngine::GetInstance()->_editorMode;
+	ImGui::BeginDisabled(editorMode != EEditorMode::Editing);
+	if (ImGui::BeginMenu("Import Scene"))
+	{
+		ImGui::Text("Import Path:"); ImGui::SameLine();
+		ImGui::InputText("##ImportTextbox", sceneFileToLoad, IM_ARRAYSIZE(sceneFileToLoad));
+		size_t len = strlen(sceneFileToLoad);
+		struct stat info;
+		ImGui::BeginDisabled(sceneFileToLoad == nullptr || sceneFileToLoad[0] == '\0' || 
+			strcmp(sceneFileToLoad + len - 6, ".salad") != 0 ||
+			stat(sceneFileToLoad, &info) != 0
+		);
+		if (ImGui::Button("Import"))
+		{
+			wchar_t* wBuffer = new wchar_t[len + 1];
+			mbstowcs(wBuffer, sceneFileToLoad, len + 1);
+			SceneManager::Instance->LoadSceneFromFile(wBuffer);
+			SceneManager::Instance->ReloadCurrentScene();
+			delete[] wBuffer;
+		}
+		ImGui::EndDisabled();
+
+		ImGui::EndMenu();
+	}
+	ImGui::EndDisabled();
 }
 
 void ColdTable::MainMenuUI::AddObjectMenu()
@@ -159,3 +221,5 @@ void ColdTable::MainMenuUI::SpawnPhysicsCubes(int count)
 		rb->_rigidBody->enableGravity(true);
 	}
 }
+
+

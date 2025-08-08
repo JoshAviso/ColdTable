@@ -17,20 +17,20 @@ public:
 	{
 		EEditorMode editorMode = ECSEngine::GetInstance()->_editorMode;
 
+		//SceneManager::Instance->SaveCurrentScene(L"D:\\OneDrive\\Downloads");
+		//SceneManager::Instance->LoadSceneFromFile(L"D:\\OneDrive\\Downloads\\DefaultScene.salad");
+
 		if (editorMode == EEditorMode::Editing && ImGui::Button("Play"))
 		{
 			EditorUIManager::Instance->InspectorSelected = nullptr;
 			SceneManager::Instance->CopyObjectManagerToCurrentScene();
-			//SceneManager::Instance->SaveCurrentScene(L"D:\\OneDrive\\Downloads");
 			ECSEngine::GetInstance()->_editorMode = EEditorMode::Playing;
 		}
 
 		if ((editorMode == EEditorMode::Playing || editorMode == EEditorMode::Paused)
 			&& ImGui::Button("Stop"))
 		{
-			EditorUIManager::Instance->InspectorSelected = nullptr;
-			//SceneManager::Instance->LoadSceneFromFile(L"D:\\OneDrive\\Downloads\\DefaultScene.salad");
-			SceneManager::Instance->ReloadCurrentScene();
+			EditorUIManager::Instance->InspectorSelected = nullptr;SceneManager::Instance->ReloadCurrentScene();
 			ECSEngine::GetInstance()->_editorMode = EEditorMode::Editing;
 		}
 
