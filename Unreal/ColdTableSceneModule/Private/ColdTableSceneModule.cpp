@@ -290,9 +290,9 @@ AActor* FColdTableSceneModule::CreateActor(UWorld* World, const FColdTableObject
 
     // Begin spawning
     FActorSpawnParameters SpawnParams;
-    FVector Position = FVector(objectData.Transform.Position.X * 100, objectData.Transform.Position.Z * 100, objectData.Transform.Position.Y * 100);
+    FVector Position = FVector(-objectData.Transform.Position.X * 100, objectData.Transform.Position.Z * 100, objectData.Transform.Position.Y * 100);
     FVector Scale = FVector(objectData.Transform.Scale.X, objectData.Transform.Scale.Z, objectData.Transform.Scale.Y);
-    FQuat Quat = FQuat(objectData.Transform.Rotation.X, objectData.Transform.Rotation.Z, objectData.Transform.Rotation.Y, objectData.Transform.Rotation.W);
+    FQuat Quat = FQuat(-objectData.Transform.Rotation.X, objectData.Transform.Rotation.Z, objectData.Transform.Rotation.Y, objectData.Transform.Rotation.W);
     if (!hasMesh)
     {
         AActor* NewActor = World->SpawnActor<AActor>(Position, Quat.Rotator(), SpawnParams);
@@ -311,7 +311,7 @@ AActor* FColdTableSceneModule::CreateActor(UWorld* World, const FColdTableObject
         /* Handle mesh assignment */
         FString TargetMesh;
         if (MeshID == "Cube")           TargetMesh = TEXT("/Engine/BasicShapes/Cube.Cube");
-        else if (MeshID == "Cylinder")  TargetMesh = TEXT("/Engine/BasicShapes/Cylinder.Cylinder");
+        else if (MeshID == "Cylinder")  TargetMesh = TEXT("/Engine/BasicShapes/MaterialCylinder.MaterialCylinder");
         else if (MeshID == "Capsule")   TargetMesh = TEXT("/Engine/BasicShapes/Capsule.Capsule");
         else if (MeshID == "Sphere")    TargetMesh = TEXT("/Engine/BasicShapes/Sphere.Sphere");
         else if (MeshID == "Plane")     TargetMesh = TEXT("/Engine/BasicShapes/Plane.Plane");
@@ -434,9 +434,9 @@ FColdTableSceneData FColdTableSceneModule::GenerateOutputDataFromCurrentScene()
 
         FTransform Transform = Actor->GetActorTransform();
         FVector3f Position = FVector3f(Transform.GetLocation());
-        ObjData.Transform.Position = FVector3f(Position.X, Position.Z, Position.Y) / 100.0f;
+        ObjData.Transform.Position = FVector3f(-Position.X, Position.Z, Position.Y) / 100.0f;
         FQuat4f Rot = FQuat4f(Transform.GetRotation());
-        ObjData.Transform.Rotation = FQuat4f(Rot.X, Rot.Z, Rot.Y, Rot.W);
+        ObjData.Transform.Rotation = FQuat4f(-Rot.X, Rot.Z, Rot.Y, Rot.W);
         FVector3f Scale = FVector3f(Transform.GetScale3D());
         ObjData.Transform.Scale = FVector3f(Scale.X, Scale.Z, Scale.Y);
 
@@ -459,6 +459,14 @@ FColdTableSceneData FColdTableSceneModule::GenerateOutputDataFromCurrentScene()
             int32 dotIndex;
             if (MeshPath.FindLastChar('.', dotIndex)) {
                 MeshID = MeshPath.Mid(dotIndex + 1);
+            }
+            if (MeshID == "MaterialSphere")
+            {
+                MeshID = "Sphere";
+            }
+            if (MeshID == "Cylinder")
+            {
+                ObjData.Transform.Scale.Y *= 0.5f;
             }
 
             MeshComponent.MeshID = MeshID;

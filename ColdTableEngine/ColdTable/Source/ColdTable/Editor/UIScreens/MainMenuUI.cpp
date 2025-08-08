@@ -8,6 +8,7 @@
 #include "ColdTable/Graphics/Renderables/Cube.h"
 #include "ColdTable/Resource/Mesh/MeshManager.h"
 #include "ColdTable/Scenes/SceneManager.h"
+#include "ColdTable/Utility/Utils.h"
 #include "DearImGUI/imgui.h"
 
 void ColdTable::MainMenuUI::DrawUI()
@@ -193,7 +194,7 @@ void ColdTable::MainMenuUI::AddObjectMenu()
 		}
 		*/
 		
-		if (ImGui::MenuItem("100 Physics Cubes"))
+		if (ImGui::MenuItem("60 Physics Cubes"))
 		{
 			SpawnPhysicsCubes(60);
 		}
@@ -216,7 +217,9 @@ void ColdTable::MainMenuUI::SpawnPhysicsCubes(int count)
 	{
 		GameObjectPtr cube = GameObjectManager::CreateGameObject("Cube");
 		cube->AddComponent<MeshComponent>(MeshManager::Instance->GetMesh("Cube"));
-		cube->transform->position.y = 10.0f;
+		cube->transform->position.y = Utils::Random(8.0f, 15.0f);
+		cube->transform->position.x = Utils::Random(-5.0f, 5.0f);
+		cube->transform->position.z = Utils::Random(-5.0f, 5.0f);
 		PhysicsComponent* rb = cube->AddComponent<PhysicsComponent>(1.0f);
 		rb->_rigidBody->enableGravity(true);
 	}
